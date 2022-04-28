@@ -1,0 +1,16 @@
+{
+  "root": "packages/nx-graphql-code-generator-e2e",
+  "projectType": "application",
+  "sourceRoot": "packages/nx-graphql-code-generator-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/nx-plugin:e2e",
+      "options": {
+        "target": "nx-graphql-code-generator:build",
+        "jestConfig": "packages/nx-graphql-code-generator-e2e/jest.config.ts"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["nx-graphql-code-generator"]
+}

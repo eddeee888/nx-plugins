@@ -1,0 +1,54 @@
+{
+  "root": "packages/nx-graphql-code-generator",
+  "sourceRoot": "packages/nx-graphql-code-generator/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/nx-graphql-code-generator",
+        "main": "packages/nx-graphql-code-generator/src/index.ts",
+        "tsConfig": "packages/nx-graphql-code-generator/tsconfig.lib.json",
+        "assets": [
+          "packages/nx-graphql-code-generator/*.md",
+          {
+            "input": "./packages/nx-graphql-code-generator/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/nx-graphql-code-generator/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/nx-graphql-code-generator",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./packages/nx-graphql-code-generator",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/nx-graphql-code-generator/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/nx-graphql-code-generator"],
+      "options": {
+        "jestConfig": "packages/nx-graphql-code-generator/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

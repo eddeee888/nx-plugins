@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "nx-graphql-code-generator",
+  "version": "0.0.1",
+  "generators": {
+    "nx-graphql-code-generator": {
+      "factory": "./src/generators/add/generator",
+      "schema": "./src/generators/add/schema.json",
+      "description": "nx-graphql-code-generator generator"
+    }
+  }
+}
