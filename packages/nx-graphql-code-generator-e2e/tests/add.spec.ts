@@ -16,6 +16,7 @@ describe('nx-graphql-code-generator e2e', () => {
       `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`
     );
 
+    // generator - check codegen.yml
     expect(readFile(`libs/${plugin}/codegen.yml`)).toMatchInlineSnapshot(`
       "schema: # Add path to schema
 
@@ -24,6 +25,14 @@ describe('nx-graphql-code-generator e2e', () => {
       "
     `);
 
+    // generator - check package.json
+    const rootPackageJson = readJson('package.json');
+    expect(rootPackageJson.dependencies.graphql).toBeTruthy();
+    expect(
+      rootPackageJson.devDependencies['@graphql-codegen/cli']
+    ).toBeTruthy();
+
+    // executor - check command
     const result = await runNxCommandAsync(`build ${plugin}`);
     expect(result.stdout).toContain('Executor ran');
   }, 120000);

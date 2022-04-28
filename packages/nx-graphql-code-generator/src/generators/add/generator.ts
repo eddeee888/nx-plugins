@@ -1,13 +1,16 @@
 import {
+  addDependenciesToPackageJson,
   addProjectConfiguration,
   formatFiles,
   generateFiles,
   getWorkspaceLayout,
   names,
   offsetFromRoot,
+  readJson,
   Tree,
 } from '@nrwl/devkit';
 import * as path from 'path';
+import { graphqlCodegenCliVersion, graphqlVersion } from '../../utils/versions';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends NxGraphqlCodeGeneratorGeneratorSchema {
@@ -35,6 +38,20 @@ function normalizeOptions(
   };
 }
 
+function checkDependenciesInstalled(tree: Tree) {
+  const packageJson = readJson(tree, 'package.json');
+  const devDependencies = {};
+  const dependencies = {};
+  packageJson.dependencies = packageJson.dependencies || {};
+  packageJson.devDependencices = packageJson.devDependencices || {};
+
+  // base deps
+  dependencies['graphql'] = graphqlVersion;
+  devDependencies['@graphql-codegen/cli'] = graphqlCodegenCliVersion;
+
+  return addDependenciesToPackageJson(tree, dependencies, devDependencies);
+}
+
 function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
@@ -55,6 +72,8 @@ export default async function (
   options: NxGraphqlCodeGeneratorGeneratorSchema
 ) {
   const normalizedOptions = normalizeOptions(tree, options);
+
+  const installTask = checkDependenciesInstalled(tree);
   addProjectConfiguration(tree, normalizedOptions.projectName, {
     root: normalizedOptions.projectRoot,
     projectType: 'library',
@@ -67,4 +86,6 @@ export default async function (
   });
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
+
+  return installTask;
 }
