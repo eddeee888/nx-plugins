@@ -27,6 +27,8 @@ function normalizeOptions(
 
   return {
     ...options,
+    schema: options.schema ?? '',
+    documents: options.documents ?? '',
     projectName,
     projectRoot,
     projectDirectory,

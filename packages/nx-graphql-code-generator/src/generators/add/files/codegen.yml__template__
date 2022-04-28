@@ -1,0 +1,10 @@
+<% if(schema) { %>
+schema: <%= schema %>
+<% } else { %>
+schema: # Add path to schema
+<% } %>
+<% if(documents) { %>
+documents: <%= documents %>
+<% } %>
+generates:
+  # Add your config below
