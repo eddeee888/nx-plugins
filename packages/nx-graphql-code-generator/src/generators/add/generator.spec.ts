@@ -6,7 +6,7 @@ import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 
 describe('nx-graphql-code-generator generator', () => {
   let appTree: Tree;
-  const options: NxGraphqlCodeGeneratorGeneratorSchema = { name: 'test' };
+  const options: NxGraphqlCodeGeneratorGeneratorSchema = { project: 'test' };
 
   beforeEach(() => {
     appTree = createTreeWithEmptyWorkspace();

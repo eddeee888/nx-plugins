@@ -5,25 +5,15 @@
   "title": "",
   "type": "object",
   "properties": {
-    "name": {
+    "project": {
       "type": "string",
-      "description": "",
+      "description": "The name of the project.",
+      "alias": "p",
       "$default": {
-        "$source": "argv",
-        "index": 0
+        "$source": "projectName"
       },
-      "x-prompt": "What name would you like to use?"
-    },
-    "tags": {
-      "type": "string",
-      "description": "Add tags to the project (used for linting)",
-      "alias": "t"
-    },
-    "directory": {
-      "type": "string",
-      "description": "A directory where the project is placed",
-      "alias": "d"
+      "x-prompt": "What project do you want to add config to?"
     }
   },
-  "required": ["name"]
+  "required": ["project"]
 }

@@ -1,5 +1,3 @@
 export interface NxGraphqlCodeGeneratorGeneratorSchema {
-  name: string;
-  tags?: string;
-  directory?: string;
+  project: string;
 }

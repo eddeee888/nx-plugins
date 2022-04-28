@@ -14,36 +14,29 @@ interface NormalizedSchema extends NxGraphqlCodeGeneratorGeneratorSchema {
   projectName: string;
   projectRoot: string;
   projectDirectory: string;
-  parsedTags: string[];
 }
 
 function normalizeOptions(
   tree: Tree,
   options: NxGraphqlCodeGeneratorGeneratorSchema
 ): NormalizedSchema {
-  const name = names(options.name).fileName;
-  const projectDirectory = options.directory
-    ? `${names(options.directory).fileName}/${name}`
-    : name;
+  const name = names(options.project).fileName;
+  const projectDirectory = name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectRoot = `${getWorkspaceLayout(tree).libsDir}/${projectDirectory}`;
-  const parsedTags = options.tags
-    ? options.tags.split(',').map((s) => s.trim())
-    : [];
 
   return {
     ...options,
     projectName,
     projectRoot,
     projectDirectory,
-    parsedTags,
   };
 }
 
 function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
-    ...names(options.name),
+    ...names(options.project),
     offsetFromRoot: offsetFromRoot(options.projectRoot),
     template: '',
   };
@@ -69,7 +62,6 @@ export default async function (
         executor: '@eddeee888/nx-graphql-code-generator:build',
       },
     },
-    tags: normalizedOptions.parsedTags,
   });
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
