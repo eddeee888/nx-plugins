@@ -1,5 +1,6 @@
 import {
   addDependenciesToPackageJson,
+  updateJson,
   addProjectConfiguration,
   formatFiles,
   generateFiles,
@@ -45,9 +46,23 @@ function checkDependenciesInstalled(tree: Tree) {
   packageJson.dependencies = packageJson.dependencies || {};
   packageJson.devDependencices = packageJson.devDependencices || {};
 
-  // base deps
-  dependencies['graphql'] = graphqlVersion;
-  devDependencies['@graphql-codegen/cli'] = graphqlCodegenCliVersion;
+  if (!packageJson.dependencies.graphql) {
+    dependencies['graphql'] = graphqlVersion;
+  } else {
+    updateJson(tree, 'package.json', (json) => {
+      json.dependencies['graphql'] = graphqlVersion;
+      return json;
+    });
+  }
+
+  if (!packageJson.devDependencies['@graphql-codegen/cli']) {
+    devDependencies['@graphql-codegen/cli'] = graphqlCodegenCliVersion;
+  } else {
+    updateJson(tree, 'package.json', (json) => {
+      json.devDependencies['@graphql-codegen/cli'] = graphqlCodegenCliVersion;
+      return json;
+    });
+  }
 
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
 }
