@@ -1,7 +1,9 @@
 import { BuildExecutorSchema } from './schema';
 import executor from './executor';
 
-const options: BuildExecutorSchema = {};
+const options: BuildExecutorSchema = {
+  configFile: 'test.yml',
+};
 
 describe('Build Executor', () => {
   it('can run', async () => {

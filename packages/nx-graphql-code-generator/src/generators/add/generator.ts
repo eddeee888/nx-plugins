@@ -94,8 +94,11 @@ export default async function (
     projectType: 'library',
     sourceRoot: `${normalizedOptions.projectRoot}/src`,
     targets: {
-      build: {
-        executor: '@eddeee888/nx-graphql-code-generator:build',
+      'graphql-codegen': {
+        executor: '@eddeee888/nx-graphql-code-generator:graphql-codegen',
+        options: {
+          configFile: `${normalizedOptions.projectRoot}/codegen.yml`,
+        },
       },
     },
   });

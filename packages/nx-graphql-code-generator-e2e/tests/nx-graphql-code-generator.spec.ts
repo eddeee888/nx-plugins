@@ -17,7 +17,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`
     );
 
-    // generator - check codegen.yml
+    // check codegen.yml
     expect(readFile(`libs/${plugin}/codegen.yml`)).toMatchInlineSnapshot(`
       "schema: # Add path to schema
 
@@ -26,16 +26,12 @@ describe('nx-graphql-code-generator:add e2e', () => {
       "
     `);
 
-    // generator - check package.json
+    // check package.json
     const rootPackageJson = readJson('package.json');
     expect(rootPackageJson.dependencies.graphql).toBe('^16.4.0');
     expect(rootPackageJson.devDependencies['@graphql-codegen/cli']).toBe(
       '^2.6.2'
     );
-
-    // executor - check command
-    const result = await runNxCommandAsync(`build ${plugin}`);
-    expect(result.stdout).toContain('Executor ran');
   }, 120000);
 
   it('should update graphql and @graphql-codegen/cli', async () => {
@@ -102,4 +98,47 @@ describe('nx-graphql-code-generator:add e2e', () => {
       `);
     }, 120000);
   });
+});
+
+describe('nx-graphql-code-generator:graphql-codegen e2e', () => {
+  it('generates templates with dummy plugin', async () => {
+    const plugin = uniq('nx-graphql-code-generator');
+    ensureNxProject(
+      '@eddeee888/nx-graphql-code-generator',
+      'dist/packages/nx-graphql-code-generator'
+    );
+    await runNxCommandAsync(
+      `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`
+    );
+
+    // Create GraphQL codegen related files
+    // 1. Schema file
+    updateFile(
+      `libs/${plugin}/src/schema.graphqls`,
+      `type User {
+        id: ID!
+      }`
+    );
+    // 2. Dummy plugin
+    updateFile(
+      `libs/${plugin}/dummy-plugin.js`,
+      "module.exports = { plugin(schema, documents, config) { return 'TestContent' } }"
+    );
+    // 3. Codegen config file
+    updateFile(
+      `libs/${plugin}/codegen.yml`,
+      `
+      schema: libs/${plugin}/**/*.graphqls
+      generates:
+        libs/${plugin}/src/types.generated.ts:
+          plugins:
+            - libs/${plugin}/dummy-plugin.js
+    `
+    );
+
+    const result = await runNxCommandAsync(`graphql-codegen ${plugin}`);
+    expect(readFile(`libs/${plugin}/src/types.generated.ts`)).toBe(
+      'TestContent'
+    );
+  }, 120000);
 });
