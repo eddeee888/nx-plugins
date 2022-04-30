@@ -11,7 +11,9 @@ import {
   Tree,
 } from '@nrwl/devkit';
 import * as path from 'path';
+import { major } from 'semver';
 import { graphqlCodegenCliVersion, graphqlVersion } from '../../utils/versions';
+import { checkAndCleanWithSemver } from '../../utils/checkAndCleanWithSemver';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends NxGraphqlCodeGeneratorGeneratorSchema {
@@ -48,7 +50,11 @@ function checkDependenciesInstalled(tree: Tree) {
 
   if (!packageJson.dependencies.graphql) {
     dependencies['graphql'] = graphqlVersion;
-  } else {
+  } else if (
+    major(
+      checkAndCleanWithSemver('graphql', packageJson.dependencies.graphql)
+    ) < major(checkAndCleanWithSemver('graphql', graphqlVersion))
+  ) {
     updateJson(tree, 'package.json', (json) => {
       json.dependencies['graphql'] = graphqlVersion;
       return json;
@@ -57,7 +63,17 @@ function checkDependenciesInstalled(tree: Tree) {
 
   if (!packageJson.devDependencies['@graphql-codegen/cli']) {
     devDependencies['@graphql-codegen/cli'] = graphqlCodegenCliVersion;
-  } else {
+  } else if (
+    major(
+      checkAndCleanWithSemver(
+        '@graphql-codegen/cli',
+        packageJson.devDependencies['@graphql-codegen/cli']
+      )
+    ) <
+    major(
+      checkAndCleanWithSemver('@graphql-codegen/cli', graphqlCodegenCliVersion)
+    )
+  ) {
     updateJson(tree, 'package.json', (json) => {
       json.devDependencies['@graphql-codegen/cli'] = graphqlCodegenCliVersion;
       return json;

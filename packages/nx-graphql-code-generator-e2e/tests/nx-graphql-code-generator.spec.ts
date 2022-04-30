@@ -7,18 +7,19 @@ import {
   updateFile,
 } from '@nrwl/nx-plugin/testing';
 describe('nx-graphql-code-generator:add e2e', () => {
-  it('should add codegen.yml and packages', async () => {
-    const plugin = uniq('nx-graphql-code-generator');
-    ensureNxProject(
-      '@eddeee888/nx-graphql-code-generator',
-      'dist/packages/nx-graphql-code-generator'
-    );
-    await runNxCommandAsync(
-      `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`
-    );
+  describe('Generating for brand new project', () => {
+    it('adds codegen.yml and packages', async () => {
+      const plugin = uniq('nx-graphql-code-generator');
+      ensureNxProject(
+        '@eddeee888/nx-graphql-code-generator',
+        'dist/packages/nx-graphql-code-generator'
+      );
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`
+      );
 
-    // check codegen.yml
-    expect(readFile(`libs/${plugin}/codegen.yml`)).toMatchInlineSnapshot(`
+      // check codegen.yml
+      expect(readFile(`libs/${plugin}/codegen.yml`)).toMatchInlineSnapshot(`
       "schema: # Add path to schema
 
       generates:
@@ -26,39 +27,17 @@ describe('nx-graphql-code-generator:add e2e', () => {
       "
     `);
 
-    // check package.json
-    const rootPackageJson = readJson('package.json');
-    expect(rootPackageJson.dependencies.graphql).toBe('^16.4.0');
-    expect(rootPackageJson.devDependencies['@graphql-codegen/cli']).toBe(
-      '^2.6.2'
-    );
-  }, 120000);
-
-  it('should update graphql and @graphql-codegen/cli', async () => {
-    const plugin = uniq('nx-graphql-code-generator');
-    ensureNxProject(
-      '@eddeee888/nx-graphql-code-generator',
-      'dist/packages/nx-graphql-code-generator'
-    );
-
-    const rootPackageJson = readJson('package.json');
-    rootPackageJson.dependencies.graphql = '15.0.0';
-    rootPackageJson.devDependencies['@graphql-codegen/cli'] = '2.0.0';
-    updateFile('package.json', JSON.stringify(rootPackageJson));
-
-    await runNxCommandAsync(
-      `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --verbose`
-    );
-
-    const resultPackageJson = readJson('package.json');
-    expect(resultPackageJson.dependencies.graphql).toBe('^16.4.0');
-    expect(resultPackageJson.devDependencies['@graphql-codegen/cli']).toBe(
-      '^2.6.2'
-    );
-  }, 120000);
+      // check package.json
+      const rootPackageJson = readJson('package.json');
+      expect(rootPackageJson.dependencies.graphql).toBe('^16.4.0');
+      expect(rootPackageJson.devDependencies['@graphql-codegen/cli']).toBe(
+        '^2.6.2'
+      );
+    }, 120000);
+  });
 
   describe('--schema', () => {
-    it('should add path to schema', async () => {
+    it('adds path to schema', async () => {
       const plugin = uniq('nx-graphql-code-generator');
       ensureNxProject(
         '@eddeee888/nx-graphql-code-generator',
@@ -78,7 +57,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
   });
 
   describe('--documents', () => {
-    it('should add path to documents', async () => {
+    it('adds path to documents', async () => {
       const plugin = uniq('nx-graphql-code-generator');
       ensureNxProject(
         '@eddeee888/nx-graphql-code-generator',
@@ -96,6 +75,54 @@ describe('nx-graphql-code-generator:add e2e', () => {
           # Add your config below
         "
       `);
+    }, 120000);
+  });
+
+  describe('Updating NPM packages', () => {
+    it('updates packages if existing packages are lower in semver', async () => {
+      const plugin = uniq('nx-graphql-code-generator');
+      ensureNxProject(
+        '@eddeee888/nx-graphql-code-generator',
+        'dist/packages/nx-graphql-code-generator'
+      );
+
+      const rootPackageJson = readJson('package.json');
+      rootPackageJson.dependencies.graphql = '15.0.0';
+      rootPackageJson.devDependencies['@graphql-codegen/cli'] = '1.0.0';
+      updateFile('package.json', JSON.stringify(rootPackageJson));
+
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --verbose`
+      );
+
+      const resultPackageJson = readJson('package.json');
+      expect(resultPackageJson.dependencies.graphql).toBe('^16.4.0');
+      expect(resultPackageJson.devDependencies['@graphql-codegen/cli']).toBe(
+        '^2.6.2'
+      );
+    }, 120000);
+
+    it('does not update packages if existing packages are higher in semver', async () => {
+      const plugin = uniq('nx-graphql-code-generator');
+      ensureNxProject(
+        '@eddeee888/nx-graphql-code-generator',
+        'dist/packages/nx-graphql-code-generator'
+      );
+
+      const rootPackageJson = readJson('package.json');
+      rootPackageJson.dependencies.graphql = '99.0.0';
+      rootPackageJson.devDependencies['@graphql-codegen/cli'] = '99.0.0';
+      updateFile('package.json', JSON.stringify(rootPackageJson));
+
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --verbose`
+      );
+
+      const resultPackageJson = readJson('package.json');
+      expect(resultPackageJson.dependencies.graphql).toBe('99.0.0');
+      expect(resultPackageJson.devDependencies['@graphql-codegen/cli']).toBe(
+        '99.0.0'
+      );
     }, 120000);
   });
 });
