@@ -33,7 +33,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       // check projectJson
       const projectJson = readJson(`libs/${plugin}/project.json`);
       expect(projectJson.targets['graphql-codegen'].executor).toBe(
-        '@eddeee888/nx-graphql-code-generator:graphql-codegen'
+        '@eddeee888/nx-graphql-code-generator:codegen'
       );
       expect(projectJson.targets['graphql-codegen'].options.configFile).toBe(
         `libs/${plugin}/codegen.yml`
@@ -161,7 +161,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
   });
 });
 
-describe('nx-graphql-code-generator:graphql-codegen e2e', () => {
+describe('nx-graphql-code-generator:codegen e2e', () => {
   it('generates templates with dummy plugin', async () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject(

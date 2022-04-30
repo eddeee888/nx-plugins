@@ -91,7 +91,7 @@ function upsertGraphqlCodegenTask(
 ) {
   const projectConfig = readProjectConfiguration(tree, projectName);
   projectConfig.targets['graphql-codegen'] = {
-    executor: '@eddeee888/nx-graphql-code-generator:graphql-codegen',
+    executor: '@eddeee888/nx-graphql-code-generator:codegen',
     options: {
       configFile: `${projectRoot}/codegen.yml`,
     },

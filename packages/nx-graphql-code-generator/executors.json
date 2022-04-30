@@ -1,9 +1,9 @@
 {
   "$schema": "http://json-schema.org/schema",
   "executors": {
-    "graphql-codegen": {
-      "implementation": "./src/executors/graphql-codegen/executor",
-      "schema": "./src/executors/graphql-codegen/schema.json",
+    "codegen": {
+      "implementation": "./src/executors/codegen/executor",
+      "schema": "./src/executors/codegen/schema.json",
       "description": "GraphQL Code Generator executor"
     }
   }
