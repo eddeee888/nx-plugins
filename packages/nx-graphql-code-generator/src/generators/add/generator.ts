@@ -1,7 +1,6 @@
 import {
   addDependenciesToPackageJson,
   updateJson,
-  addProjectConfiguration,
   formatFiles,
   generateFiles,
   getWorkspaceLayout,
@@ -11,6 +10,8 @@ import {
   Tree,
   readWorkspaceConfiguration,
   updateWorkspaceConfiguration,
+  readProjectConfiguration,
+  updateProjectConfiguration,
 } from '@nrwl/devkit';
 import * as path from 'path';
 import { major } from 'semver';
@@ -83,7 +84,23 @@ function checkDependenciesInstalled(tree: Tree) {
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
 }
 
-function addCacheableOperation(tree: Tree) {
+function upsertGraphqlCodegenTask(
+  tree: Tree,
+  projectName: string,
+  projectRoot: string
+) {
+  const projectConfig = readProjectConfiguration(tree, projectName);
+  projectConfig.targets['graphql-codegen'] = {
+    executor: '@eddeee888/nx-graphql-code-generator:graphql-codegen',
+    options: {
+      configFile: `${projectRoot}/codegen.yml`,
+    },
+  };
+
+  updateProjectConfiguration(tree, projectName, projectConfig);
+}
+
+function upsertCacheableOperation(tree: Tree) {
   const workspace = readWorkspaceConfiguration(tree);
   if (
     !workspace.tasksRunnerOptions ||
@@ -135,20 +152,12 @@ export default async function (
   const normalizedOptions = normalizeOptions(tree, options);
 
   const installTask = checkDependenciesInstalled(tree);
-  addProjectConfiguration(tree, normalizedOptions.projectName, {
-    root: normalizedOptions.projectRoot,
-    projectType: 'library',
-    sourceRoot: `${normalizedOptions.projectRoot}/src`,
-    targets: {
-      'graphql-codegen': {
-        executor: '@eddeee888/nx-graphql-code-generator:graphql-codegen',
-        options: {
-          configFile: `${normalizedOptions.projectRoot}/codegen.yml`,
-        },
-      },
-    },
-  });
-  addCacheableOperation(tree);
+  upsertGraphqlCodegenTask(
+    tree,
+    normalizedOptions.projectName,
+    normalizedOptions.projectRoot
+  );
+  upsertCacheableOperation(tree);
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
 

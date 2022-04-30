@@ -15,7 +15,10 @@ describe('nx-graphql-code-generator:add e2e', () => {
         'dist/packages/nx-graphql-code-generator'
       );
       await runNxCommandAsync(
-        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`
+        `generate @nrwl/workspace:library --name=${plugin} --no-interactive`
+      );
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project=${plugin}`
       );
 
       // check codegen.yml
@@ -26,6 +29,15 @@ describe('nx-graphql-code-generator:add e2e', () => {
         # Add your config below
       "
     `);
+
+      // check projectJson
+      const projectJson = readJson(`libs/${plugin}/project.json`);
+      expect(projectJson.targets['graphql-codegen'].executor).toBe(
+        '@eddeee888/nx-graphql-code-generator:graphql-codegen'
+      );
+      expect(projectJson.targets['graphql-codegen'].options.configFile).toBe(
+        `libs/${plugin}/codegen.yml`
+      );
 
       // check package.json
       const rootPackageJson = readJson('package.json');
@@ -52,6 +64,9 @@ describe('nx-graphql-code-generator:add e2e', () => {
         'dist/packages/nx-graphql-code-generator'
       );
       await runNxCommandAsync(
+        `generate @nrwl/workspace:library --name=${plugin} --no-interactive`
+      );
+      await runNxCommandAsync(
         `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql`
       );
       expect(readFile(`libs/${plugin}/codegen.yml`)).toMatchInlineSnapshot(`
@@ -70,6 +85,9 @@ describe('nx-graphql-code-generator:add e2e', () => {
       ensureNxProject(
         '@eddeee888/nx-graphql-code-generator',
         'dist/packages/nx-graphql-code-generator'
+      );
+      await runNxCommandAsync(
+        `generate @nrwl/workspace:library --name=${plugin} --no-interactive`
       );
       await runNxCommandAsync(
         `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --documents libs/**/*.graphql`
@@ -94,6 +112,10 @@ describe('nx-graphql-code-generator:add e2e', () => {
         'dist/packages/nx-graphql-code-generator'
       );
 
+      await runNxCommandAsync(
+        `generate @nrwl/workspace:library --name=${plugin} --no-interactive`
+      );
+
       const rootPackageJson = readJson('package.json');
       rootPackageJson.dependencies.graphql = '15.0.0';
       rootPackageJson.devDependencies['@graphql-codegen/cli'] = '1.0.0';
@@ -115,6 +137,10 @@ describe('nx-graphql-code-generator:add e2e', () => {
       ensureNxProject(
         '@eddeee888/nx-graphql-code-generator',
         'dist/packages/nx-graphql-code-generator'
+      );
+
+      await runNxCommandAsync(
+        `generate @nrwl/workspace:library --name=${plugin} --no-interactive`
       );
 
       const rootPackageJson = readJson('package.json');
@@ -141,6 +167,9 @@ describe('nx-graphql-code-generator:graphql-codegen e2e', () => {
     ensureNxProject(
       '@eddeee888/nx-graphql-code-generator',
       'dist/packages/nx-graphql-code-generator'
+    );
+    await runNxCommandAsync(
+      `generate @nrwl/workspace:library --name=${plugin} --no-interactive`
     );
     await runNxCommandAsync(
       `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`
@@ -171,7 +200,7 @@ describe('nx-graphql-code-generator:graphql-codegen e2e', () => {
     `
     );
 
-    const result = await runNxCommandAsync(`graphql-codegen ${plugin}`);
+    await runNxCommandAsync(`graphql-codegen ${plugin}`);
     expect(readFile(`libs/${plugin}/src/types.generated.ts`)).toBe(
       'TestContent'
     );
