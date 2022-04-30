@@ -33,6 +33,14 @@ describe('nx-graphql-code-generator:add e2e', () => {
       expect(rootPackageJson.devDependencies['@graphql-codegen/cli']).toBe(
         '^2.6.2'
       );
+
+      // nx.json
+      const nxJson = readJson('nx.json');
+      expect(
+        nxJson.tasksRunnerOptions.default.options.cacheableOperations.includes(
+          'graphql-codegen'
+        )
+      );
     }, 120000);
   });
 

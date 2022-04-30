@@ -9,6 +9,8 @@ import {
   offsetFromRoot,
   readJson,
   Tree,
+  readWorkspaceConfiguration,
+  updateWorkspaceConfiguration,
 } from '@nrwl/devkit';
 import * as path from 'path';
 import { major } from 'semver';
@@ -81,6 +83,36 @@ function checkDependenciesInstalled(tree: Tree) {
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
 }
 
+function addCacheableOperation(tree: Tree) {
+  const workspace = readWorkspaceConfiguration(tree);
+  if (
+    !workspace.tasksRunnerOptions ||
+    !workspace.tasksRunnerOptions.default ||
+    (workspace.tasksRunnerOptions.default.runner !==
+      '@nrwl/workspace/tasks-runners/default' &&
+      workspace.tasksRunnerOptions.default.runner !==
+        'nx/tasks-runners/default')
+  ) {
+    return;
+  }
+
+  workspace.tasksRunnerOptions.default.options =
+    workspace.tasksRunnerOptions.default.options || {};
+
+  workspace.tasksRunnerOptions.default.options.cacheableOperations =
+    workspace.tasksRunnerOptions.default.options.cacheableOperations || [];
+  if (
+    !workspace.tasksRunnerOptions.default.options.cacheableOperations?.includes(
+      'graphql-codegen'
+    )
+  ) {
+    workspace.tasksRunnerOptions.default.options.cacheableOperations.push(
+      'graphql-codegen'
+    );
+  }
+  updateWorkspaceConfiguration(tree, workspace);
+}
+
 function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
@@ -116,6 +148,7 @@ export default async function (
       },
     },
   });
+  addCacheableOperation(tree);
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
 
