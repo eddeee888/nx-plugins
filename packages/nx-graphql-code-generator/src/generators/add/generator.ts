@@ -19,7 +19,6 @@ import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 interface NormalizedSchema extends NxGraphqlCodeGeneratorGeneratorSchema {
   projectName: string;
   projectRoot: string;
-  projectDirectory: string;
 }
 
 function normalizeOptions(
@@ -37,7 +36,6 @@ function normalizeOptions(
     documents: options.documents ?? '',
     projectName,
     projectRoot,
-    projectDirectory,
   };
 }
 
