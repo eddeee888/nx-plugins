@@ -24,7 +24,7 @@ $ nx generate @eddeee888/nx-graphql-code-generator --project=<existing project n
 
 You can use this executor to run codegen CLI. Note that the `add` generator automatically adds this to the project config. Your project config should look like this:
 
-```json
+```js
 // libs/<project name>/project.json
 {
   // ...
