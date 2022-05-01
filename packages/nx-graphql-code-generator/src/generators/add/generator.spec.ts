@@ -1,10 +1,5 @@
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import {
-  Tree,
-  readProjectConfiguration,
-  readJson,
-  writeJson,
-} from '@nrwl/devkit';
+import { Tree, readProjectConfiguration, readJson, writeJson } from '@nrwl/devkit';
 import { libraryGenerator } from '@nrwl/workspace/generators';
 import generator from './generator';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
@@ -31,9 +26,7 @@ describe('nx-graphql-code-generator generator', () => {
 
     // nx.json
     const nxJson = readJson(tree, 'nx.json');
-    expect(
-      nxJson.tasksRunnerOptions.default.options.cacheableOperations
-    ).toContain('graphql-codegen');
+    expect(nxJson.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
 
     // project config
     const projectConfig = readProjectConfiguration(tree, projectName);

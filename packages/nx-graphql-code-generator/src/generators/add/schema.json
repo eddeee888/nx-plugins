@@ -12,7 +12,7 @@
       "$default": {
         "$source": "projectName"
       },
-      "x-prompt": "What project do you want to add config to?"
+      "x-prompt": "Which project do you want to add config to?"
     },
     "schema": {
       "type": "string",
@@ -24,7 +24,7 @@
       "type": "string",
       "description": "Array of paths or glob patterns for files which export GraphQL documents e.g. ./src/**/*.graphql",
       "alias": "d",
-      "x-prompt": "Where are your GraphQL documents?"
+      "x-prompt": "Where are your GraphQL documents (operations/fragments)?"
     }
   },
   "required": ["project"]
