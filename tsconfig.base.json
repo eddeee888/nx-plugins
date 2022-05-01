@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@eddeee888/nx-graphql-code-generator": ["packages/nx-graphql-code-generator/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

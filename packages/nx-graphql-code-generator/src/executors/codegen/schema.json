@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "Run GraphQL codegen",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "configFile": {
+      "type": "string",
+      "description": "Path to config file"
+    }
+  },
+  "required": []
+}
