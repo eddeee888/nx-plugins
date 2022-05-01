@@ -1,0 +1,52 @@
+name: 'Release'
+on:
+  push:
+    branches:
+      - master
+
+env:
+  npm-token: ${{ secrets.NPM_TOKEN }}
+  github-token: ${{ secrets.GITHUB_TOKEN }}
+  node-version: '14.x'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: yarn
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Install packages
+        run: yarn install --prefer-offline
+
+      - name: Setup GIT
+        run: |
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+
+      - name: Set up NPM credentials
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ env.npm-token }}
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@master
+        with:
+          publish: yarn nx build nx-graphql-code-generator && yarn changeset publish
+          commit: 'chore(release): update packages versions'
+          title: 'Upcoming Release Changes'
+        env:
+          GITHUB_TOKEN: ${{ env.github-token }}
