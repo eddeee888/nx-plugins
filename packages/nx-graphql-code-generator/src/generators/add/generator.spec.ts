@@ -52,7 +52,9 @@ describe('nx-graphql-code-generator generator', () => {
 
 
       generates:
-        # Add your config below"
+        # Add your config below
+        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      "
     `);
   });
 
@@ -98,7 +100,9 @@ describe('nx-graphql-code-generator generator', () => {
 
 
       generates:
-        # Add your config below"
+        # Add your config below
+        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      "
     `);
   });
 
@@ -112,7 +116,9 @@ describe('nx-graphql-code-generator generator', () => {
 
 
       generates:
-        # Add your config below"
+        # Add your config below
+        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      "
     `);
   });
 
@@ -128,7 +134,9 @@ describe('nx-graphql-code-generator generator', () => {
       documents: **/*.graphqls
 
       generates:
-        # Add your config below"
+        # Add your config below
+        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      "
     `);
   });
 });
