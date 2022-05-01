@@ -1,11 +1,51 @@
-# nx-graphql-code-generator
+# @eddeee888/nx-graphql-code-generator
 
-This library was generated with [Nx](https://nx.dev).
+This [Nx plugin](https://nx.dev/getting-started/intro) can be used to add [graphql-code-generator](https://www.graphql-code-generator.com/) config and packages to an Nx project.
 
-## Building
+## Generators
 
-Run `nx build nx-graphql-code-generator` to build the library.
+### add
 
-## Running unit tests
+You can use this generator to wire up codegen config to an Nx project.
 
-Run `nx test nx-graphql-code-generator` to execute the unit tests via [Jest](https://jestjs.io).
+```bash
+$ nx generate @eddeee888/nx-graphql-code-generator --project=<existing project name>
+```
+
+| Options    | Required | Description                                                                                                       |
+| ---------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| `project`  | Yes      | Nx project to add codegen config to                                                                               |
+| `schema`   | Yes      | Maps to codegen's [schema field](https://www.graphql-code-generator.com/docs/config-reference/schema-field)       |
+| `document` | No       | Maps to codegen's [documents field](https://www.graphql-code-generator.com/docs/config-reference/documents-field) |
+
+## Executors
+
+### codegen
+
+You can use this executor to run codegen CLI. Note that the `add` generator automatically adds this to the project config. Your project config should look like this:
+
+```js
+// libs/<project name>/project.json
+{
+  // ...
+  "targets": {
+    // ...
+    "graphql-codegen": {
+      "executor": "@eddeee888/nx-graphql-code-generator:codegen",
+      "options": {
+        "configFile": "libs/<project name>/codegen.yml"
+      }
+    }
+  }
+}
+```
+
+You can run the executor like you woud other targets:
+
+```bash
+$ nx graphql-codegen <project name>
+```
+
+| Options      | Required | Description                               |
+| ------------ | -------- | ----------------------------------------- |
+| `configFile` | Yes      | Path to the project's codegen config file |
