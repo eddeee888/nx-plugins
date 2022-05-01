@@ -3,7 +3,7 @@
   "sourceRoot": "packages/nx-graphql-code-generator/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:swc",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/nx-graphql-code-generator",
