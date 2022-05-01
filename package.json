@@ -39,6 +39,6 @@
     "typescript": "~4.6.2"
   },
   "workspaces": [
-    "dist/packages/**"
+    "packages/**"
   ]
 }
