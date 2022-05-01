@@ -1,18 +1,19 @@
 name: 'Release'
 on:
   push:
-    branches:
+    branches-ignore:
       - master
-
 env:
-  npm-token: ${{ secrets.NPM_TOKEN }}
   github-token: ${{ secrets.GITHUB_TOKEN }}
+  npm-token: ${{ secrets.NPM_TOKEN }}
   node-version: '14.x'
-
 jobs:
   release:
     name: Release
     runs-on: ubuntu-18.04
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Check out repository
@@ -31,16 +32,6 @@ jobs:
       - name: Install packages
         run: yarn install --prefer-offline
 
-      - name: Setup GIT
-        run: |
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config user.name "$GITHUB_ACTOR"
-
-      - name: Set up NPM credentials
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ env.npm-token }}
-
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -50,3 +41,4 @@ jobs:
           title: 'Upcoming Release Changes'
         env:
           GITHUB_TOKEN: ${{ env.github-token }}
+          NPM_TOKEN: ${{ env.npm-token }}
