@@ -36,7 +36,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: yarn publish
+          publish: yarn release
           commit: 'chore(release): update packages versions'
           title: 'Upcoming Release Changes'
         env:
