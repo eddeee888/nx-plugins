@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.8
+
+### Patch Changes
+
+- 319fe31: Add default workspace schema logic
+
 ## 0.0.7
 
 ### Patch Changes
