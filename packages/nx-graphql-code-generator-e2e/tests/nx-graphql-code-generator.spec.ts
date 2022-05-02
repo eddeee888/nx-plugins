@@ -5,7 +5,9 @@ describe('nx-graphql-code-generator:add e2e', () => {
       const plugin = uniq('nx-graphql-code-generator');
       ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
       await runNxCommandAsync(`generate @nrwl/workspace:library --name=${plugin} --no-interactive`);
-      await runNxCommandAsync(`generate @eddeee888/nx-graphql-code-generator:add --project=${plugin}`);
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project=${plugin} --schema http://localhost:9999/graphql`
+      );
 
       // check codegen.yml
       expect(readFile(`libs/${plugin}/codegen.yml`)).toBeTruthy();
@@ -26,25 +28,13 @@ describe('nx-graphql-code-generator:add e2e', () => {
     }, 120000);
   });
 
-  describe('--schema', () => {
-    it('adds path to schema', async () => {
-      const plugin = uniq('nx-graphql-code-generator');
-      ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
-      await runNxCommandAsync(`generate @nrwl/workspace:library --name=${plugin} --no-interactive`);
-      await runNxCommandAsync(
-        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql`
-      );
-      expect(readFile(`libs/${plugin}/codegen.yml`)).toBeTruthy();
-    }, 120000);
-  });
-
   describe('--documents', () => {
     it('adds path to documents', async () => {
       const plugin = uniq('nx-graphql-code-generator');
       ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
       await runNxCommandAsync(`generate @nrwl/workspace:library --name=${plugin} --no-interactive`);
       await runNxCommandAsync(
-        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --documents libs/**/*.graphql`
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --documents libs/**/*.graphql`
       );
       expect(readFile(`libs/${plugin}/codegen.yml`)).toBeTruthy();
     }, 120000);
@@ -62,7 +52,9 @@ describe('nx-graphql-code-generator:add e2e', () => {
       rootPackageJson.devDependencies['@graphql-codegen/cli'] = '1.0.0';
       updateFile('package.json', JSON.stringify(rootPackageJson));
 
-      await runNxCommandAsync(`generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --verbose`);
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql`
+      );
 
       const resultPackageJson = readJson('package.json');
       expect(resultPackageJson.dependencies.graphql).toBe('^16.4.0');
@@ -80,7 +72,9 @@ describe('nx-graphql-code-generator:add e2e', () => {
       rootPackageJson.devDependencies['@graphql-codegen/cli'] = '99.0.0';
       updateFile('package.json', JSON.stringify(rootPackageJson));
 
-      await runNxCommandAsync(`generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --verbose`);
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --verbose`
+      );
 
       const resultPackageJson = readJson('package.json');
       expect(resultPackageJson.dependencies.graphql).toBe('99.0.0');
@@ -94,7 +88,9 @@ describe('nx-graphql-code-generator:codegen e2e', () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
     await runNxCommandAsync(`generate @nrwl/workspace:library --name=${plugin} --no-interactive`);
-    await runNxCommandAsync(`generate @eddeee888/nx-graphql-code-generator:add --project ${plugin}`);
+    await runNxCommandAsync(
+      `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql`
+    );
 
     // Create GraphQL codegen related files
     // 1. Schema file

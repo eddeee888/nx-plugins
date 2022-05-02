@@ -25,6 +25,11 @@ interface NormalizedSchema extends NxGraphqlCodeGeneratorGeneratorSchema {
 }
 
 function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema): NormalizedSchema {
+  // Validations
+  if (!options.schema) {
+    throw new Error('--schema is required');
+  }
+
   const name = names(options.project).fileName;
   const projectDirectory = name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');

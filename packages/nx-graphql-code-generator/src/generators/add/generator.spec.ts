@@ -8,8 +8,10 @@ import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 describe('nx-graphql-code-generator generator', () => {
   let tree: Tree;
   const projectName = 'test';
+  const codegenSchema = 'https://localhost:9999/graphql';
   const options: NxGraphqlCodeGeneratorGeneratorSchema = {
     project: projectName,
+    schema: codegenSchema,
   };
 
   beforeEach(async () => {
@@ -41,9 +43,7 @@ describe('nx-graphql-code-generator generator', () => {
     // files
     const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "
-      schema: # Add path to schema
-
+      "schema: https://localhost:9999/graphql
 
       generates:
         # Add your config below
@@ -79,9 +79,7 @@ describe('nx-graphql-code-generator generator', () => {
     // files
     const codegenConfig = tree.read(`apps/${directory}/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "
-      schema: # Add path to schema
-
+      "schema: https://localhost:9999/graphql
 
       generates:
         # Add your config below
@@ -130,26 +128,7 @@ describe('nx-graphql-code-generator generator', () => {
 
     const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "
-      schema: **/*.graphqls
-
-
-      generates:
-        # Add your config below
-        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
-      "
-    `);
-  });
-
-  it('generates schema path correctly to codegen config', async () => {
-    await libraryGenerator(tree, { name: projectName });
-    await generator(tree, { ...options, schema: '**/*.graphqls' });
-
-    const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
-    expect(codegenConfig).toMatchInlineSnapshot(`
-      "
-      schema: **/*.graphqls
-
+      "schema: **/*.graphqls
 
       generates:
         # Add your config below
@@ -164,9 +143,7 @@ describe('nx-graphql-code-generator generator', () => {
 
     const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "
-      schema: # Add path to schema
-
+      "schema: https://localhost:9999/graphql
 
       documents: **/*.graphqls
 
@@ -175,5 +152,10 @@ describe('nx-graphql-code-generator generator', () => {
         # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
       "
     `);
+  });
+
+  it('throws error if there is no schema', async () => {
+    await libraryGenerator(tree, { name: projectName });
+    await expect(generator(tree, { ...options, schema: undefined })).rejects.toEqual(new Error('--schema is required'));
   });
 });
