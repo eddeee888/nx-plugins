@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.6
+
+### Patch Changes
+
+- 8ea7f37: Update executor schema
+
 ## 0.0.5
 
 ### Patch Changes
