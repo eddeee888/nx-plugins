@@ -26,7 +26,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       const nxJson = readJson('nx.json');
       expect(nxJson.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
       expect(nxJson.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-        add: { schema: 'https://localhost:9999/graphql' },
+        add: { schema: 'http://localhost:9999/graphql' },
       });
     }, 120000);
   });

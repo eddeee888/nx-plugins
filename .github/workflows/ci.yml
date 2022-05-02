@@ -84,5 +84,5 @@ jobs:
       - name: Install deps
         run: yarn install --prefer-offline
 
-      - name: Lint
+      - name: e2e
         run: yarn nx e2e nx-graphql-code-generator-e2e
