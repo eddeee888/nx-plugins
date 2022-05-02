@@ -1,5 +1,5 @@
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { Tree, readProjectConfiguration, readJson, writeJson } from '@nrwl/devkit';
+import { Tree, readProjectConfiguration, readJson, writeJson, readWorkspaceConfiguration } from '@nrwl/devkit';
 import { libraryGenerator } from '@nrwl/workspace/generators';
 import { applicationGenerator } from '@nrwl/node';
 import generator from './generator';
@@ -27,9 +27,12 @@ describe('nx-graphql-code-generator generator', () => {
     expect(packageJson.dependencies.graphql).toBe('^16.4.0');
     expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^2.6.2');
 
-    // nx.json
-    const nxJson = readJson(tree, 'nx.json');
-    expect(nxJson.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
+    // workspace config ( nx.json )
+    const workspaceConfig = readWorkspaceConfiguration(tree);
+    expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
+      add: { schema: 'https://localhost:9999/graphql' },
+    });
 
     // project config
     const projectConfig = readProjectConfiguration(tree, projectName);
@@ -63,9 +66,12 @@ describe('nx-graphql-code-generator generator', () => {
     expect(packageJson.dependencies.graphql).toBe('^16.4.0');
     expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^2.6.2');
 
-    // nx.json
-    const nxJson = readJson(tree, 'nx.json');
-    expect(nxJson.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
+    // workspace config ( nx.json )
+    const workspaceConfig = readWorkspaceConfiguration(tree);
+    expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
+      add: { schema: 'https://localhost:9999/graphql' },
+    });
 
     // project config
     const projectConfig = readProjectConfiguration(tree, finalProjectName);
@@ -86,6 +92,24 @@ describe('nx-graphql-code-generator generator', () => {
         # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
       "
     `);
+  });
+
+  it('does not overwrite workspace config schema option if it has been added', async () => {
+    await libraryGenerator(tree, { name: projectName });
+    await generator(tree, { ...options, schema: '**/*.graphqls' });
+
+    const workspaceConfig = readWorkspaceConfiguration(tree);
+    expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
+      add: { schema: '**/*.graphqls' },
+    });
+
+    await libraryGenerator(tree, { name: projectName + '2' });
+    await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls' });
+
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
+      add: { schema: '**/*.graphqls' },
+    });
   });
 
   it('updates NPM packges if existing versions are less than expected major version', async () => {

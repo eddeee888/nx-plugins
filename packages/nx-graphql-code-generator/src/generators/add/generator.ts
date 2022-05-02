@@ -110,6 +110,29 @@ function upsertCacheableOperation(tree: Tree) {
   updateWorkspaceConfiguration(tree, workspace);
 }
 
+function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
+  const workspace = readWorkspaceConfiguration(tree);
+
+  workspace.generators = workspace.generators || {};
+  workspace.generators['@eddeee888/nx-graphql-code-generator'] =
+    workspace.generators['@eddeee888/nx-graphql-code-generator'] || {};
+
+  const prev = { ...workspace.generators['@eddeee888/nx-graphql-code-generator'] };
+
+  workspace.generators = {
+    ...workspace.generators,
+    '@eddeee888/nx-graphql-code-generator': {
+      ...prev,
+      add: {
+        schema: options.schema,
+        ...prev.add,
+      },
+    },
+  };
+
+  updateWorkspaceConfiguration(tree, workspace);
+}
+
 function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
@@ -126,6 +149,7 @@ export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGenera
   const installTask = checkDependenciesInstalled(tree);
   upsertGraphqlCodegenTask(tree, normalizedOptions.projectConfig, normalizedOptions.projectName);
   upsertCacheableOperation(tree);
+  addDefaultWorkspaceOptions(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
 
