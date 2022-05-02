@@ -7,8 +7,8 @@
   "properties": {
     "configFile": {
       "type": "string",
-      "description": "Path to config file"
+      "description": "Path to codegen config file"
     }
   },
-  "required": []
+  "required": ["configFile"]
 }
