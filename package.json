@@ -2,9 +2,7 @@
   "name": "eddeee888",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "release": "yarn nx run-many --target=build --all && yarn changeset publish"
-  },
+  "scripts": {},
   "private": true,
   "dependencies": {
     "tslib": "^2.3.0"
