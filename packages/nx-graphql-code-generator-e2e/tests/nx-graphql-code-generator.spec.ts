@@ -43,6 +43,18 @@ describe('nx-graphql-code-generator:add e2e', () => {
     }, 120000);
   });
 
+  describe('--config', () => {
+    it('generates custom codegen config filename correctly', async () => {
+      const plugin = uniq('nx-graphql-code-generator');
+      ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
+      await runNxCommandAsync(`generate @nrwl/workspace:library --name=${plugin} --no-interactive`);
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --config graphql-codegen.yml`
+      );
+      expect(readFile(`libs/${plugin}/graphql-codegen.yml`)).toBeTruthy();
+    }, 120000);
+  });
+
   describe('Updating NPM packages', () => {
     it('updates packages if existing packages are lower in semver', async () => {
       const plugin = uniq('nx-graphql-code-generator');

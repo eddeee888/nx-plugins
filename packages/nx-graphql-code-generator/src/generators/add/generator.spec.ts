@@ -178,6 +178,21 @@ describe('nx-graphql-code-generator generator', () => {
     `);
   });
 
+  it('generates custom codegen config filename', async () => {
+    await libraryGenerator(tree, { name: projectName });
+    await generator(tree, { ...options, config: 'graphql-codegen.yml' });
+
+    const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.yml`, 'utf-8');
+    expect(codegenConfig).toMatchInlineSnapshot(`
+      "schema: https://localhost:9999/graphql
+
+      generates:
+        # Add your config below
+        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      "
+    `);
+  });
+
   it('throws error if there is no schema', async () => {
     await libraryGenerator(tree, { name: projectName });
     await expect(generator(tree, { ...options, schema: undefined })).rejects.toEqual(new Error('--schema is required'));

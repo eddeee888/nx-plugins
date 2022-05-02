@@ -19,7 +19,7 @@ import { graphqlCodegenCliVersion, graphqlVersion } from '../../utils/versions';
 import { checkAndCleanWithSemver } from '../../utils/checkAndCleanWithSemver';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 
-interface NormalizedSchema extends NxGraphqlCodeGeneratorGeneratorSchema {
+interface NormalizedSchema extends Required<NxGraphqlCodeGeneratorGeneratorSchema> {
   projectConfig: ProjectConfiguration;
   projectName: string;
 }
@@ -39,6 +39,7 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
     ...options,
     schema: options.schema ?? '',
     documents: options.documents ?? '',
+    config: options.config ?? 'codegen.yml',
     projectConfig,
     projectName,
   };
@@ -78,15 +79,15 @@ function checkDependenciesInstalled(tree: Tree) {
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
 }
 
-function upsertGraphqlCodegenTask(tree: Tree, projectConfig: ProjectConfiguration, projectName: string) {
-  projectConfig.targets['graphql-codegen'] = {
+function upsertGraphqlCodegenTask(tree: Tree, options: NormalizedSchema) {
+  options.projectConfig.targets['graphql-codegen'] = {
     executor: '@eddeee888/nx-graphql-code-generator:codegen',
     options: {
-      configFile: `${projectConfig.root}/codegen.yml`,
+      configFile: path.join(options.projectConfig.root, options.config),
     },
   };
 
-  updateProjectConfiguration(tree, projectName, projectConfig);
+  updateProjectConfiguration(tree, options.projectName, options.projectConfig);
 }
 
 function upsertCacheableOperation(tree: Tree) {
@@ -147,7 +148,7 @@ export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGenera
   const normalizedOptions = normalizeOptions(tree, options);
 
   const installTask = checkDependenciesInstalled(tree);
-  upsertGraphqlCodegenTask(tree, normalizedOptions.projectConfig, normalizedOptions.projectName);
+  upsertGraphqlCodegenTask(tree, normalizedOptions);
   upsertCacheableOperation(tree);
   addDefaultWorkspaceOptions(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);

@@ -24,6 +24,12 @@
       "type": "string",
       "description": "Array of paths or glob patterns for files which export GraphQL documents e.g. libs/<project name>/**/*.graphql",
       "alias": "d"
+    },
+    "config": {
+      "type": "string",
+      "description": "Name of the codegen config file",
+      "default": "codegen.yml",
+      "alias": "c"
     }
   },
   "required": ["project"]
