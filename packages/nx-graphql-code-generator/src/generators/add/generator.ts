@@ -3,7 +3,6 @@ import {
   updateJson,
   formatFiles,
   generateFiles,
-  getWorkspaceLayout,
   names,
   offsetFromRoot,
   readJson,
@@ -12,6 +11,7 @@ import {
   updateWorkspaceConfiguration,
   readProjectConfiguration,
   updateProjectConfiguration,
+  ProjectConfiguration,
 } from '@nrwl/devkit';
 import * as path from 'path';
 import { major } from 'semver';
@@ -20,22 +20,22 @@ import { checkAndCleanWithSemver } from '../../utils/checkAndCleanWithSemver';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends NxGraphqlCodeGeneratorGeneratorSchema {
+  projectConfig: ProjectConfiguration;
   projectName: string;
-  projectRoot: string;
 }
 
 function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema): NormalizedSchema {
   const name = names(options.project).fileName;
   const projectDirectory = name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${getWorkspaceLayout(tree).libsDir}/${projectDirectory}`;
+  const projectConfig = readProjectConfiguration(tree, projectName);
 
   return {
     ...options,
     schema: options.schema ?? '',
     documents: options.documents ?? '',
+    projectConfig,
     projectName,
-    projectRoot,
   };
 }
 
@@ -73,12 +73,11 @@ function checkDependenciesInstalled(tree: Tree) {
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
 }
 
-function upsertGraphqlCodegenTask(tree: Tree, projectName: string, projectRoot: string) {
-  const projectConfig = readProjectConfiguration(tree, projectName);
+function upsertGraphqlCodegenTask(tree: Tree, projectConfig: ProjectConfiguration, projectName: string) {
   projectConfig.targets['graphql-codegen'] = {
     executor: '@eddeee888/nx-graphql-code-generator:codegen',
     options: {
-      configFile: `${projectRoot}/codegen.yml`,
+      configFile: `${projectConfig.root}/codegen.yml`,
     },
   };
 
@@ -110,17 +109,17 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
     ...names(options.project),
-    offsetFromRoot: offsetFromRoot(options.projectRoot),
+    offsetFromRoot: offsetFromRoot(options.projectConfig.root),
     template: '',
   };
-  generateFiles(tree, path.join(__dirname, 'files'), options.projectRoot, templateOptions);
+  generateFiles(tree, path.join(__dirname, 'files'), options.projectConfig.root, templateOptions);
 }
 
 export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {
   const normalizedOptions = normalizeOptions(tree, options);
 
   const installTask = checkDependenciesInstalled(tree);
-  upsertGraphqlCodegenTask(tree, normalizedOptions.projectName, normalizedOptions.projectRoot);
+  upsertGraphqlCodegenTask(tree, normalizedOptions.projectConfig, normalizedOptions.projectName);
   upsertCacheableOperation(tree);
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
