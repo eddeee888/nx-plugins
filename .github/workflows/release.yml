@@ -36,7 +36,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: yarn nx build nx-graphql-code-generator && yarn changeset publish
+          publish: yarn publish
           commit: 'chore(release): update packages versions'
           title: 'Upcoming Release Changes'
         env:
