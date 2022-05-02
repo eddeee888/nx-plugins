@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.5
+
+### Patch Changes
+
+- 546ac12: Update nx-graphql-code-generator schema
+
 ## 0.0.4
 
 ### Patch Changes

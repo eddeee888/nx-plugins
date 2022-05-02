@@ -1,6 +1,6 @@
 {
   "name": "@eddeee888/nx-graphql-code-generator",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
   "description": "The Nx Plugin to integrate graphql-code-generator with Nx projects",
