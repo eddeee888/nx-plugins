@@ -1,5 +1,12 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.7
+
+### Patch Changes
+
+- 0378a1e: Make generator's schema option required with validations
+- 097e61d: Fix generator to generate project directory and type correctly
+
 ## 0.0.6
 
 ### Patch Changes
