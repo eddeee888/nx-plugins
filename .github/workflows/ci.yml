@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  precheck:
+    name: Check jobs to run
+    runs-on: ubuntu-18.04
+    outputs:
+      affected-nx-graphql-code-generator: ${{ steps.affected.outputs.nx-graphql-code-generator }}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: yarn
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Install deps
+        run: yarn install --prefer-offline
+
+      - name: Check affected projects
+        id: affected
+        run: |
+          echo "::set-output name=nx-graphql-code-generator::$(./ops/bin/check-affected.sh libs nx-graphql-code-generator origin/master)"
+
+  nx-graphql-code-generator:
+    name:
+    runs-on: ubuntu-18.04
+    needs: precheck
+    if: ${{ needs.precheck.outputs.affected-nx-graphql-code-generator == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: yarn
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Install deps
+        run: yarn install --prefer-offline
+
+      - name: Lint
+        run: yarn nx lint nx-graphql-code-generator
+
+      - name: Lint
+        run: yarn nx test nx-graphql-code-generator
+
+      - name: Build
+        run: yarn nx build nx-graphql-code-generator
+
+  nx-graphql-code-generator-e2e:
+    name:
+    runs-on: ubuntu-18.04
+    needs: precheck
+    if: ${{ needs.precheck.outputs.affected-nx-graphql-code-generator == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: yarn
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Install deps
+        run: yarn install --prefer-offline
+
+      - name: Lint
+        run: yarn nx e2e nx-graphql-code-generator-e2e
