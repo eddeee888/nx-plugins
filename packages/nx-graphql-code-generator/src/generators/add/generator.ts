@@ -82,6 +82,7 @@ function checkDependenciesInstalled(tree: Tree) {
 function upsertGraphqlCodegenTask(tree: Tree, options: NormalizedSchema) {
   options.projectConfig.targets['graphql-codegen'] = {
     executor: '@eddeee888/nx-graphql-code-generator:codegen',
+    outputs: [],
     options: {
       configFile: path.join(options.projectConfig.root, options.config),
     },
