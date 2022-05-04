@@ -133,6 +133,7 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
       ...prev,
       add: {
         schema: options.schema,
+        config: options.config,
         output: options.output,
         ...prev.add,
       },

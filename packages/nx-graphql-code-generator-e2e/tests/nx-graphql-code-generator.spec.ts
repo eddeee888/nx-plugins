@@ -29,6 +29,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       expect(nxJson.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
         add: {
           schema: 'http://localhost:9999/graphql',
+          config: 'codegen.yml',
           output: 'graphql/generated.ts',
         },
       });

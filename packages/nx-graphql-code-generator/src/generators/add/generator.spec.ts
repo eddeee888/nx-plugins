@@ -33,6 +33,7 @@ describe('nx-graphql-code-generator generator', () => {
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: 'https://localhost:9999/graphql',
+        config: 'codegen.yml',
         output: 'graphql/generated.ts',
       },
     });
@@ -78,6 +79,7 @@ describe('nx-graphql-code-generator generator', () => {
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: 'https://localhost:9999/graphql',
+        config: 'codegen.yml',
         output: 'graphql/generated.ts',
       },
     });
@@ -115,6 +117,7 @@ describe('nx-graphql-code-generator generator', () => {
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: '**/*.graphqls',
+        config: 'codegen.yml',
         output: 'types.generated.ts',
       },
     });
@@ -125,6 +128,7 @@ describe('nx-graphql-code-generator generator', () => {
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: '**/*.graphqls',
+        config: 'codegen.yml',
         output: 'types.generated.ts',
       },
     });
