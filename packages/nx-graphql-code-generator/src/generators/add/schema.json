@@ -20,6 +20,12 @@
       "alias": "s",
       "x-prompt": "Where is your GraphQL schema?"
     },
+    "output": {
+      "type": "string",
+      "description": "Output to be generated ( relative to the project root ). More can be added later.",
+      "alias": "o",
+      "default": "graphql/generated.ts"
+    },
     "documents": {
       "type": "string",
       "description": "Array of paths or glob patterns for files which export GraphQL documents e.g. libs/<project name>/**/*.graphql",
@@ -32,5 +38,5 @@
       "alias": "c"
     }
   },
-  "required": ["project"]
+  "required": ["project", "schema"]
 }

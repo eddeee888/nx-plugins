@@ -22,6 +22,7 @@ import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 interface NormalizedSchema extends Required<NxGraphqlCodeGeneratorGeneratorSchema> {
   projectConfig: ProjectConfiguration;
   projectName: string;
+  fullOutput: string;
 }
 
 function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema): NormalizedSchema {
@@ -35,11 +36,16 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectConfig = readProjectConfiguration(tree, projectName);
 
+  const output = options.output ?? 'graphql/generated.ts';
+  const fullOutput = path.join(projectConfig.root, output);
+
   return {
     ...options,
     schema: options.schema ?? '',
     documents: options.documents ?? '',
     config: options.config ?? 'codegen.yml',
+    output,
+    fullOutput,
     projectConfig,
     projectName,
   };
@@ -127,6 +133,7 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
       ...prev,
       add: {
         schema: options.schema,
+        output: options.output,
         ...prev.add,
       },
     },

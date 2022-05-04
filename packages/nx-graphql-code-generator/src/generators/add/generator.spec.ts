@@ -31,7 +31,10 @@ describe('nx-graphql-code-generator generator', () => {
     const workspaceConfig = readWorkspaceConfiguration(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: { schema: 'https://localhost:9999/graphql' },
+      add: {
+        schema: 'https://localhost:9999/graphql',
+        output: 'graphql/generated.ts',
+      },
     });
 
     // project config
@@ -47,11 +50,13 @@ describe('nx-graphql-code-generator generator', () => {
     // files
     const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "schema: https://localhost:9999/graphql
+      "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      overwrite: true
+      schema: https://localhost:9999/graphql
 
       generates:
-        # Add your config below
-        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        libs/test/graphql/generated.ts:
+        
       "
     `);
   });
@@ -71,7 +76,10 @@ describe('nx-graphql-code-generator generator', () => {
     const workspaceConfig = readWorkspaceConfiguration(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: { schema: 'https://localhost:9999/graphql' },
+      add: {
+        schema: 'https://localhost:9999/graphql',
+        output: 'graphql/generated.ts',
+      },
     });
 
     // project config
@@ -87,30 +95,38 @@ describe('nx-graphql-code-generator generator', () => {
     // files
     const codegenConfig = tree.read(`apps/${directory}/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "schema: https://localhost:9999/graphql
+      "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      overwrite: true
+      schema: https://localhost:9999/graphql
 
       generates:
-        # Add your config below
-        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        apps/node/js/test/graphql/generated.ts:
+        
       "
     `);
   });
 
   it('does not overwrite workspace config schema option if it has been added', async () => {
     await libraryGenerator(tree, { name: projectName });
-    await generator(tree, { ...options, schema: '**/*.graphqls' });
+    await generator(tree, { ...options, schema: '**/*.graphqls', output: 'types.generated.ts' });
 
     const workspaceConfig = readWorkspaceConfiguration(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: { schema: '**/*.graphqls' },
+      add: {
+        schema: '**/*.graphqls',
+        output: 'types.generated.ts',
+      },
     });
 
     await libraryGenerator(tree, { name: projectName + '2' });
-    await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls' });
+    await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls', output: 'graphql/types/generated.ts' });
 
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: { schema: '**/*.graphqls' },
+      add: {
+        schema: '**/*.graphqls',
+        output: 'types.generated.ts',
+      },
     });
   });
 
@@ -154,11 +170,13 @@ describe('nx-graphql-code-generator generator', () => {
 
     const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "schema: **/*.graphqls
+      "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      overwrite: true
+      schema: **/*.graphqls
 
       generates:
-        # Add your config below
-        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        libs/test/graphql/generated.ts:
+        
       "
     `);
   });
@@ -169,13 +187,15 @@ describe('nx-graphql-code-generator generator', () => {
 
     const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "schema: https://localhost:9999/graphql
+      "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      overwrite: true
+      schema: https://localhost:9999/graphql
 
       documents: **/*.graphqls
 
       generates:
-        # Add your config below
-        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        libs/test/graphql/generated.ts:
+        
       "
     `);
   });
@@ -186,11 +206,13 @@ describe('nx-graphql-code-generator generator', () => {
 
     const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.yml`, 'utf-8');
     expect(codegenConfig).toMatchInlineSnapshot(`
-      "schema: https://localhost:9999/graphql
+      "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+      overwrite: true
+      schema: https://localhost:9999/graphql
 
       generates:
-        # Add your config below
-        # https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        libs/test/graphql/generated.ts:
+        
       "
     `);
   });
