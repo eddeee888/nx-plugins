@@ -38,6 +38,7 @@ describe('nx-graphql-code-generator generator', () => {
     const projectConfig = readProjectConfiguration(tree, projectName);
     expect(projectConfig.targets['graphql-codegen']).toEqual({
       executor: '@eddeee888/nx-graphql-code-generator:codegen',
+      outputs: [],
       options: {
         configFile: `libs/${projectName}/codegen.yml`,
       },
@@ -77,6 +78,7 @@ describe('nx-graphql-code-generator generator', () => {
     const projectConfig = readProjectConfiguration(tree, finalProjectName);
     expect(projectConfig.targets['graphql-codegen']).toEqual({
       executor: '@eddeee888/nx-graphql-code-generator:codegen',
+      outputs: [],
       options: {
         configFile: `apps/${directory}/${projectName}/codegen.yml`,
       },
