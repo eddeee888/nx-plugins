@@ -57,7 +57,6 @@ describe('nx-graphql-code-generator generator', () => {
 
       generates:
         libs/test/graphql/generated.ts:
-        
       "
     `);
   });
@@ -103,7 +102,6 @@ describe('nx-graphql-code-generator generator', () => {
 
       generates:
         apps/node/js/test/graphql/generated.ts:
-        
       "
     `);
   });
@@ -180,7 +178,6 @@ describe('nx-graphql-code-generator generator', () => {
 
       generates:
         libs/test/graphql/generated.ts:
-        
       "
     `);
   });
@@ -199,7 +196,6 @@ describe('nx-graphql-code-generator generator', () => {
 
       generates:
         libs/test/graphql/generated.ts:
-        
       "
     `);
   });
@@ -216,7 +212,6 @@ describe('nx-graphql-code-generator generator', () => {
 
       generates:
         libs/test/graphql/generated.ts:
-        
       "
     `);
   });
