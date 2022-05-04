@@ -1,5 +1,12 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.9
+
+### Patch Changes
+
+- 12dbfd8: nx-graphql-code-generator:add - add codegen config option
+- e6e0578: Add empty outputs to generated target
+
 ## 0.0.8
 
 ### Patch Changes
