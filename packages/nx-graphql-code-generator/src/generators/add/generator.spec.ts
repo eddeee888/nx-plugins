@@ -54,10 +54,8 @@ describe('nx-graphql-code-generator generator', () => {
       "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
       overwrite: true
       schema: https://localhost:9999/graphql
-
       generates:
-        libs/test/graphql/generated.ts:
-      "
+        libs/test/graphql/generated.ts:"
     `);
   });
 
@@ -99,10 +97,8 @@ describe('nx-graphql-code-generator generator', () => {
       "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
       overwrite: true
       schema: https://localhost:9999/graphql
-
       generates:
-        apps/node/js/test/graphql/generated.ts:
-      "
+        apps/node/js/test/graphql/generated.ts:"
     `);
   });
 
@@ -175,10 +171,8 @@ describe('nx-graphql-code-generator generator', () => {
       "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
       overwrite: true
       schema: **/*.graphqls
-
       generates:
-        libs/test/graphql/generated.ts:
-      "
+        libs/test/graphql/generated.ts:"
     `);
   });
 
@@ -191,12 +185,9 @@ describe('nx-graphql-code-generator generator', () => {
       "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
       overwrite: true
       schema: https://localhost:9999/graphql
-
       documents: **/*.graphqls
-
       generates:
-        libs/test/graphql/generated.ts:
-      "
+        libs/test/graphql/generated.ts:"
     `);
   });
 
@@ -209,11 +200,101 @@ describe('nx-graphql-code-generator generator', () => {
       "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
       overwrite: true
       schema: https://localhost:9999/graphql
-
       generates:
-        libs/test/graphql/generated.ts:
-      "
+        libs/test/graphql/generated.ts:"
     `);
+  });
+
+  describe('generates plugin presets', () => {
+    test('typescript-react-apollo-client', async () => {
+      await libraryGenerator(tree, { name: projectName });
+      await generator(tree, { ...options, pluginPreset: 'typescript-react-apollo-client' });
+
+      const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        overwrite: true
+        schema: https://localhost:9999/graphql
+        generates:
+          libs/test/graphql/generated.ts:
+            - typescript
+            - typescript-operations
+            - typescript-react-apollo
+            - fragment-matcher"
+      `);
+
+      const workspaceConfig = readWorkspaceConfiguration(tree);
+      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
+        'typescript-react-apollo-client'
+      );
+    });
+
+    test('typescript-angular-apollo-client', async () => {
+      await libraryGenerator(tree, { name: projectName });
+      await generator(tree, { ...options, pluginPreset: 'typescript-angular-apollo-client' });
+
+      const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        overwrite: true
+        schema: https://localhost:9999/graphql
+        generates:
+          libs/test/graphql/generated.ts:
+            - typescript
+            - typescript-operations
+            - typescript-apollo-angular
+            - fragment-matcher"
+      `);
+
+      const workspaceConfig = readWorkspaceConfiguration(tree);
+      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
+        'typescript-angular-apollo-client'
+      );
+    });
+
+    test('typescript-vue-apollo-client', async () => {
+      await libraryGenerator(tree, { name: projectName });
+      await generator(tree, { ...options, pluginPreset: 'typescript-vue-apollo-client' });
+
+      const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        overwrite: true
+        schema: https://localhost:9999/graphql
+        generates:
+          libs/test/graphql/generated.ts:
+            - typescript
+            - typescript-vue-apollo-smart-ops
+            - typescript-vue-apollo
+            - fragment-matcher"
+      `);
+
+      const workspaceConfig = readWorkspaceConfiguration(tree);
+      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
+        'typescript-vue-apollo-client'
+      );
+    });
+
+    test('typescript-resolvers', async () => {
+      await libraryGenerator(tree, { name: projectName });
+      await generator(tree, { ...options, pluginPreset: 'typescript-resolvers' });
+
+      const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        overwrite: true
+        schema: https://localhost:9999/graphql
+        generates:
+          libs/test/graphql/generated.ts:
+            - typescript
+            - typescript-resolvers"
+      `);
+
+      const workspaceConfig = readWorkspaceConfiguration(tree);
+      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
+        'typescript-resolvers'
+      );
+    });
   });
 
   it('throws error if there is no schema', async () => {
