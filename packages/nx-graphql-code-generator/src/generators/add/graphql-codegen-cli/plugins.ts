@@ -4,6 +4,7 @@
 export interface PluginOption {
   name: string;
   package: string;
+  version: string;
   value: string;
 }
 
@@ -18,21 +19,25 @@ const typescriptLanguagePlugin: PluginOption = {
   name: 'TypeScript (required by other typescript plugins)',
   package: '@graphql-codegen/typescript',
   value: 'typescript',
+  version: '^2.4.9',
 };
 const typescriptOperationsPlugin: PluginOption = {
   name: 'TypeScript Operations (operations and fragments)',
   package: '@graphql-codegen/typescript-operations',
   value: 'typescript-operations',
+  version: '^2.3.6',
 };
 const typescriptVueOperationsPlugin: PluginOption = {
   name: 'TypeScript Vue Apollo Smart Operations (typed functions)',
   package: '@graphql-codegen/typescript-vue-apollo-smart-ops',
   value: 'typescript-vue-apollo-smart-ops',
+  version: '^2.2.9',
 };
 const typescriptApolloFragmentMatcher: PluginOption = {
   name: `Introspection Fragment Matcher (for Apollo Client)`,
   package: '@graphql-codegen/fragment-matcher',
   value: 'fragment-matcher',
+  version: '^3.2.1',
 };
 
 export const pluginPresets: PluginPresets = {
@@ -43,6 +48,7 @@ export const pluginPresets: PluginPresets = {
       name: 'TypeScript React Apollo (typed components and HOCs)',
       package: '@graphql-codegen/typescript-react-apollo',
       value: 'typescript-react-apollo',
+      version: '^3.2.12',
     },
     typescriptApolloFragmentMatcher,
   ],
@@ -53,6 +59,7 @@ export const pluginPresets: PluginPresets = {
       name: 'TypeScript Apollo Angular (typed GQL services)',
       package: '@graphql-codegen/typescript-apollo-angular',
       value: 'typescript-apollo-angular',
+      version: '^3.4.8',
     },
     typescriptApolloFragmentMatcher,
   ],
@@ -63,6 +70,7 @@ export const pluginPresets: PluginPresets = {
       name: 'TypeScript Vue Apollo Composition API (typed functions)',
       package: '@graphql-codegen/typescript-vue-apollo',
       value: 'typescript-vue-apollo',
+      version: '^3.2.10',
     },
     typescriptApolloFragmentMatcher,
   ],
@@ -72,6 +80,7 @@ export const pluginPresets: PluginPresets = {
       name: 'TypeScript Resolvers (strongly typed resolve functions)',
       package: '@graphql-codegen/typescript-resolvers',
       value: 'typescript-resolvers',
+      version: '^2.6.2',
     },
   ],
 };

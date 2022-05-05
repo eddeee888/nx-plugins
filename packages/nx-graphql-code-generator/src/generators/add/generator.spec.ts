@@ -227,6 +227,12 @@ describe('nx-graphql-code-generator generator', () => {
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-react-apollo-client'
       );
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-operations']).toBe('^2.3.6');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-react-apollo']).toBe('^3.2.12');
+      expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
     });
 
     test('typescript-angular-apollo-client', async () => {
@@ -250,6 +256,12 @@ describe('nx-graphql-code-generator generator', () => {
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-angular-apollo-client'
       );
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-operations']).toBe('^2.3.6');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-apollo-angular']).toBe('^3.4.8');
+      expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
     });
 
     test('typescript-vue-apollo-client', async () => {
@@ -273,6 +285,12 @@ describe('nx-graphql-code-generator generator', () => {
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-vue-apollo-client'
       );
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-vue-apollo-smart-ops']).toBe('^2.2.9');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-vue-apollo']).toBe('^3.2.10');
+      expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
     });
 
     test('typescript-resolvers', async () => {
@@ -294,6 +312,10 @@ describe('nx-graphql-code-generator generator', () => {
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-resolvers'
       );
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-resolvers']).toBe('^2.6.2');
     });
   });
 

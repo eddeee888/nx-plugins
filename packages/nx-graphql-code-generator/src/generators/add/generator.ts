@@ -57,7 +57,7 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
   };
 }
 
-function checkDependenciesInstalled(tree: Tree) {
+function checkDependenciesInstalled(tree: Tree, options: NormalizedSchema) {
   const packageJson = readJson(tree, 'package.json');
   const devDependencies = {};
   const dependencies = {};
@@ -87,6 +87,15 @@ function checkDependenciesInstalled(tree: Tree) {
       return json;
     });
   }
+
+  options.plugins.forEach((plugin) => {
+    if (!packageJson.devDependencices[plugin.package]) {
+      updateJson(tree, 'package.json', (json) => {
+        json.devDependencies[plugin.package] = plugin.version;
+        return json;
+      });
+    }
+  });
 
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
 }
@@ -171,7 +180,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {
   const normalizedOptions = normalizeOptions(tree, options);
 
-  const installTask = checkDependenciesInstalled(tree);
+  const installTask = checkDependenciesInstalled(tree, normalizedOptions);
   upsertGraphqlCodegenTask(tree, normalizedOptions);
   upsertCacheableOperation(tree);
   addDefaultWorkspaceOptions(tree, normalizedOptions);
