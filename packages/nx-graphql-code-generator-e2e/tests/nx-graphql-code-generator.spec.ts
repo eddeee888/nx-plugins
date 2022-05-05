@@ -60,6 +60,24 @@ describe('nx-graphql-code-generator:add e2e', () => {
     }, 120000);
   });
 
+  describe('--pluginPreset', () => {
+    it('generates custom codegen config filename correctly', async () => {
+      const plugin = uniq('nx-graphql-code-generator');
+      ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
+      await runNxCommandAsync(`generate @nrwl/workspace:library --name=${plugin} --no-interactive`);
+      await runNxCommandAsync(
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --pluginPreset typescript-react-apollo-client`
+      );
+      expect(readFile(`libs/${plugin}/codegen.yml`)).toBeTruthy();
+
+      const rootPackageJson = readJson('package.json');
+      expect(rootPackageJson.devDependencies['@graphql-codegen/typescript']).toBeTruthy();
+      expect(rootPackageJson.devDependencies['@graphql-codegen/typescript-operations']).toBeTruthy();
+      expect(rootPackageJson.devDependencies['@graphql-codegen/typescript-react-apollo']).toBeTruthy();
+      expect(rootPackageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBeTruthy();
+    }, 120000);
+  });
+
   describe('Updating NPM packages', () => {
     it('updates packages if existing packages are lower in semver', async () => {
       const plugin = uniq('nx-graphql-code-generator');
