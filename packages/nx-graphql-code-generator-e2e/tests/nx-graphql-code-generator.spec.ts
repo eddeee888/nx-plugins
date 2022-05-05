@@ -30,6 +30,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
         add: {
           schema: 'http://localhost:9999/graphql',
           config: 'codegen.yml',
+          pluginPreset: 'typescript-react-apollo-client',
           output: 'graphql/generated.ts',
         },
       });
@@ -110,8 +111,9 @@ describe('nx-graphql-code-generator:add e2e', () => {
       rootPackageJson.devDependencies['@graphql-codegen/cli'] = '99.0.0';
       updateFile('package.json', JSON.stringify(rootPackageJson));
 
+      // Note: we add pluginPreset=none here to avoid triggering npmInstall which fails because there's no 99.0.0 packages.
       await runNxCommandAsync(
-        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --verbose`
+        `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --pluginPreset none`
       );
 
       const resultPackageJson = readJson('package.json');
