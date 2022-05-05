@@ -18,11 +18,13 @@ import { major } from 'semver';
 import { graphqlCodegenCliVersion, graphqlVersion } from '../../utils/versions';
 import { checkAndCleanWithSemver } from '../../utils/checkAndCleanWithSemver';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
+import { PluginOption, pluginPresets } from './graphql-codegen-cli/plugins';
 
 interface NormalizedSchema extends Required<NxGraphqlCodeGeneratorGeneratorSchema> {
   projectConfig: ProjectConfiguration;
   projectName: string;
   fullOutput: string;
+  plugins: PluginOption[];
 }
 
 function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema): NormalizedSchema {
@@ -39,19 +41,23 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
   const output = options.output ?? 'graphql/generated.ts';
   const fullOutput = path.join(projectConfig.root, output);
 
+  const plugins = getPlugins(options);
+
   return {
     ...options,
     schema: options.schema ?? '',
     documents: options.documents ?? '',
     config: options.config ?? 'codegen.yml',
+    pluginPreset: options.pluginPreset ?? 'none',
     output,
     fullOutput,
     projectConfig,
     projectName,
+    plugins,
   };
 }
 
-function checkDependenciesInstalled(tree: Tree) {
+function checkDependenciesInstalled(tree: Tree, options: NormalizedSchema) {
   const packageJson = readJson(tree, 'package.json');
   const devDependencies = {};
   const dependencies = {};
@@ -82,7 +88,24 @@ function checkDependenciesInstalled(tree: Tree) {
     });
   }
 
+  options.plugins.forEach((plugin) => {
+    if (!packageJson.devDependencices[plugin.package]) {
+      updateJson(tree, 'package.json', (json) => {
+        json.devDependencies[plugin.package] = plugin.version;
+        return json;
+      });
+    }
+  });
+
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
+}
+
+function getPlugins(options: NxGraphqlCodeGeneratorGeneratorSchema): PluginOption[] {
+  if (!options.pluginPreset) {
+    return [];
+  }
+
+  return pluginPresets[options.pluginPreset] || [];
 }
 
 function upsertGraphqlCodegenTask(tree: Tree, options: NormalizedSchema) {
@@ -135,6 +158,7 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
         schema: options.schema,
         config: options.config,
         output: options.output,
+        pluginPreset: options.pluginPreset !== 'none' ? options.pluginPreset : undefined,
         ...prev.add,
       },
     },
@@ -156,7 +180,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {
   const normalizedOptions = normalizeOptions(tree, options);
 
-  const installTask = checkDependenciesInstalled(tree);
+  const installTask = checkDependenciesInstalled(tree, normalizedOptions);
   upsertGraphqlCodegenTask(tree, normalizedOptions);
   upsertCacheableOperation(tree);
   addDefaultWorkspaceOptions(tree, normalizedOptions);
