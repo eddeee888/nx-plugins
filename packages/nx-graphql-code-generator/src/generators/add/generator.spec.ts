@@ -34,7 +34,6 @@ describe('nx-graphql-code-generator generator', () => {
       add: {
         schema: 'https://localhost:9999/graphql',
         config: 'codegen.yml',
-        output: 'graphql/generated.ts',
       },
     });
 
@@ -77,7 +76,6 @@ describe('nx-graphql-code-generator generator', () => {
       add: {
         schema: 'https://localhost:9999/graphql',
         config: 'codegen.yml',
-        output: 'graphql/generated.ts',
       },
     });
 
@@ -104,7 +102,7 @@ describe('nx-graphql-code-generator generator', () => {
 
   it('does not overwrite workspace config schema option if it has been added', async () => {
     await libraryGenerator(tree, { name: projectName });
-    await generator(tree, { ...options, schema: '**/*.graphqls', output: 'types.generated.ts' });
+    await generator(tree, { ...options, schema: '**/*.graphqls' });
 
     const workspaceConfig = readWorkspaceConfiguration(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
@@ -112,18 +110,16 @@ describe('nx-graphql-code-generator generator', () => {
       add: {
         schema: '**/*.graphqls',
         config: 'codegen.yml',
-        output: 'types.generated.ts',
       },
     });
 
     await libraryGenerator(tree, { name: projectName + '2' });
-    await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls', output: 'graphql/types/generated.ts' });
+    await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls' });
 
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: '**/*.graphqls',
         config: 'codegen.yml',
-        output: 'types.generated.ts',
       },
     });
   });
