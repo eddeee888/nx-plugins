@@ -89,7 +89,7 @@ function checkDependenciesInstalled(tree: Tree, options: NormalizedSchema) {
   }
 
   options.plugins.forEach((plugin) => {
-    if (!packageJson.devDependencices[plugin.package]) {
+    if (!packageJson.devDependencies[plugin.package]) {
       updateJson(tree, 'package.json', (json) => {
         json.devDependencies[plugin.package] = plugin.version;
         return json;
