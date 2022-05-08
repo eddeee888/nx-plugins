@@ -157,7 +157,6 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
       add: {
         schema: options.schema,
         config: options.config,
-        output: options.output,
         pluginPreset: options.pluginPreset !== 'none' ? options.pluginPreset : undefined,
         ...prev.add,
       },
