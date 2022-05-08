@@ -59,7 +59,7 @@ jobs:
       - name: Lint
         run: yarn nx lint nx-graphql-code-generator
 
-      - name: Lint
+      - name: Test
         run: yarn nx test nx-graphql-code-generator
 
       - name: Build
