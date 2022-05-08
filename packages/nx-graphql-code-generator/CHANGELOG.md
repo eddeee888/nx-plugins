@@ -1,5 +1,13 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.10
+
+### Patch Changes
+
+- 87e8429: Fix spacing
+- 2e11d73: Add output option that maps to graphql-codegen init output. Add `config` and `output` as defaults to workspace config.
+- 276ffa5: Add plugin preset logic
+
 ## 0.0.9
 
 ### Patch Changes
