@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.11
+
+### Patch Changes
+
+- 4654884: Fix devDependencies always getting overwritten when using pluginPreset
+
 ## 0.0.10
 
 ### Patch Changes
