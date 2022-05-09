@@ -14,9 +14,13 @@ describe('nx-graphql-code-generator:add e2e', () => {
 
       // check projectJson
       const projectJson = readJson(`libs/${plugin}/project.json`);
-      expect(projectJson.targets['graphql-codegen'].executor).toBe('@eddeee888/nx-graphql-code-generator:codegen');
-      expect(projectJson.targets['graphql-codegen'].outputs).toEqual([]);
-      expect(projectJson.targets['graphql-codegen'].options.configFile).toBe(`libs/${plugin}/codegen.yml`);
+      expect(projectJson.targets['graphql-codegen']).toEqual({
+        executor: '@eddeee888/nx-graphql-code-generator:codegen',
+        outputs: [],
+        options: {
+          configFile: `libs/${plugin}/codegen.yml`,
+        },
+      });
 
       // check package.json
       const rootPackageJson = readJson('package.json');
@@ -31,7 +35,6 @@ describe('nx-graphql-code-generator:add e2e', () => {
           schema: 'http://localhost:9999/graphql',
           config: 'codegen.yml',
           pluginPreset: 'typescript-react-apollo-client',
-          output: 'graphql/generated.ts',
         },
       });
     }, 120000);

@@ -89,7 +89,7 @@ function checkDependenciesInstalled(tree: Tree, options: NormalizedSchema) {
   }
 
   options.plugins.forEach((plugin) => {
-    if (!packageJson.devDependencices[plugin.package]) {
+    if (!packageJson.devDependencies[plugin.package]) {
       updateJson(tree, 'package.json', (json) => {
         json.devDependencies[plugin.package] = plugin.version;
         return json;
@@ -157,7 +157,6 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
       add: {
         schema: options.schema,
         config: options.config,
-        output: options.output,
         pluginPreset: options.pluginPreset !== 'none' ? options.pluginPreset : undefined,
         ...prev.add,
       },

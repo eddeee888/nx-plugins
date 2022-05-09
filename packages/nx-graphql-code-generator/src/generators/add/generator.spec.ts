@@ -34,7 +34,6 @@ describe('nx-graphql-code-generator generator', () => {
       add: {
         schema: 'https://localhost:9999/graphql',
         config: 'codegen.yml',
-        output: 'graphql/generated.ts',
       },
     });
 
@@ -77,7 +76,6 @@ describe('nx-graphql-code-generator generator', () => {
       add: {
         schema: 'https://localhost:9999/graphql',
         config: 'codegen.yml',
-        output: 'graphql/generated.ts',
       },
     });
 
@@ -104,7 +102,7 @@ describe('nx-graphql-code-generator generator', () => {
 
   it('does not overwrite workspace config schema option if it has been added', async () => {
     await libraryGenerator(tree, { name: projectName });
-    await generator(tree, { ...options, schema: '**/*.graphqls', output: 'types.generated.ts' });
+    await generator(tree, { ...options, schema: '**/*.graphqls' });
 
     const workspaceConfig = readWorkspaceConfiguration(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
@@ -112,18 +110,16 @@ describe('nx-graphql-code-generator generator', () => {
       add: {
         schema: '**/*.graphqls',
         config: 'codegen.yml',
-        output: 'types.generated.ts',
       },
     });
 
     await libraryGenerator(tree, { name: projectName + '2' });
-    await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls', output: 'graphql/types/generated.ts' });
+    await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls' });
 
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: '**/*.graphqls',
         config: 'codegen.yml',
-        output: 'types.generated.ts',
       },
     });
   });
@@ -206,7 +202,7 @@ describe('nx-graphql-code-generator generator', () => {
   });
 
   describe('generates plugin presets', () => {
-    test('typescript-react-apollo-client', async () => {
+    it('typescript-react-apollo-client', async () => {
       await libraryGenerator(tree, { name: projectName });
       await generator(tree, { ...options, pluginPreset: 'typescript-react-apollo-client' });
 
@@ -235,7 +231,7 @@ describe('nx-graphql-code-generator generator', () => {
       expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
     });
 
-    test('typescript-angular-apollo-client', async () => {
+    it('typescript-angular-apollo-client', async () => {
       await libraryGenerator(tree, { name: projectName });
       await generator(tree, { ...options, pluginPreset: 'typescript-angular-apollo-client' });
 
@@ -264,7 +260,7 @@ describe('nx-graphql-code-generator generator', () => {
       expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
     });
 
-    test('typescript-vue-apollo-client', async () => {
+    it('typescript-vue-apollo-client', async () => {
       await libraryGenerator(tree, { name: projectName });
       await generator(tree, { ...options, pluginPreset: 'typescript-vue-apollo-client' });
 
@@ -293,7 +289,7 @@ describe('nx-graphql-code-generator generator', () => {
       expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
     });
 
-    test('typescript-resolvers', async () => {
+    it('typescript-resolvers', async () => {
       await libraryGenerator(tree, { name: projectName });
       await generator(tree, { ...options, pluginPreset: 'typescript-resolvers' });
 
@@ -316,6 +312,43 @@ describe('nx-graphql-code-generator generator', () => {
       const packageJson = readJson(tree, 'package.json');
       expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
       expect(packageJson.devDependencies['@graphql-codegen/typescript-resolvers']).toBe('^2.6.2');
+    });
+
+    it('does not overwrite packages if already exists', async () => {
+      await libraryGenerator(tree, { name: projectName });
+      writeJson(tree, 'package.json', {
+        devDependencies: {
+          '@graphql-codegen/typescript': '1.0.0',
+          '@graphql-codegen/typescript-operations': '1.0.0',
+          '@graphql-codegen/typescript-react-apollo': '1.0.0',
+          '@graphql-codegen/fragment-matcher': '1.0.0',
+        },
+      });
+      await generator(tree, { ...options, pluginPreset: 'typescript-react-apollo-client' });
+
+      const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
+        overwrite: true
+        schema: https://localhost:9999/graphql
+        generates:
+          libs/test/graphql/generated.ts:
+            - typescript
+            - typescript-operations
+            - typescript-react-apollo
+            - fragment-matcher"
+      `);
+
+      const workspaceConfig = readWorkspaceConfiguration(tree);
+      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
+        'typescript-react-apollo-client'
+      );
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('1.0.0');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-operations']).toBe('1.0.0');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-react-apollo']).toBe('1.0.0');
+      expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('1.0.0');
     });
   });
 
