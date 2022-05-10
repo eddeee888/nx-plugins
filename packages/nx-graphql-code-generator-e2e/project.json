@@ -1,5 +1,4 @@
 {
-  "root": "packages/nx-graphql-code-generator-e2e",
   "projectType": "application",
   "sourceRoot": "packages/nx-graphql-code-generator-e2e/src",
   "targets": {
