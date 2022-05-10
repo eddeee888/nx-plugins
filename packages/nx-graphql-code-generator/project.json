@@ -1,5 +1,4 @@
 {
-  "root": "packages/nx-graphql-code-generator",
   "sourceRoot": "packages/nx-graphql-code-generator/src",
   "targets": {
     "build": {
