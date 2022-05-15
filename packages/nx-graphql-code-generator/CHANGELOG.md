@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.13
+
+### Patch Changes
+
+- 51259ab: Add watch configuration to make it easier to run watch mode on a certain project
+
 ## 0.0.12
 
 ### Patch Changes
