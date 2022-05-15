@@ -9,8 +9,8 @@ describe('nx-graphql-code-generator:add e2e', () => {
         `generate @eddeee888/nx-graphql-code-generator:add --project=${plugin} --schema http://localhost:9999/graphql`
       );
 
-      // check codegen.yml
-      expect(readFile(`libs/${plugin}/codegen.yml`)).toBeTruthy();
+      // check graphql-codegen.yml
+      expect(readFile(`libs/${plugin}/graphql-codegen.yml`)).toBeTruthy();
 
       // check projectJson
       const projectJson = readJson(`libs/${plugin}/project.json`);
@@ -18,7 +18,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
         executor: '@eddeee888/nx-graphql-code-generator:codegen',
         outputs: [],
         options: {
-          configFile: `libs/${plugin}/codegen.yml`,
+          configFile: `libs/${plugin}/graphql-codegen.yml`,
         },
       });
 
@@ -33,8 +33,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       expect(nxJson.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
         add: {
           schema: 'http://localhost:9999/graphql',
-          config: 'codegen.yml',
-          pluginPreset: 'typescript-react-apollo-client',
+          config: 'graphql-codegen.yml',
         },
       });
     }, 120000);
@@ -48,7 +47,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       await runNxCommandAsync(
         `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --documents libs/**/*.graphql`
       );
-      expect(readFile(`libs/${plugin}/codegen.yml`)).toBeTruthy();
+      expect(readFile(`libs/${plugin}/graphql-codegen.yml`)).toBeTruthy();
     }, 120000);
   });
 
@@ -72,7 +71,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       await runNxCommandAsync(
         `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --pluginPreset typescript-react-apollo-client`
       );
-      expect(readFile(`libs/${plugin}/codegen.yml`)).toBeTruthy();
+      expect(readFile(`libs/${plugin}/graphql-codegen.yml`)).toBeTruthy();
 
       const rootPackageJson = readJson('package.json');
       expect(rootPackageJson.devDependencies['@graphql-codegen/typescript']).toBeTruthy();
@@ -150,7 +149,7 @@ describe('nx-graphql-code-generator:codegen e2e', () => {
     );
     // 3. Codegen config file
     updateFile(
-      `libs/${plugin}/codegen.yml`,
+      `libs/${plugin}/graphql-codegen.yml`,
       `
       schema: libs/${plugin}/**/*.graphqls
       generates:
