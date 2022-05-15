@@ -46,6 +46,11 @@ describe('nx-graphql-code-generator generator', () => {
         configFile: `libs/${projectName}/codegen.yml`,
         watch: false,
       },
+      configurations: {
+        watch: {
+          watch: true,
+        },
+      },
     });
 
     // files
@@ -88,6 +93,11 @@ describe('nx-graphql-code-generator generator', () => {
       options: {
         configFile: `apps/${directory}/${projectName}/codegen.yml`,
         watch: false,
+      },
+      configurations: {
+        watch: {
+          watch: true,
+        },
       },
     });
 

@@ -21,6 +21,11 @@ describe('nx-graphql-code-generator:add e2e', () => {
           configFile: `libs/${plugin}/graphql-codegen.yml`,
           watch: false,
         },
+        configurations: {
+          watch: {
+            watch: true,
+          },
+        },
       });
 
       // check package.json
