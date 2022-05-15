@@ -114,6 +114,7 @@ function upsertGraphqlCodegenTask(tree: Tree, options: NormalizedSchema) {
     outputs: [],
     options: {
       configFile: path.join(options.projectConfig.root, options.config),
+      watch: false,
     },
   };
 

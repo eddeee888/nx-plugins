@@ -8,6 +8,10 @@
     "configFile": {
       "type": "string",
       "description": "Path to codegen config file"
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "Run in watch mode if true"
     }
   },
   "required": ["configFile"]

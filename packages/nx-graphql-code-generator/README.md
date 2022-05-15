@@ -12,14 +12,14 @@ You can use this generator to wire up codegen config to an Nx project.
 $ nx generate @eddeee888/nx-graphql-code-generator --project=<existing project name>
 ```
 
-| Options        | Required | Description                                                                                                                              |
-| -------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `project`      | Yes      | Nx project to add codegen config to.                                                                                                     |
-| `schema`       | Yes      | Maps to codegen's [schema field](https://www.graphql-code-generator.com/docs/config-reference/schema-field).                             |
-| `output`       | No       | Output path for the generated path. Relative from project root. More can be added manually later. Default: `graphql/generated.ts`        |
-| `document`     | No       | Maps to codegen's [documents field](https://www.graphql-code-generator.com/docs/config-reference/documents-field).                       |
-| `pluginPreset` | No       | Common [codegen plugins](https://www.graphql-code-generator.com/plugins) presets depending on project language, use cases and libraries. |
-| `config`       | No       | Name of codegen config file. Default: `graphql-codegen.yml`                                                                              |
+| Options        | Required | Description                                                                                                                             |
+| -------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `project`      | Yes      | Nx project to add codegen config to                                                                                                     |
+| `schema`       | Yes      | Maps to codegen's [schema field](https://www.graphql-code-generator.com/docs/config-reference/schema-field)                             |
+| `output`       | No       | Output path for the generated path. Relative from project root. More can be added manually later. Default: `graphql/generated.ts`       |
+| `document`     | No       | Maps to codegen's [documents field](https://www.graphql-code-generator.com/docs/config-reference/documents-field)                       |
+| `pluginPreset` | No       | Common [codegen plugins](https://www.graphql-code-generator.com/plugins) presets depending on project language, use cases and libraries |
+| `config`       | No       | Name of codegen config file. Default: `graphql-codegen.yml`                                                                             |
 
 ## Executors
 
@@ -49,6 +49,7 @@ You can run the executor like you woud other targets:
 $ nx graphql-codegen <project name>
 ```
 
-| Options      | Required | Description                               |
-| ------------ | -------- | ----------------------------------------- |
-| `configFile` | Yes      | Path to the project's codegen config file |
+| Options      | Required | Description                                                                                                              |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `configFile` | Yes      | Path to the project's codegen config file                                                                                |
+| `watch`      | No       | Run codegen in [watch mode](https://www.graphql-code-generator.com/docs/getting-started/development-workflow#watch-mode) |
