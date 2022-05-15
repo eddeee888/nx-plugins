@@ -40,13 +40,12 @@
         "typescript-vue-apollo-client",
         "typescript-resolvers",
         "none"
-      ],
-      "default": "typescript-react-apollo-client"
+      ]
     },
     "config": {
       "type": "string",
       "description": "Name of the codegen config file",
-      "default": "codegen.yml",
+      "default": "graphql-codegen.yml",
       "alias": "c"
     }
   },
