@@ -1,5 +1,12 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.12
+
+### Patch Changes
+
+- 09bf2d4: Add executor watch mode
+- 9b56ae2: Fix README and generator defaults
+
 ## 0.0.11
 
 ### Patch Changes
