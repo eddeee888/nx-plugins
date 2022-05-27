@@ -60,7 +60,8 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: https://localhost:9999/graphql
       generates:
-        libs/test/graphql/generated.ts:"
+        libs/test/graphql/generated.ts:
+      "
     `);
   });
 
@@ -108,7 +109,8 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: https://localhost:9999/graphql
       generates:
-        apps/node/js/test/graphql/generated.ts:"
+        apps/node/js/test/graphql/generated.ts:
+      "
     `);
   });
 
@@ -180,7 +182,8 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: **/*.graphqls
       generates:
-        libs/test/graphql/generated.ts:"
+        libs/test/graphql/generated.ts:
+      "
     `);
   });
 
@@ -195,7 +198,8 @@ describe('nx-graphql-code-generator generator', () => {
       schema: https://localhost:9999/graphql
       documents: **/*.graphqls
       generates:
-        libs/test/graphql/generated.ts:"
+        libs/test/graphql/generated.ts:
+      "
     `);
   });
 
@@ -209,7 +213,8 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: https://localhost:9999/graphql
       generates:
-        libs/test/graphql/generated.ts:"
+        libs/test/graphql/generated.ts:
+      "
     `);
   });
 
@@ -225,10 +230,11 @@ describe('nx-graphql-code-generator generator', () => {
         schema: https://localhost:9999/graphql
         generates:
           libs/test/graphql/generated.ts:
-            - typescript
-            - typescript-operations
-            - typescript-react-apollo
-            - fragment-matcher"
+            plugins:
+              - typescript
+              - typescript-operations
+              - typescript-react-apollo
+              - fragment-matcher"
       `);
 
       const workspaceConfig = readWorkspaceConfiguration(tree);
@@ -254,10 +260,11 @@ describe('nx-graphql-code-generator generator', () => {
         schema: https://localhost:9999/graphql
         generates:
           libs/test/graphql/generated.ts:
-            - typescript
-            - typescript-operations
-            - typescript-apollo-angular
-            - fragment-matcher"
+            plugins:
+              - typescript
+              - typescript-operations
+              - typescript-apollo-angular
+              - fragment-matcher"
       `);
 
       const workspaceConfig = readWorkspaceConfiguration(tree);
@@ -283,10 +290,11 @@ describe('nx-graphql-code-generator generator', () => {
         schema: https://localhost:9999/graphql
         generates:
           libs/test/graphql/generated.ts:
-            - typescript
-            - typescript-vue-apollo-smart-ops
-            - typescript-vue-apollo
-            - fragment-matcher"
+            plugins:
+              - typescript
+              - typescript-vue-apollo-smart-ops
+              - typescript-vue-apollo
+              - fragment-matcher"
       `);
 
       const workspaceConfig = readWorkspaceConfiguration(tree);
@@ -312,8 +320,9 @@ describe('nx-graphql-code-generator generator', () => {
         schema: https://localhost:9999/graphql
         generates:
           libs/test/graphql/generated.ts:
-            - typescript
-            - typescript-resolvers"
+            plugins:
+              - typescript
+              - typescript-resolvers"
       `);
 
       const workspaceConfig = readWorkspaceConfiguration(tree);
@@ -345,10 +354,11 @@ describe('nx-graphql-code-generator generator', () => {
         schema: https://localhost:9999/graphql
         generates:
           libs/test/graphql/generated.ts:
-            - typescript
-            - typescript-operations
-            - typescript-react-apollo
-            - fragment-matcher"
+            plugins:
+              - typescript
+              - typescript-operations
+              - typescript-react-apollo
+              - fragment-matcher"
       `);
 
       const workspaceConfig = readWorkspaceConfiguration(tree);

@@ -5,7 +5,10 @@ schema: <%= schema -%>
 documents: <%= documents -%>
 <% } %>
 generates:
-  <%= fullOutput %>:<%= -%>
+  <%= fullOutput %>:
+<% if (plugins.length > 0) { -%>
+    plugins:<%= -%>
+<% } -%>
 <% plugins.forEach(function(plugin){ %>
-    - <%= plugin.value -%>
+      - <%= plugin.value -%>
 <% }); -%>
