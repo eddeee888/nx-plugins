@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.14
+
+### Patch Changes
+
+- 32bb6e8: Fix generated template for plugins
+
 ## 0.0.13
 
 ### Patch Changes
