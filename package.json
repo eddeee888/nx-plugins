@@ -22,6 +22,8 @@
     "@nrwl/nx-cloud": "14.1.2",
     "@nrwl/nx-plugin": "14.3.6",
     "@nrwl/workspace": "14.3.6",
+    "@swc-node/register": "^1.4.2",
+    "@swc/core": "^1.2.173",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
     "@types/semver": "^7.3.9",
