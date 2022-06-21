@@ -3,10 +3,10 @@
   "name": "nx-dev-tools",
   "version": "0.0.1",
   "generators": {
-    "nx-dev-tools": {
-      "factory": "./src/generators/nx-dev-tools/generator",
-      "schema": "./src/generators/nx-dev-tools/schema.json",
-      "description": "nx-dev-tools generator"
+    "init": {
+      "factory": "./src/generators/nx-dev-tools/init/generator",
+      "schema": "./src/generators/nx-dev-tools/init/schema.json",
+      "description": "Generator to create basic Docker-based setup and bash CLIs"
     }
   }
 }

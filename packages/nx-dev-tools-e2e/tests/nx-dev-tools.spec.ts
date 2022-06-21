@@ -18,27 +18,6 @@ describe('nx-dev-tools e2e', () => {
   });
 
   it('should create nx-dev-tools', async () => {
-    const project = uniq('nx-dev-tools');
-    await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:nx-dev-tools ${project}`);
-    const result = await runNxCommandAsync(`build ${project}`);
-    expect(result.stdout).toContain('Executor ran');
+    await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:init --projectName BaseApp --commandName bam`);
   }, 120000);
-
-  describe('--directory', () => {
-    it('should create src in the specified directory', async () => {
-      const project = uniq('nx-dev-tools');
-      await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:nx-dev-tools ${project} --directory subdir`);
-      expect(() => checkFilesExist(`libs/subdir/${project}/src/index.ts`)).not.toThrow();
-    }, 120000);
-  });
-
-  describe('--tags', () => {
-    it('should add tags to the project', async () => {
-      const projectName = uniq('nx-dev-tools');
-      ensureNxProject('@eddeee888/nx-dev-tools', 'dist/packages/nx-dev-tools');
-      await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:nx-dev-tools ${projectName} --tags e2etag,e2ePackage`);
-      const project = readJson(`libs/${projectName}/project.json`);
-      expect(project.tags).toEqual(['e2etag', 'e2ePackage']);
-    }, 120000);
-  });
 });

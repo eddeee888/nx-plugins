@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "NxDevTools",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "",
+      "x-prompt": "What is your project name?"
+    },
+    "commandName": {
+      "type": "string",
+      "description": "",
+      "x-prompt": "What is your core command name?"
+    }
+  }
+}
