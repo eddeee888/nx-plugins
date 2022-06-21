@@ -1,6 +1,6 @@
-export default {
+module.exports = {
   displayName: 'nx-graphql-code-generator',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
