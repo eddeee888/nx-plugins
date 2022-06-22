@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`nx-dev-tools generator Files generation .env.docker-compose content 1`] = `
+"PRIMARY_DOMAIN=bam.fakecom
+
+MYSQL_ROOT_PASSWORD=root
+MYSQL_PORT=3306
+
+MAIN_SERVICE_NAME=main
+MAIN_SERVICE_PORT=3000
+
+PRISMA_SCHEMA_FLAG=--schema=libs/main-prisma/src/prisma/schema.prisma
+PRISMA_DATABASE_URL=mysql://root:root@database:3306/bam?schema=public
+PRISMA_BINARY_TARGET=[\\"native\\",\\"linux-musl\\"]
+"
+`;
+
+exports[`nx-dev-tools generator Files generation .env.local content 1`] = `
+"PRIMARY_DOMAIN=bam.fakecom
+"
+`;
+
 exports[`nx-dev-tools generator Files generation dev-tools/bin/core.sh content 1`] = `
 "#!/bin/bash
 
@@ -657,5 +677,72 @@ exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/ws.conf
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection \\"Upgrade\\";
 proxy_set_header Sec-WebSocket-Protocol $http_sec_websocket_protocol;
+"
+`;
+
+exports[`nx-dev-tools generator Files generation docker-compose.yml content 1`] = `
+"version: '3.7'
+
+services:
+  main:
+    image: bam/dev-backend:latest
+    command: nx serve main --port=\${MAIN_SERVICE_PORT}
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
+    networks:
+      - vm
+
+  database:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=\${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PORT=\${MYSQL_PORT}
+    volumes:
+      - database_data:/var/lib/mysql
+    expose:
+      - \${MYSQL_PORT}
+    ports:
+      - \${MYSQL_PORT}:\${MYSQL_PORT}
+    networks:
+      - vm
+
+  reverse-proxy:
+    build:
+      context: .
+      dockerfile: dev-tools/reverse-proxy/Dockerfile
+    tty: true
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - main
+      - dnsmasq
+    environment:
+      PRIMARY_DOMAIN: \${PRIMARY_DOMAIN}
+      MAIN_SERVICE_NAME: \${MAIN_SERVICE_NAME}
+      MAIN_SERVICE_PORT: \${MAIN_SERVICE_PORT}
+    volumes:
+      - ./dev-tools/reverse-proxy/templates:/etc/nginx/templates
+    networks:
+      - vm
+
+  dnsmasq:
+    image: 4km3/dnsmasq:2.85-r2-alpine-3.14
+    ports:
+      - 53535:53/tcp
+      - 53535:53/udp
+    cap_add: ['NET_ADMIN']
+    volumes:
+      - ./dev-tools/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+    networks:
+      - vm
+
+volumes:
+  database_data:
+
+networks:
+  vm:
 "
 `;

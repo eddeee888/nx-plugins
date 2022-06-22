@@ -1,4 +1,4 @@
-import { checkFilesExist, ensureNxProject, readJson, runNxCommandAsync, uniq } from '@nrwl/nx-plugin/testing';
+import { checkFilesExist, ensureNxProject, exists, runNxCommandAsync, tmpProjPath } from '@nrwl/nx-plugin/testing';
 
 describe('nx-dev-tools e2e', () => {
   // Setting up individual workspaces per
@@ -17,7 +17,16 @@ describe('nx-dev-tools e2e', () => {
     runNxCommandAsync('reset');
   });
 
-  it('should create nx-dev-tools', async () => {
-    await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:init --projectName BaseApp --commandName bam`);
+  it('should create dev-tools folder and related files ', async () => {
+    await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:init --projectName bam --commandName bb --devDomain vm`);
+
+    // root files
+    checkFilesExist('.env.docker-compose', '.env.local', 'docker-compose.yml');
+
+    // main folders and files
+    expect(exists(tmpProjPath('dev-tools/bin/core.sh'))).toBe(true);
+    expect(exists(tmpProjPath('dev-tools/dnsmasq'))).toBe(true);
+    expect(exists(tmpProjPath('dev-tools/docker-images'))).toBe(true);
+    expect(exists(tmpProjPath('dev-tools/reverse-proxy'))).toBe(true);
   }, 120000);
 });
