@@ -408,7 +408,7 @@ exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-constants.s
 CORE_CMD_NAME=\\"bam\\"
 PROJECT_NAME=\\"BaseApp\\"
 USR_BIN=\\"/usr/local/bin\\"
-TOP_LEVEL_DOMAIN=\\"dev\\"
+TOP_LEVEL_DOMAIN=\\"fakecom\\"
 PRIMARY_DOMAIN=\\"\${PROJECT_NAME}.\${TOP_LEVEL_DOMAIN}\\"
 DOCKER_PROJECT_NAME=\\"\${PROJECT_NAME}_\${TOP_LEVEL_DOMAIN}\\"
 DNS_PORT=53535
@@ -489,3 +489,5 @@ function main {
 main
 "
 `;
+
+exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/dnsmasq.conf content 1`] = `"address=/fakecom/127.0.0.1"`;
