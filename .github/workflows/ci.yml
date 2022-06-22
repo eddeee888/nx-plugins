@@ -37,7 +37,7 @@ jobs:
         id: affected
         run: |
           echo "::set-output name=nx-graphql-code-generator::$(./ops/bin/check-affected.sh libs nx-graphql-code-generator origin/master)"
-          echo "::set-output name=affected-nx-dev-tools::$(./ops/bin/check-affected.sh libs affected-nx-dev-tools origin/master)"
+          echo "::set-output name=nx-dev-tools::$(./ops/bin/check-affected.sh libs nx-dev-tools origin/master)"
 
   nx-graphql-code-generator:
     name:
