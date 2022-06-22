@@ -34,14 +34,20 @@ describe('nx-dev-tools generator', () => {
       ['dev-tools/bin/utils-dc.sh'],
       ['dev-tools/bin/vm-down.sh'],
       ['dev-tools/bin/vm-up.sh'],
-      ['dev-tools/bin/vm-nx.sh'],
+      ['dev-tools/bin/ws-nx.sh'],
       ['dev-tools/dnsmasq/dnsmasq.conf'],
       ['dev-tools/docker-images/build-dev-images.yml'],
       ['dev-tools/docker-images/Dockerfile.dev'],
       ['dev-tools/docker-images/Dockerfile.dev-backend'],
       ['dev-tools/docker-images/Dockerfile.dev.dockerignore'],
+      ['dev-tools/reverse-proxy/templates/http.conf.template'],
+      ['dev-tools/reverse-proxy/.gitignore'],
+      ['dev-tools/reverse-proxy/Dockerfile'],
+      ['dev-tools/reverse-proxy/proxy.conf'],
+      ['dev-tools/reverse-proxy/ws.conf'],
     ])('%s content', (file) => {
       const content = tree.read(file, 'utf-8');
+      expect(content).not.toBeNull();
       expect(content).toMatchSnapshot();
     });
   });

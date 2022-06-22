@@ -456,8 +456,6 @@ main
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/bin/vm-nx.sh content 1`] = `null`;
-
 exports[`nx-dev-tools generator Files generation dev-tools/bin/vm-up.sh content 1`] = `
 "#!/bin/bash
 
@@ -488,6 +486,14 @@ function main {
 
 main
 "
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/ws-nx.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+nx $@"
 `;
 
 exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/dnsmasq.conf content 1`] = `"address=/fakecom/127.0.0.1"`;
@@ -586,5 +592,70 @@ services:
         PRISMA_SCHEMA_FLAG: \${PRISMA_SCHEMA_FLAG}
         PRISMA_DATABASE_URL: \${PRISMA_DATABASE_URL}
         PRISMA_BINARY_TARGET: \${PRISMA_BINARY_TARGET}
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/.gitignore content 1`] = `"certificates/"`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/Dockerfile content 1`] = `
+"FROM nginx:1.22.0-alpine
+
+RUN apk update \\\\ 
+  && apk add bash \\\\
+  && apk add openssl \\\\
+  && rm -rf /var/cache/apk/*
+
+WORKDIR /opt
+
+COPY ./dev-tools/reverse-proxy/certificates/primary/device.crt /usr/share/nginx/certificates/primary/device.crt
+COPY ./dev-tools/reverse-proxy/certificates/primary/device.key /usr/share/nginx/certificates/primary/device.key
+
+COPY ./dev-tools/reverse-proxy/proxy.conf /etc/nginx/proxy.conf
+COPY ./dev-tools/reverse-proxy/ws.conf /etc/nginx/ws.conf
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/proxy.conf content 1`] = `
+"proxy_redirect    off;
+proxy_set_header  Host $host;
+proxy_set_header  X-Real-IP $remote_addr;
+proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header  X-Forwarded-Host $server_name;
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/templates/http.conf.template content 1`] = `
+"upstream \${MAIN_SERVICE_NAME} {
+  server \${MAIN_SERVICE_NAME}:\${MAIN_SERVICE_PORT};
+}
+
+server {
+  listen 80;
+  
+  location / {
+        return 301 https://$host$request_uri;
+  }      
+}
+
+server {
+  listen 443 ssl http2;
+  server_name \${PRIMARY_DOMAIN};
+  ssl_certificate /usr/share/nginx/certificates/primary/device.crt;
+  ssl_certificate_key /usr/share/nginx/certificates/primary/device.key;
+
+  location / {
+    proxy_pass http://\${MAIN_SERVICE_NAME};
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/ws.conf;
+  }
+}
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/ws.conf content 1`] = `
+"proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection \\"Upgrade\\";
+proxy_set_header Sec-WebSocket-Protocol $http_sec_websocket_protocol;
 "
 `;
