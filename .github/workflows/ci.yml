@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-18.04
     outputs:
       affected-nx-graphql-code-generator: ${{ steps.affected.outputs.nx-graphql-code-generator }}
+      affected-nx-dev-tools: ${{ steps.affected.outputs.nx-dev-tools }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -36,6 +37,7 @@ jobs:
         id: affected
         run: |
           echo "::set-output name=nx-graphql-code-generator::$(./ops/bin/check-affected.sh libs nx-graphql-code-generator origin/master)"
+          echo "::set-output name=affected-nx-dev-tools::$(./ops/bin/check-affected.sh libs affected-nx-dev-tools origin/master)"
 
   nx-graphql-code-generator:
     name:
@@ -86,3 +88,53 @@ jobs:
 
       - name: e2e
         run: yarn nx e2e nx-graphql-code-generator-e2e
+
+  nx-dev-tools:
+    name:
+    runs-on: ubuntu-18.04
+    needs: precheck
+    if: ${{ needs.precheck.outputs.affected-nx-dev-tools == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: yarn
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Install deps
+        run: yarn install --prefer-offline
+
+      - name: Lint
+        run: yarn nx lint nx-dev-tools
+
+      - name: Test
+        run: yarn nx test nx-dev-tools
+
+      - name: Build
+        run: yarn nx build nx-dev-tools
+
+  nx-dev-toolse2e:
+    name:
+    runs-on: ubuntu-18.04
+    needs: precheck
+    if: ${{ needs.precheck.outputs.affected-nx-dev-tools == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: yarn
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Install deps
+        run: yarn install --prefer-offline
+
+      - name: e2e
+        run: yarn nx e2e nx-dev-tools-e2e
