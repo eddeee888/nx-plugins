@@ -6,7 +6,7 @@ import { NxDevToolsGeneratorSchema } from './schema';
 
 describe('nx-dev-tools generator', () => {
   let tree: Tree;
-  const options: NxDevToolsGeneratorSchema = { projectName: 'BaseApp', commandName: 'bam', devDomain: 'fakecom' };
+  const options: NxDevToolsGeneratorSchema = { projectName: 'bam', commandName: 'bb', devDomain: 'fakecom' };
 
   beforeEach(async () => {
     tree = createTreeWithEmptyWorkspace();
@@ -36,6 +36,10 @@ describe('nx-dev-tools generator', () => {
       ['dev-tools/bin/vm-up.sh'],
       ['dev-tools/bin/vm-nx.sh'],
       ['dev-tools/dnsmasq/dnsmasq.conf'],
+      ['dev-tools/docker-images/build-dev-images.yml'],
+      ['dev-tools/docker-images/Dockerfile.dev'],
+      ['dev-tools/docker-images/Dockerfile.dev-backend'],
+      ['dev-tools/docker-images/Dockerfile.dev.dockerignore'],
     ])('%s content', (file) => {
       const content = tree.read(file, 'utf-8');
       expect(content).toMatchSnapshot();

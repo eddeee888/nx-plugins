@@ -5,7 +5,7 @@ exports[`nx-dev-tools generator Files generation dev-tools/bin/core.sh content 1
 
 set -e
 
-CORE_CMD_NAME=\\"bam\\"
+CORE_CMD_NAME=\\"bb\\"
 
 function display_help {
   echo
@@ -105,7 +105,7 @@ function build_dev_images {
   image=$1
 
   docker-compose \\\\
-    --file dev-tools/docker-image/build-dev-image.yml \\\\
+    --file dev-tools/docker-images/build-dev-images.yml \\\\
     --env-file=.env.docker-compose \\\\
     build --no-cache $image
 }
@@ -405,8 +405,8 @@ main $@
 exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-constants.sh content 1`] = `
 "#!/bin/bash
 
-CORE_CMD_NAME=\\"bam\\"
-PROJECT_NAME=\\"BaseApp\\"
+CORE_CMD_NAME=\\"bb\\"
+PROJECT_NAME=\\"bam\\"
 USR_BIN=\\"/usr/local/bin\\"
 TOP_LEVEL_DOMAIN=\\"fakecom\\"
 PRIMARY_DOMAIN=\\"\${PROJECT_NAME}.\${TOP_LEVEL_DOMAIN}\\"
@@ -491,3 +491,100 @@ main
 `;
 
 exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/dnsmasq.conf content 1`] = `"address=/fakecom/127.0.0.1"`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev content 1`] = `
+"FROM node:16.14-alpine
+
+WORKDIR /usr/src/app
+
+RUN apk update \\\\
+  && apk add bash git curl \\\\
+  && rm -rf /var/cache/apk/*
+
+COPY . .
+
+RUN yarn global add nx \\\\
+  && yarn install \\\\
+  && rm -rf $(yarn cache dir)
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev.dockerignore content 1`] = `
+"# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev-backend content 1`] = `
+"FROM bam/dev
+
+ARG PRISMA_SCHEMA_FLAG
+ARG PRISMA_DATABASE_URL
+ARG PRISMA_BINARY_TARGET
+
+WORKDIR /usr/src/app
+
+RUN PRISMA_DATABASE_URL=$PRISMA_DATABASE_URL \\\\
+    PRISMA_BINARY_TARGET=$PRISMA_BINARY_TARGET \\\\
+    yarn prisma generate $PRISMA_SCHEMA_FLAG
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/docker-images/build-dev-images.yml content 1`] = `
+"version: '3.7'
+
+services:
+  dev:
+    image: bam/dev:latest
+    build:
+      context: ../..
+      dockerfile: dev-tools/docker-images/Dockerfile.dev
+
+  dev-backend:
+    image: bam/dev-backend:latest
+    build:
+      context: ../..
+      dockerfile: dev-tools/docker-images/Dockerfile.dev-backend
+      args:
+        PRISMA_SCHEMA_FLAG: \${PRISMA_SCHEMA_FLAG}
+        PRISMA_DATABASE_URL: \${PRISMA_DATABASE_URL}
+        PRISMA_BINARY_TARGET: \${PRISMA_BINARY_TARGET}
+"
+`;

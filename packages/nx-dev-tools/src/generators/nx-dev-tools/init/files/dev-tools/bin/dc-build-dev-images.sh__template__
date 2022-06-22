@@ -13,7 +13,7 @@ function build_dev_images {
   image=$1
 
   docker-compose \
-    --file dev-tools/docker-image/build-dev-image.yml \
+    --file dev-tools/docker-images/build-dev-images.yml \
     --env-file=.env.docker-compose \
     build --no-cache $image
 }
