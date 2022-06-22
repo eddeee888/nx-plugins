@@ -119,3 +119,373 @@ function main {
 main
 "
 `;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-down.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc down\\"
+  eval $cmd
+}
+
+main
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-exec.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc exec $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-logs.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc logs $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-rebuild.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc rm -f -s $@ && dc build --no-cache $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-recreate.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc rm -f -s $@ && dc up -d $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-run.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc run $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-shell.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc exec $1 /bin/bash\\"
+  eval $cmd
+}
+
+main $1
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-start.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc start $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-stop.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc stop --timeout=1 $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-up.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  local cmd=\\"dc up -d $@\\"
+  eval $cmd
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/init.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+CURRENT_DIR=\\"$( cd \\"$( dirname \\"\${BASH_SOURCE[0]}\\" )\\" >/dev/null && pwd )\\"
+REVERSE_PROXY_CERTIFICATE_DIR=\\"\${CURRENT_DIR}/../reverse-proxy/certificates\\"
+source $CURRENT_DIR/utils-constants.sh
+
+function remove_old_symlink {
+  if [ -f $USR_BIN/$CORE_CMD_NAME ]; then
+    echo \\"=> Removing old command...\\"
+    sudo rm $USR_BIN/$CORE_CMD_NAME
+  fi
+  echo -e \\"=> Successfully removed old command!\\\\n\\"
+}
+
+function setup_symlink_permission {
+  echo \\"=> Setting up permissions for core command...\\"
+  sudo chmod a+rx $CURRENT_DIR/core.sh
+  echo -e \\"=> Successfully set up core command permissions!\\\\n\\"
+}
+
+function symlink {
+  echo \\"=> Symlinking core command...\\"
+  sudo ln -s $CURRENT_DIR/core.sh $USR_BIN/$CORE_CMD_NAME
+  echo -e \\"=> Successfully symlinked core command!\\\\n\\"
+}
+
+function main {
+  echo -e \\"Welcome to \\\\\\"$CORE_CMD_NAME\\\\\\" setup!\\"
+  echo -e \\"======== **** ========\\\\n\\"
+
+  remove_old_symlink
+  setup_symlink_permission
+  symlink
+  $CORE_CMD_NAME init-cert $PRIMARY_DOMAIN $REVERSE_PROXY_CERTIFICATE_DIR/primary
+  yarn install
+
+  echo -e \\"\\\\n=> Successfully set up \\\\\\"$CORE_CMD_NAME\\\\\\"!\\\\n\\"
+  echo -e \\"Run the following command to initialize the project:\\\\n\\"
+  echo -e \\"$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-image && $CORE_CMD_NAME up && nx init-database main-prisma\\\\n\\"
+}
+
+main
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/init-cert.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+function create_root_cert_and_key {
+  echo \\"=> Creating Root CA...\\"
+
+  SUBJECT=\\"/C=AU/ST=None/L=None/O=None/CN=root.com\\"
+  
+  openssl genrsa -out $1/rootCA.key 2048
+  openssl req -x509 -new -nodes -key $1/rootCA.key -subj \\"$SUBJECT\\" -sha256 -days 1024 -out $1/rootCA.pem
+
+  echo -e \\"=> Successfully created Root CA!\\\\n\\"
+}
+
+function create_certificate {
+  echo \\"=> Creating certificate for \\\\\\"$1\\\\\\"...\\"
+
+  COMMON_NAME=$1
+  SUBJECT=\\"/C=AU/ST=Victoria/L=Melbourne/O=None/CN=$COMMON_NAME\\"
+  NUM_OF_DAYS=365
+  
+  openssl req -new -newkey rsa:2048 -sha256 -nodes -keyout $2/device.key -subj \\"$SUBJECT\\" -out $2/device.csr
+  echo \\"
+      authorityKeyIdentifier=keyid,issuer
+      basicConstraints=CA:FALSE
+      keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+      subjectAltName = @alt_names
+
+      [alt_names]
+      DNS.1 = \${COMMON_NAME}
+  \\" > /tmp/__v3.ext
+  
+  openssl x509 \\\\
+    -req -in $2/device.csr \\\\
+    -CA $2/rootCA.pem \\\\
+    -CAkey $2/rootCA.key \\\\
+    -CAserial $2/.srl \\\\
+    -CAcreateserial \\\\
+    -out $2/device.crt \\\\
+    -days $NUM_OF_DAYS \\\\
+    -sha256 \\\\
+    -extfile /tmp/__v3.ext
+
+  echo -e \\"=> Successfully created certificate for \\\\\\"$1\\\\\\"!\\\\n\\"
+}
+
+function trust_root_ca {
+  echo \\"=> Trusting Root CA...\\"
+  sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain $1/rootCA.pem
+  echo -e \\"=> Successfully trusted Root CA!\\\\n\\"
+}
+
+function main {
+  echo \\"=> Setting up TLS...\\"
+
+  if [ ! -f $1/fullchain.pem ]; then
+    echo \\"=> No cert detected... Creating new certs...\\"
+    mkdir -p $2
+    create_root_cert_and_key $2
+    create_certificate $1 $2
+    trust_root_ca $2
+  else
+    echo \\"=> Existing cert detected... Skipping cert creation.\\"
+  fi
+
+  echo -e \\"=> Successfully set up certs!\\\\n\\"
+}
+
+main $@
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-constants.sh content 1`] = `
+"#!/bin/bash
+
+CORE_CMD_NAME=\\"bam\\"
+PROJECT_NAME=\\"BaseApp\\"
+USR_BIN=\\"/usr/local/bin\\"
+TOP_LEVEL_DOMAIN=\\"dev\\"
+PRIMARY_DOMAIN=\\"\${PROJECT_NAME}.\${TOP_LEVEL_DOMAIN}\\"
+DOCKER_PROJECT_NAME=\\"\${PROJECT_NAME}_\${TOP_LEVEL_DOMAIN}\\"
+DNS_PORT=53535
+RESOLVER_DIR=\\"/etc/resolver\\"
+RESOLVER_FILE=\\"$RESOLVER_DIR/$PRIMARY_DOMAIN\\"
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-dc.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_CONST
+
+function dc {
+  local cmd=\\"docker-compose --env-file=.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@\\"
+  echo \\"=> \${CORE_CMD_NAME}.compose: \\"$cmd
+  eval $cmd
+}
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/vm-down.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_CONST
+
+function remove_resolver_file {
+  if [ -e $RESOLVER_FILE ]; then 
+    echo \\"=> Removing old resolver file $RESOLVER_FILE ...\\"
+    sudo rm $RESOLVER_FILE
+    echo \\"=> Successfully removed $RESOLVER_FILE\\"
+  fi
+}
+
+function main {
+  remove_resolver_file
+  $CORE_CMD_NAME stop
+}
+
+main
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/vm-nx.sh content 1`] = `null`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/bin/vm-up.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+source $UTILS_DC
+
+function main {
+  echo -e \\"=> Checking resolver file...\\\\n\\"
+
+  # Make the directory
+  if [ ! -e $RESOLVER_DIR ]; then 
+    sudo mkdir -p $RESOLVER_DIR
+    echo -e \\"Created new directory: $RESOLVER_DIR\\\\n\\"
+  fi
+
+  if [ -e $RESOLVER_FILE ]; then 
+    echo \\"=> Removing old resolver file $RESOLVER_FILE ...\\"
+    sudo rm $RESOLVER_FILE
+    echo -e \\"=> Successfully removed $RESOLVER_FILE\\\\n\\"
+  fi
+  
+
+  echo \\"=> Creating new resolver file $RESOLVER_FILE ...\\"
+  sudo sh -c \\"echo '# This is auto-generated. Do NOT edit this file\\\\nnameserver 127.0.0.1 \\\\nport $DNS_PORT' >> $RESOLVER_FILE\\"
+  echo -e \\"=> Successfully created resolver file: $RESOLVER_FILE\\\\n\\"
+}
+
+main
+"
+`;
