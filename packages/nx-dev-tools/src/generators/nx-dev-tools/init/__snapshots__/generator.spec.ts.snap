@@ -513,10 +513,14 @@ exports[`nx-dev-tools generator Files generation dev-tools/bin/ws-nx.sh content 
 
 set -e
 
-nx $@"
+nx $@
+"
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/dnsmasq.conf content 1`] = `"address=/fakecom/127.0.0.1"`;
+exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/dnsmasq.conf content 1`] = `
+"address=/fakecom/127.0.0.1
+"
+`;
 
 exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev content 1`] = `
 "FROM node:16.14-alpine
@@ -615,7 +619,10 @@ services:
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/.gitignore content 1`] = `"certificates/"`;
+exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/.gitignore content 1`] = `
+"certificates/
+"
+`;
 
 exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/Dockerfile content 1`] = `
 "FROM nginx:1.22.0-alpine
