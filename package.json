@@ -7,6 +7,7 @@
   },
   "private": true,
   "dependencies": {
+    "@swc/helpers": "~0.3.3",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -22,6 +23,9 @@
     "@nrwl/nx-cloud": "14.1.2",
     "@nrwl/nx-plugin": "14.2.4",
     "@nrwl/workspace": "14.2.4",
+    "@swc-node/register": "^1.4.2",
+    "@swc/cli": "~0.1.55",
+    "@swc/core": "^1.2.173",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
     "@types/semver": "^7.3.9",
@@ -30,6 +34,7 @@
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.5.1",
+    "jsonc-eslint-parser": "^2.1.0",
     "nx": "14.2.4",
     "prettier": "2.7.1",
     "semver": "^7.3.7",
