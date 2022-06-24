@@ -117,7 +117,7 @@ jobs:
       - name: Build
         run: yarn nx build nx-dev-tools
 
-  nx-dev-toolse2e:
+  nx-dev-tools-e2e:
     name:
     runs-on: ubuntu-18.04
     needs: precheck
