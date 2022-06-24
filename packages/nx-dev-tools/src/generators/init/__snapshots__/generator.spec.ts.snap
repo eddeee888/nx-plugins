@@ -6,7 +6,7 @@ exports[`nx-dev-tools generator Files generation .env.docker-compose content 1`]
 MYSQL_ROOT_PASSWORD=root
 MYSQL_PORT=3306
 
-MAIN_SERVICE_NAME=main
+MAIN_SERVICE_NAME=bam
 MAIN_SERVICE_PORT=3000
 
 PRISMA_SCHEMA_FLAG=--schema=libs/main-prisma/src/prisma/schema.prisma
@@ -691,9 +691,9 @@ exports[`nx-dev-tools generator Files generation docker-compose.yml content 1`] 
 "version: '3.7'
 
 services:
-  main:
+  bam:
     image: bam/dev-backend:latest
-    command: nx serve main --port=\${MAIN_SERVICE_PORT}
+    command: nx serve bam --port=\${MAIN_SERVICE_PORT}
     volumes:
       - .:/usr/src/app/
       - /usr/src/app/node_modules
@@ -724,7 +724,7 @@ services:
       - 80:80
       - 443:443
     depends_on:
-      - main
+      - bam
       - dnsmasq
     environment:
       PRIMARY_DOMAIN: \${PRIMARY_DOMAIN}
