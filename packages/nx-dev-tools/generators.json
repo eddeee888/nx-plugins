@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "generators": {
     "init": {
-      "factory": "./src/generators/nx-dev-tools/init/generator",
-      "schema": "./src/generators/nx-dev-tools/init/schema.json",
+      "factory": "./src/generators/init/generator",
+      "schema": "./src/generators/init/schema.json",
       "description": "Generator to create basic Docker-based setup and bash CLIs"
     }
   }
