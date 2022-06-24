@@ -1,9 +1,9 @@
 version: '3.7'
 
 services:
-  main:
+  <%= projectName -%>:
     image: <%= projectName %>/dev-backend:latest
-    command: nx serve main --port=${MAIN_SERVICE_PORT}
+    command: nx serve <%= projectName -%> --port=${MAIN_SERVICE_PORT}
     volumes:
       - .:/usr/src/app/
       - /usr/src/app/node_modules
@@ -34,7 +34,7 @@ services:
       - 80:80
       - 443:443
     depends_on:
-      - main
+      - <%= projectName %>
       - dnsmasq
     environment:
       PRIMARY_DOMAIN: ${PRIMARY_DOMAIN}

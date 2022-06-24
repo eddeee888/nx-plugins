@@ -1,6 +1,16 @@
 {
   "name": "@eddeee888/nx-dev-tools",
   "version": "0.0.2",
+  "license": "MIT",
+  "author": "Eddy Nguyen <ch@eddeee888.me>",
+  "description": "The Nx Plugin to add essential Docker and networking config to an Nx workspace",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddeee888/nx-plugins.git"
+  },
   "main": "src/index.js",
-  "generators": "./generators.json"
+  "generators": "./generators.json",
+  "publishConfig": {
+    "directory": "../../dist/packages/nx-dev-tools"
+  }
 }
