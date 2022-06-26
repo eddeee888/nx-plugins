@@ -15,11 +15,6 @@ PRISMA_BINARY_TARGET=[\\"native\\",\\"linux-musl\\"]
 "
 `;
 
-exports[`nx-dev-tools generator Files generation .env.local content 1`] = `
-"PRIMARY_DOMAIN=bam.fakecom
-"
-`;
-
 exports[`nx-dev-tools generator Files generation dev-tools/bin/core.sh content 1`] = `
 "#!/bin/bash
 
