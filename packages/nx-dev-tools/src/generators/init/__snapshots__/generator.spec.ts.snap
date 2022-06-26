@@ -15,11 +15,6 @@ PRISMA_BINARY_TARGET=[\\"native\\",\\"linux-musl\\"]
 "
 `;
 
-exports[`nx-dev-tools generator Files generation .env.local content 1`] = `
-"PRIMARY_DOMAIN=bam.fakecom
-"
-`;
-
 exports[`nx-dev-tools generator Files generation dev-tools/bin/core.sh content 1`] = `
 "#!/bin/bash
 
@@ -309,6 +304,12 @@ CURRENT_DIR=\\"$( cd \\"$( dirname \\"\${BASH_SOURCE[0]}\\" )\\" >/dev/null && p
 REVERSE_PROXY_CERTIFICATE_DIR=\\"\${CURRENT_DIR}/../reverse-proxy/certificates\\"
 source $CURRENT_DIR/utils-constants.sh
 
+function update_file_permissions {
+  echo \\"=> Updating script permissions...\\"
+  chmod +x $CURRENT_DIR/*.sh
+  echo \\"=> Successfully updated script permissions ...\\"
+}
+
 function remove_old_symlink {
   if [ -f $USR_BIN/$CORE_CMD_NAME ]; then
     echo \\"=> Removing old command...\\"
@@ -333,6 +334,7 @@ function main {
   echo -e \\"Welcome to \\\\\\"$CORE_CMD_NAME\\\\\\" setup!\\"
   echo -e \\"======== **** ========\\\\n\\"
 
+  update_file_permissions
   remove_old_symlink
   setup_symlink_permission
   symlink
@@ -341,7 +343,7 @@ function main {
 
   echo -e \\"\\\\n=> Successfully set up \\\\\\"$CORE_CMD_NAME\\\\\\"!\\\\n\\"
   echo -e \\"Run the following command to initialize the project:\\\\n\\"
-  echo -e \\"$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-image && $CORE_CMD_NAME up && nx init-database main-prisma\\\\n\\"
+  echo -e \\"$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-images && $CORE_CMD_NAME up && nx init-database main-prisma\\\\n\\"
 }
 
 main
