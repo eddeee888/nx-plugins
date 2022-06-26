@@ -9,15 +9,15 @@ source $CURRENT_DIR/utils-constants.sh
 function update_file_permissions {
   echo "=> Updating script permissions..."
   chmod +x $CURRENT_DIR/*.sh
-  echo "=> Successfully updated script permissions ..."
+  echo -e "=> Successfully updated script permissions!\n"
 }
 
 function remove_old_symlink {
   if [ -f $USR_BIN/$CORE_CMD_NAME ]; then
     echo "=> Removing old command..."
     sudo rm $USR_BIN/$CORE_CMD_NAME
+    echo -e "=> Successfully removed old command!\n"
   fi
-  echo -e "=> Successfully removed old command!\n"
 }
 
 function setup_symlink_permission {
@@ -45,7 +45,7 @@ function main {
 
   echo -e "\n=> Successfully set up \"$CORE_CMD_NAME\"!\n"
   echo -e "Run the following command to initialize the project:\n"
-  echo -e "$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-images && $CORE_CMD_NAME up && nx init-database main-prisma\n"
+  echo -e "$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-images && $CORE_CMD_NAME up && $CORE_CMD_NAME nx init-database main-prisma\n"
 }
 
 main
