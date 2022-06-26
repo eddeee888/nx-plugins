@@ -343,7 +343,7 @@ function main {
 
   echo -e \\"\\\\n=> Successfully set up \\\\\\"$CORE_CMD_NAME\\\\\\"!\\\\n\\"
   echo -e \\"Run the following command to initialize the project:\\\\n\\"
-  echo -e \\"$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-image && $CORE_CMD_NAME up && nx init-database main-prisma\\\\n\\"
+  echo -e \\"$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-images && $CORE_CMD_NAME up && nx init-database main-prisma\\\\n\\"
 }
 
 main
