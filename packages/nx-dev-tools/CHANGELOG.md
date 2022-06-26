@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 0.0.5
+
+### Patch Changes
+
+- 1d9d3aa: Fix init.sh logs for consistency
+
 ## 0.0.4
 
 ### Patch Changes
