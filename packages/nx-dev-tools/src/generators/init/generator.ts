@@ -4,7 +4,7 @@ import type { NxDevToolsGeneratorSchema } from './schema';
 
 type NormalizedSchema = NxDevToolsGeneratorSchema;
 
-function normalizeOptions(tree: Tree, options: NxDevToolsGeneratorSchema): NormalizedSchema {
+function normalizeOptions(_tree: Tree, options: NxDevToolsGeneratorSchema): NormalizedSchema {
   return {
     ...options,
   };
