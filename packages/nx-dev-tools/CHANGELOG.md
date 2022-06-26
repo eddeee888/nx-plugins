@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 0.0.4
+
+### Patch Changes
+
+- 231772f: Simplify and fix nx-dev-tools scripts
+
 ## 0.0.3
 
 ### Patch Changes
