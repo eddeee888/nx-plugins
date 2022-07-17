@@ -643,7 +643,8 @@ services:
       MAIN_SERVICE_NAME: \${MAIN_SERVICE_NAME}
       MAIN_SERVICE_PORT: \${MAIN_SERVICE_PORT}
     volumes:
-      - ./dev-tools/reverse-proxy/templates:/etc/nginx/templates"
+      - ./dev-tools/reverse-proxy/templates:/etc/nginx/templates
+"
 `;
 
 exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/proxy.conf content 1`] = `
