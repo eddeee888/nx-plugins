@@ -46,7 +46,7 @@ describe('nx-dev-tools generator', () => {
       ['dev-tools/reverse-proxy/Dockerfile'],
       ['dev-tools/reverse-proxy/proxy.conf'],
       ['dev-tools/reverse-proxy/ws.conf'],
-      ['.env.docker-compose'],
+      ['dev-tools/.env.docker-compose'],
     ])('%s content', (file) => {
       const content = tree.read(file, 'utf-8');
       expect(content).not.toBeNull();

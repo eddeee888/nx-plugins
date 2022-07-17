@@ -15,7 +15,7 @@ function dc {
 	  files="$files --file $file"
   done
 
-  local cmd="docker-compose $files --project-directory . --env-file=.env.docker-compose -p ${DOCKER_PROJECT_NAME} $@"
+  local cmd="docker-compose $files --project-directory . --env-file=dev-tools/.env.docker-compose -p ${DOCKER_PROJECT_NAME} $@"
   echo "=> ${CORE_CMD_NAME}.compose: "$cmd
   eval $cmd
 }

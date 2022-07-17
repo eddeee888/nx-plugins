@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`nx-dev-tools generator Files generation .env.docker-compose content 1`] = `
-"PRIMARY_DOMAIN=bam.fakecom
-
-MYSQL_ROOT_PASSWORD=root
-MYSQL_PORT=3306
-
-MAIN_SERVICE_NAME=bam
-MAIN_SERVICE_PORT=3000
-"
-`;
-
 exports[`nx-dev-tools generator Files generation apps/bam/docker-compose.yml content 1`] = `
 "version: '3.7'
 
@@ -37,6 +26,17 @@ services:
 
 volumes:
   bam-db-data:
+"
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/.env.docker-compose content 1`] = `
+"PRIMARY_DOMAIN=bam.fakecom
+
+MYSQL_ROOT_PASSWORD=root
+MYSQL_PORT=3306
+
+MAIN_SERVICE_NAME=bam
+MAIN_SERVICE_PORT=3000
 "
 `;
 
@@ -479,7 +479,7 @@ function dc {
 	  files=\\"$files --file $file\\"
   done
 
-  local cmd=\\"docker-compose $files --project-directory . --env-file=.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@\\"
+  local cmd=\\"docker-compose $files --project-directory . --env-file=dev-tools/.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@\\"
   echo \\"=> \${CORE_CMD_NAME}.compose: \\"$cmd
   eval $cmd
 }
