@@ -20,8 +20,13 @@ describe('nx-dev-tools e2e', () => {
   it('should create dev-tools folder and related files ', async () => {
     await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:init --projectName bam --commandName bb --devDomain vm`);
 
-    // root files
-    checkFilesExist('.env.docker-compose', 'docker-compose.yml');
+    // Docker files
+    checkFilesExist(
+      'dev-tools/.env.docker-compose',
+      'apps/bam/docker-compose.yml',
+      'dev-tools/reverse-proxy/docker-compose.yml',
+      'dev-tools/dnsmasq/docker-compose.yml'
+    );
 
     // main folders and files
     expect(exists(tmpProjPath('dev-tools/bin/core.sh'))).toBe(true);
