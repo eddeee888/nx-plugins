@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 0.0.6
+
+### Patch Changes
+
+- 542d082: Split docker-compose file into smaller files
+
 ## 0.0.5
 
 ### Patch Changes
