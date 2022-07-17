@@ -8,10 +8,35 @@ MYSQL_PORT=3306
 
 MAIN_SERVICE_NAME=bam
 MAIN_SERVICE_PORT=3000
+"
+`;
 
-PRISMA_SCHEMA_FLAG=--schema=libs/bam-prisma/src/prisma/schema.prisma
-PRISMA_DATABASE_URL=mysql://root:root@database:3306/bam?schema=public
-PRISMA_BINARY_TARGET=[\\"native\\",\\"linux-musl\\"]
+exports[`nx-dev-tools generator Files generation apps/bam/docker-compose.yml content 1`] = `
+"version: '3.7'
+
+services:
+  bam:
+    image: bam/dev:latest
+    command: nx serve bam --port=\${MAIN_SERVICE_PORT}
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
+
+  bam-db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=\${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PORT=\${MYSQL_PORT}
+    volumes:
+      - bam-db-data:/var/lib/mysql
+    expose:
+      - \${MYSQL_PORT}
+    ports:
+      - \${MYSQL_PORT}:\${MYSQL_PORT}
+
+volumes:
+  bam-db-data:
 "
 `;
 
@@ -113,7 +138,6 @@ source $UTILS_CONST
 
 function clean_images {
   docker rmi -f $PROJECT_NAME/dev
-  docker rmi -f $PROJECT_NAME/dev-backend
 }
 
 function build_dev_images {
@@ -121,14 +145,12 @@ function build_dev_images {
 
   docker-compose \\\\
     --file dev-tools/docker-images/build-dev-images.yml \\\\
-    --env-file=.env.docker-compose \\\\
     build --no-cache $image
 }
 
 function main {
   clean_images
   build_dev_images dev
-  build_dev_images dev-backend
 }
 
 main
@@ -447,7 +469,17 @@ set -e
 source $UTILS_CONST
 
 function dc {
-  local cmd=\\"docker-compose --env-file=.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@\\"
+  local networking_compose_files=(\\"dev-tools/dnsmasq/docker-compose.yml\\" \\"dev-tools/reverse-proxy/docker-compose.yml\\")
+  local app_compose_files=(\\"apps/bam/docker-compose.yml\\")
+
+  local all_compose_files=(\\"\${networking_compose_files[@]}\\" \\"\${app_compose_files[@]}\\")
+  local files=\\"\\"
+  for file in \\"\${all_compose_files[@]}\\"
+  do
+	  files=\\"$files --file $file\\"
+  done
+
+  local cmd=\\"docker-compose $files --project-directory . --env-file=.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@\\"
   echo \\"=> \${CORE_CMD_NAME}.compose: \\"$cmd
   eval $cmd
 }
@@ -524,6 +556,21 @@ exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/dnsmasq.conf 
 "
 `;
 
+exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/docker-compose.yml content 1`] = `
+"version: '3.7'
+
+services:
+  dnsmasq:
+    image: 4km3/dnsmasq:2.85-r2-alpine-3.14
+    ports:
+      - 53535:53/tcp
+      - 53535:53/udp
+    cap_add: ['NET_ADMIN']
+    volumes:
+      - ./dev-tools/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+"
+`;
+
 exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev content 1`] = `
 "FROM node:16.14-alpine
 
@@ -541,64 +588,6 @@ RUN yarn global add nx \\\\
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev.dockerignore content 1`] = `
-"# See http://help.github.com/ignore-files/ for more about ignoring files.
-
-# compiled output
-/dist
-/tmp
-/out-tsc
-
-# dependencies
-/node_modules
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-
-# System Files
-.DS_Store
-Thumbs.db
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev-backend content 1`] = `
-"FROM bam/dev
-
-ARG PRISMA_SCHEMA_FLAG
-ARG PRISMA_DATABASE_URL
-ARG PRISMA_BINARY_TARGET
-
-WORKDIR /usr/src/app
-
-RUN PRISMA_DATABASE_URL=$PRISMA_DATABASE_URL \\\\
-    PRISMA_BINARY_TARGET=$PRISMA_BINARY_TARGET \\\\
-    yarn prisma generate $PRISMA_SCHEMA_FLAG
-"
-`;
-
 exports[`nx-dev-tools generator Files generation dev-tools/docker-images/build-dev-images.yml content 1`] = `
 "version: '3.7'
 
@@ -608,16 +597,6 @@ services:
     build:
       context: ../..
       dockerfile: dev-tools/docker-images/Dockerfile.dev
-
-  dev-backend:
-    image: bam/dev-backend:latest
-    build:
-      context: ../..
-      dockerfile: dev-tools/docker-images/Dockerfile.dev-backend
-      args:
-        PRISMA_SCHEMA_FLAG: \${PRISMA_SCHEMA_FLAG}
-        PRISMA_DATABASE_URL: \${PRISMA_DATABASE_URL}
-        PRISMA_BINARY_TARGET: \${PRISMA_BINARY_TARGET}
 "
 `;
 
@@ -642,6 +621,29 @@ COPY ./dev-tools/reverse-proxy/certificates/primary/device.key /usr/share/nginx/
 COPY ./dev-tools/reverse-proxy/proxy.conf /etc/nginx/proxy.conf
 COPY ./dev-tools/reverse-proxy/ws.conf /etc/nginx/ws.conf
 "
+`;
+
+exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/docker-compose.yml content 1`] = `
+"version: '3.7'
+
+services:
+  reverse-proxy:
+    build:
+      context: .
+      dockerfile: dev-tools/reverse-proxy/Dockerfile
+    tty: true
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - main
+      - dnsmasq
+    environment:
+      PRIMARY_DOMAIN: \${PRIMARY_DOMAIN}
+      MAIN_SERVICE_NAME: \${MAIN_SERVICE_NAME}
+      MAIN_SERVICE_PORT: \${MAIN_SERVICE_PORT}
+    volumes:
+      - ./dev-tools/reverse-proxy/templates:/etc/nginx/templates"
 `;
 
 exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/proxy.conf content 1`] = `
@@ -686,72 +688,5 @@ exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/ws.conf
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection \\"Upgrade\\";
 proxy_set_header Sec-WebSocket-Protocol $http_sec_websocket_protocol;
-"
-`;
-
-exports[`nx-dev-tools generator Files generation docker-compose.yml content 1`] = `
-"version: '3.7'
-
-services:
-  bam:
-    image: bam/dev-backend:latest
-    command: nx serve bam --port=\${MAIN_SERVICE_PORT}
-    volumes:
-      - .:/usr/src/app/
-      - /usr/src/app/node_modules
-    networks:
-      - vm
-
-  database:
-    image: mysql:8.0
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=\${MYSQL_ROOT_PASSWORD}
-      - MYSQL_PORT=\${MYSQL_PORT}
-    volumes:
-      - database_data:/var/lib/mysql
-    expose:
-      - \${MYSQL_PORT}
-    ports:
-      - \${MYSQL_PORT}:\${MYSQL_PORT}
-    networks:
-      - vm
-
-  reverse-proxy:
-    build:
-      context: .
-      dockerfile: dev-tools/reverse-proxy/Dockerfile
-    tty: true
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - bam
-      - dnsmasq
-    environment:
-      PRIMARY_DOMAIN: \${PRIMARY_DOMAIN}
-      MAIN_SERVICE_NAME: \${MAIN_SERVICE_NAME}
-      MAIN_SERVICE_PORT: \${MAIN_SERVICE_PORT}
-    volumes:
-      - ./dev-tools/reverse-proxy/templates:/etc/nginx/templates
-    networks:
-      - vm
-
-  dnsmasq:
-    image: 4km3/dnsmasq:2.85-r2-alpine-3.14
-    ports:
-      - 53535:53/tcp
-      - 53535:53/udp
-    cap_add: ['NET_ADMIN']
-    volumes:
-      - ./dev-tools/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
-    networks:
-      - vm
-
-volumes:
-  database_data:
-
-networks:
-  vm:
 "
 `;
