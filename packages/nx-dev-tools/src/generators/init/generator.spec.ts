@@ -15,6 +15,7 @@ describe('nx-dev-tools generator', () => {
 
   describe('Files generation', () => {
     test.each([
+      ['apps/bam/docker-compose.yml'],
       ['dev-tools/bin/core.sh'],
       ['dev-tools/bin/dc-build-dev-images.sh'],
       ['dev-tools/bin/dc-build.sh'],
@@ -36,17 +37,16 @@ describe('nx-dev-tools generator', () => {
       ['dev-tools/bin/vm-up.sh'],
       ['dev-tools/bin/ws-nx.sh'],
       ['dev-tools/dnsmasq/dnsmasq.conf'],
+      ['dev-tools/dnsmasq/docker-compose.yml'],
       ['dev-tools/docker-images/build-dev-images.yml'],
       ['dev-tools/docker-images/Dockerfile.dev'],
-      ['dev-tools/docker-images/Dockerfile.dev-backend'],
-      ['dev-tools/docker-images/Dockerfile.dev.dockerignore'],
       ['dev-tools/reverse-proxy/templates/http.conf.template'],
       ['dev-tools/reverse-proxy/.gitignore'],
+      ['dev-tools/reverse-proxy/docker-compose.yml'],
       ['dev-tools/reverse-proxy/Dockerfile'],
       ['dev-tools/reverse-proxy/proxy.conf'],
       ['dev-tools/reverse-proxy/ws.conf'],
-      ['.env.docker-compose'],
-      ['docker-compose.yml'],
+      ['dev-tools/.env.docker-compose'],
     ])('%s content', (file) => {
       const content = tree.read(file, 'utf-8');
       expect(content).not.toBeNull();
