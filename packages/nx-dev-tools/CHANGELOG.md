@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 0.0.7
+
+### Patch Changes
+
+- f15c8ac: Add missing Dockerfile.dev.dockerignore
+
 ## 0.0.6
 
 ### Patch Changes

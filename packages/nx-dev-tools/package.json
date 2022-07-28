@@ -1,6 +1,6 @@
 {
   "name": "@eddeee888/nx-dev-tools",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
   "description": "The Nx Plugin to add essential Docker and networking config to an Nx workspace",
