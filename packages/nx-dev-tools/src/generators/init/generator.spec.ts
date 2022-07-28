@@ -40,6 +40,7 @@ describe('nx-dev-tools generator', () => {
       ['dev-tools/dnsmasq/docker-compose.yml'],
       ['dev-tools/docker-images/build-dev-images.yml'],
       ['dev-tools/docker-images/Dockerfile.dev'],
+      ['dev-tools/docker-images/Dockerfile.dev.dockerignore'],
       ['dev-tools/reverse-proxy/templates/http.conf.template'],
       ['dev-tools/reverse-proxy/.gitignore'],
       ['dev-tools/reverse-proxy/docker-compose.yml'],
