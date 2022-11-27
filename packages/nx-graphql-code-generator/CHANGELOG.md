@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.16
+
+### Patch Changes
+
+- 865e3a9: Replace generic typescript-resolvers preset with @eddeee888/gcg-typescript-resolver-files preset
+
 ## 0.0.15
 
 ### Patch Changes
