@@ -1,4 +1,5 @@
 {
+  "name": "nx-graphql-code-generator",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/nx-graphql-code-generator/src",
   "projectType": "library",
@@ -44,7 +45,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/nx-graphql-code-generator"],
+      "outputs": ["{workspaceRoot}/coverage/packages/nx-graphql-code-generator"],
       "options": {
         "jestConfig": "packages/nx-graphql-code-generator/jest.config.ts",
         "passWithNoTests": true
