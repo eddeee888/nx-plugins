@@ -17,6 +17,7 @@ describe('nx-dev-tools generator', () => {
     test.each([
       ['apps/bam/docker-compose.yml'],
       ['dev-tools/bin/core.sh'],
+      ['dev-tools/bin/open.sh'],
       ['dev-tools/bin/dc-build-dev-images.sh'],
       ['dev-tools/bin/dc-build.sh'],
       ['dev-tools/bin/dc-down.sh'],

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+source $CURRENT_DIR/utils-constants.sh
+
+function main {
+  open https://$PRIMARY_DOMAIN
+}
+
+main
