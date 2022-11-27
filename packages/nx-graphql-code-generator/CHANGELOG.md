@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.15
+
+### Patch Changes
+
+- 257e6f7: Move graphql-codegen cli to package that needs it
+
 ## 0.0.14
 
 ### Patch Changes
