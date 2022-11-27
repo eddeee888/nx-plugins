@@ -309,9 +309,9 @@ describe('nx-graphql-code-generator generator', () => {
       expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
     });
 
-    it('typescript-resolvers', async () => {
+    it('typescript-resolver-files', async () => {
       await libraryGenerator(tree, { name: projectName });
-      await generator(tree, { ...options, pluginPreset: 'typescript-resolvers' });
+      await generator(tree, { ...options, pluginPreset: 'typescript-resolver-files', output: 'graphql/schemas' });
 
       const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
       expect(codegenConfig).toMatchInlineSnapshot(`
@@ -319,20 +319,22 @@ describe('nx-graphql-code-generator generator', () => {
         overwrite: true
         schema: https://localhost:9999/graphql
         generates:
-          libs/test/graphql/generated.ts:
-            plugins:
-              - typescript
-              - typescript-resolvers"
+          libs/test/graphql/schemas:
+            preset: '@eddeee888/gcg-typescript-resolver-files'
+            presetConfig:
+              resolverTypesPath: '../types.generated.ts'
+              mainFile: 'resolvers.ts'
+              relativeTargetDir: 'resolvers'
+        "
       `);
 
       const workspaceConfig = readWorkspaceConfiguration(tree);
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
-        'typescript-resolvers'
+        'typescript-resolver-files'
       );
 
       const packageJson = readJson(tree, 'package.json');
-      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
-      expect(packageJson.devDependencies['@graphql-codegen/typescript-resolvers']).toBe('^2.6.2');
+      expect(packageJson.devDependencies['@eddeee888/gcg-typescript-resolver-files']).toBe('^0.0.7');
     });
 
     it('does not overwrite packages if already exists', async () => {

@@ -12,7 +12,7 @@ export interface PluginPresets {
   'typescript-react-apollo-client': PluginOption[];
   'typescript-angular-apollo-client': PluginOption[];
   'typescript-vue-apollo-client': PluginOption[];
-  'typescript-resolvers': PluginOption[];
+  'typescript-resolver-files': PluginOption[];
 }
 
 const typescriptLanguagePlugin: PluginOption = {
@@ -74,13 +74,12 @@ export const pluginPresets: PluginPresets = {
     },
     typescriptApolloFragmentMatcher,
   ],
-  'typescript-resolvers': [
-    typescriptLanguagePlugin,
+  'typescript-resolver-files': [
     {
-      name: 'TypeScript Resolvers (strongly typed resolve functions)',
-      package: '@graphql-codegen/typescript-resolvers',
-      value: 'typescript-resolvers',
-      version: '^2.6.2',
+      name: 'TypeScript Resolver Files preset',
+      package: '@eddeee888/gcg-typescript-resolver-files',
+      value: '@eddeee888/gcg-typescript-resolver-files',
+      version: '^0.0.7',
     },
   ],
 };

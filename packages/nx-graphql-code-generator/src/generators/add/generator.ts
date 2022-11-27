@@ -172,6 +172,10 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
   updateWorkspaceConfiguration(tree, workspace);
 }
 
+const configTemplateDirMap: Record<string, string> = {
+  'typescript-resolver-files': 'typescript-resolver-files',
+};
+
 function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
@@ -179,7 +183,10 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     offsetFromRoot: offsetFromRoot(options.projectConfig.root),
     template: '',
   };
-  generateFiles(tree, path.join(__dirname, 'files'), options.projectConfig.root, templateOptions);
+
+  const configTemplateDir = configTemplateDirMap[options.pluginPreset] || 'generic';
+
+  generateFiles(tree, path.join(__dirname, 'files', configTemplateDir), options.projectConfig.root, templateOptions);
 }
 
 export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {
