@@ -23,8 +23,7 @@
     "output": {
       "type": "string",
       "description": "Output to be generated ( relative to the project root ). More can be added later.",
-      "alias": "o",
-      "default": "graphql/generated.ts"
+      "alias": "o"
     },
     "documents": {
       "type": "string",
