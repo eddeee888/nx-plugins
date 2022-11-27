@@ -27,6 +27,18 @@ interface NormalizedSchema extends Required<NxGraphqlCodeGeneratorGeneratorSchem
   plugins: PluginOption[];
 }
 
+interface PresetDefaults {
+  fileDir: string;
+  outputPath: string;
+}
+const presetDefaultsMap: Record<string, PresetDefaults> = {
+  'typescript-resolver-files': { fileDir: 'typescript-resolver-files', outputPath: 'src/graphql/schemas/modules' },
+};
+const genericPresetDefaults: PresetDefaults = {
+  fileDir: 'generic',
+  outputPath: 'src/graphql/generated.ts',
+};
+
 function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema): NormalizedSchema {
   // Validations
   if (!options.schema) {
@@ -38,7 +50,10 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectConfig = readProjectConfiguration(tree, projectName);
 
-  const output = options.output ?? 'graphql/generated.ts';
+  const pluginPreset = options.pluginPreset ?? 'none';
+
+  const { outputPath: defaultOutputPath } = presetDefaultsMap[pluginPreset] || genericPresetDefaults;
+  const output = options.output ?? defaultOutputPath;
   const fullOutput = path.join(projectConfig.root, output);
 
   const plugins = getPlugins(options);
@@ -48,7 +63,7 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
     schema: options.schema ?? '',
     documents: options.documents ?? '',
     config: options.config ?? 'codegen.yml',
-    pluginPreset: options.pluginPreset ?? 'none',
+    pluginPreset,
     output,
     fullOutput,
     projectConfig,
@@ -179,7 +194,10 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     offsetFromRoot: offsetFromRoot(options.projectConfig.root),
     template: '',
   };
-  generateFiles(tree, path.join(__dirname, 'files'), options.projectConfig.root, templateOptions);
+
+  const { fileDir } = presetDefaultsMap[options.pluginPreset] || genericPresetDefaults;
+
+  generateFiles(tree, path.join(__dirname, 'files', fileDir), options.projectConfig.root, templateOptions);
 }
 
 export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {

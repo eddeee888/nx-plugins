@@ -7,7 +7,7 @@ export interface NxGraphqlCodeGeneratorGeneratorSchema {
     | 'typescript-react-apollo-client'
     | 'typescript-angular-apollo-client'
     | 'typescript-vue-apollo-client'
-    | 'typescript-resolvers'
+    | 'typescript-resolver-files'
     | 'none';
 
   config?: string;
