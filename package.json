@@ -20,7 +20,7 @@
     "@nrwl/js": "14.2.4",
     "@nrwl/linter": "14.2.4",
     "@nrwl/node": "14.2.4",
-    "@nrwl/nx-cloud": "14.1.2",
+    "@nrwl/nx-cloud": "14.7.0",
     "@nrwl/nx-plugin": "14.2.4",
     "@nrwl/workspace": "14.2.4",
     "@swc-node/register": "^1.4.2",
