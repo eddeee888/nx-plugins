@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 0.0.8
+
+### Patch Changes
+
+- 94898fc: Add bin/open.sh to easily navigate to project in the browser
+
 ## 0.0.7
 
 ### Patch Changes
