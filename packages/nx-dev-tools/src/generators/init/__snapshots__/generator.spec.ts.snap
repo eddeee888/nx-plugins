@@ -446,6 +446,22 @@ main $@
 "
 `;
 
+exports[`nx-dev-tools generator Files generation dev-tools/bin/open.sh content 1`] = `
+"#!/bin/bash
+
+set -e
+
+CURRENT_DIR=\\"$( cd \\"$( dirname \\"\${BASH_SOURCE[0]}\\" )\\" >/dev/null && pwd )\\"
+source $CURRENT_DIR/utils-constants.sh
+
+function main {
+  open https://$PRIMARY_DOMAIN
+}
+
+main
+"
+`;
+
 exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-constants.sh content 1`] = `
 "#!/bin/bash
 
