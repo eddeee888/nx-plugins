@@ -34,10 +34,10 @@
       "type": "string",
       "description": "What do you want to generate output for?",
       "enum": [
+        "typescript-resolver-files",
         "typescript-react-apollo-client",
         "typescript-angular-apollo-client",
         "typescript-vue-apollo-client",
-        "typescript-resolvers",
         "none"
       ]
     },
