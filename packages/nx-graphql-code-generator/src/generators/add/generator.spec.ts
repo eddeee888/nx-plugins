@@ -60,7 +60,7 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: https://localhost:9999/graphql
       generates:
-        libs/test/graphql/generated.ts:
+        libs/test/src/graphql/generated.ts:
       "
     `);
   });
@@ -109,7 +109,7 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: https://localhost:9999/graphql
       generates:
-        apps/node/js/test/graphql/generated.ts:
+        apps/node/js/test/src/graphql/generated.ts:
       "
     `);
   });
@@ -182,7 +182,7 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: **/*.graphqls
       generates:
-        libs/test/graphql/generated.ts:
+        libs/test/src/graphql/generated.ts:
       "
     `);
   });
@@ -198,7 +198,7 @@ describe('nx-graphql-code-generator generator', () => {
       schema: https://localhost:9999/graphql
       documents: **/*.graphqls
       generates:
-        libs/test/graphql/generated.ts:
+        libs/test/src/graphql/generated.ts:
       "
     `);
   });
@@ -213,7 +213,7 @@ describe('nx-graphql-code-generator generator', () => {
       overwrite: true
       schema: https://localhost:9999/graphql
       generates:
-        libs/test/graphql/generated.ts:
+        libs/test/src/graphql/generated.ts:
       "
     `);
   });
@@ -229,7 +229,7 @@ describe('nx-graphql-code-generator generator', () => {
         overwrite: true
         schema: https://localhost:9999/graphql
         generates:
-          libs/test/graphql/generated.ts:
+          libs/test/src/graphql/generated.ts:
             plugins:
               - typescript
               - typescript-operations
@@ -259,7 +259,7 @@ describe('nx-graphql-code-generator generator', () => {
         overwrite: true
         schema: https://localhost:9999/graphql
         generates:
-          libs/test/graphql/generated.ts:
+          libs/test/src/graphql/generated.ts:
             plugins:
               - typescript
               - typescript-operations
@@ -289,7 +289,7 @@ describe('nx-graphql-code-generator generator', () => {
         overwrite: true
         schema: https://localhost:9999/graphql
         generates:
-          libs/test/graphql/generated.ts:
+          libs/test/src/graphql/generated.ts:
             plugins:
               - typescript
               - typescript-vue-apollo-smart-ops
@@ -311,7 +311,7 @@ describe('nx-graphql-code-generator generator', () => {
 
     it('typescript-resolver-files', async () => {
       await libraryGenerator(tree, { name: projectName });
-      await generator(tree, { ...options, pluginPreset: 'typescript-resolver-files', output: 'graphql/schemas' });
+      await generator(tree, { ...options, pluginPreset: 'typescript-resolver-files' });
 
       const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
       expect(codegenConfig).toMatchInlineSnapshot(`
@@ -319,7 +319,7 @@ describe('nx-graphql-code-generator generator', () => {
         overwrite: true
         schema: https://localhost:9999/graphql
         generates:
-          libs/test/graphql/schemas:
+          libs/test/src/graphql/schemas/modules:
             preset: '@eddeee888/gcg-typescript-resolver-files'
             presetConfig:
               resolverTypesPath: '../types.generated.ts'
@@ -355,7 +355,7 @@ describe('nx-graphql-code-generator generator', () => {
         overwrite: true
         schema: https://localhost:9999/graphql
         generates:
-          libs/test/graphql/generated.ts:
+          libs/test/src/graphql/generated.ts:
             plugins:
               - typescript
               - typescript-operations
