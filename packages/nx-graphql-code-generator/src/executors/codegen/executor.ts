@@ -8,6 +8,10 @@ export default async function runExecutor(options: BuildExecutorSchema) {
       process.argv.push('--watch');
     }
 
+    if (options.verbose) {
+      process.argv.push('--verbose');
+    }
+
     await runCli('');
   } catch (e) {
     cliError(e);

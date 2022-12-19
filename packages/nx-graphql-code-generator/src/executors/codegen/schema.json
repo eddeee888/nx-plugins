@@ -14,6 +14,10 @@
     "watch": {
       "type": "boolean",
       "description": "Run in watch mode if true"
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "Run in verbose mode if true"
     }
   },
   "required": ["configFile"]
