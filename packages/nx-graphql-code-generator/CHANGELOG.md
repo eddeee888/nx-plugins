@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.0.17
+
+### Patch Changes
+
+- 2d15aca: Add verbose option
+
 ## 0.0.16
 
 ### Patch Changes
