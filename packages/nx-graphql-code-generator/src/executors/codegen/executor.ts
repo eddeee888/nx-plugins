@@ -12,6 +12,10 @@ export default async function runExecutor(options: BuildExecutorSchema) {
       process.argv.push('--verbose');
     }
 
+    if (options.profile) {
+      process.argv.push('--profile');
+    }
+
     await runCli('');
   } catch (e) {
     cliError(e);
