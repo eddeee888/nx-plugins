@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.1.0
+
+### Minor Changes
+
+- 389bf90: Bump GraphQL Codegen dep, move to peerDeps and add --profile
+
 ## 0.0.17
 
 ### Patch Changes
