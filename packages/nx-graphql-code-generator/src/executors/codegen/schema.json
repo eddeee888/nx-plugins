@@ -18,6 +18,10 @@
     "verbose": {
       "type": "boolean",
       "description": "Run in verbose mode if true"
+    },
+    "profile": {
+      "type": "boolean",
+      "description": "Profile the execution if true"
     }
   },
   "required": ["configFile"]
