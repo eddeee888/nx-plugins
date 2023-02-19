@@ -1,5 +1,5 @@
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { Tree, readProjectConfiguration, readJson, writeJson, readWorkspaceConfiguration } from '@nrwl/devkit';
+import { Tree, readProjectConfiguration, readJson, writeJson, readNxJson } from '@nrwl/devkit';
 import { libraryGenerator } from '@nrwl/workspace/generators';
 import { applicationGenerator } from '@nrwl/node';
 import generator from './generator';
@@ -15,7 +15,7 @@ describe('nx-graphql-code-generator generator', () => {
   };
 
   beforeEach(async () => {
-    tree = createTreeWithEmptyWorkspace();
+    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
   it('generates files to library', async () => {
@@ -28,7 +28,7 @@ describe('nx-graphql-code-generator generator', () => {
     expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^2.6.2');
 
     // workspace config ( nx.json )
-    const workspaceConfig = readWorkspaceConfiguration(tree);
+    const workspaceConfig = readNxJson(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
@@ -77,7 +77,7 @@ describe('nx-graphql-code-generator generator', () => {
     expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^2.6.2');
 
     // workspace config ( nx.json )
-    const workspaceConfig = readWorkspaceConfiguration(tree);
+    const workspaceConfig = readNxJson(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
@@ -118,7 +118,7 @@ describe('nx-graphql-code-generator generator', () => {
     await libraryGenerator(tree, { name: projectName });
     await generator(tree, { ...options, schema: '**/*.graphqls' });
 
-    const workspaceConfig = readWorkspaceConfiguration(tree);
+    const workspaceConfig = readNxJson(tree);
     expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
@@ -237,7 +237,7 @@ describe('nx-graphql-code-generator generator', () => {
               - fragment-matcher"
       `);
 
-      const workspaceConfig = readWorkspaceConfiguration(tree);
+      const workspaceConfig = readNxJson(tree);
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-react-apollo-client'
       );
@@ -267,7 +267,7 @@ describe('nx-graphql-code-generator generator', () => {
               - fragment-matcher"
       `);
 
-      const workspaceConfig = readWorkspaceConfiguration(tree);
+      const workspaceConfig = readNxJson(tree);
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-angular-apollo-client'
       );
@@ -297,7 +297,7 @@ describe('nx-graphql-code-generator generator', () => {
               - fragment-matcher"
       `);
 
-      const workspaceConfig = readWorkspaceConfiguration(tree);
+      const workspaceConfig = readNxJson(tree);
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-vue-apollo-client'
       );
@@ -328,7 +328,7 @@ describe('nx-graphql-code-generator generator', () => {
         "
       `);
 
-      const workspaceConfig = readWorkspaceConfiguration(tree);
+      const workspaceConfig = readNxJson(tree);
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-resolver-files'
       );
@@ -363,7 +363,7 @@ describe('nx-graphql-code-generator generator', () => {
               - fragment-matcher"
       `);
 
-      const workspaceConfig = readWorkspaceConfiguration(tree);
+      const workspaceConfig = readNxJson(tree);
       expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
         'typescript-react-apollo-client'
       );

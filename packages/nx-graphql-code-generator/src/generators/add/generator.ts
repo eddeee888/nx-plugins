@@ -7,8 +7,8 @@ import {
   offsetFromRoot,
   readJson,
   Tree,
-  readWorkspaceConfiguration,
-  updateWorkspaceConfiguration,
+  readNxJson,
+  updateNxJson,
   readProjectConfiguration,
   updateProjectConfiguration,
   ProjectConfiguration,
@@ -142,7 +142,7 @@ function upsertGraphqlCodegenTask(tree: Tree, options: NormalizedSchema) {
 }
 
 function upsertCacheableOperation(tree: Tree) {
-  const workspace = readWorkspaceConfiguration(tree);
+  const workspace = readNxJson(tree);
   if (
     !workspace.tasksRunnerOptions ||
     !workspace.tasksRunnerOptions.default ||
@@ -159,11 +159,11 @@ function upsertCacheableOperation(tree: Tree) {
   if (!workspace.tasksRunnerOptions.default.options.cacheableOperations?.includes('graphql-codegen')) {
     workspace.tasksRunnerOptions.default.options.cacheableOperations.push('graphql-codegen');
   }
-  updateWorkspaceConfiguration(tree, workspace);
+  updateNxJson(tree, workspace);
 }
 
 function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
-  const workspace = readWorkspaceConfiguration(tree);
+  const workspace = readNxJson(tree);
 
   workspace.generators = workspace.generators || {};
   workspace.generators['@eddeee888/nx-graphql-code-generator'] =
@@ -184,7 +184,7 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
     },
   };
 
-  updateWorkspaceConfiguration(tree, workspace);
+  updateNxJson(tree, workspace);
 }
 
 function addFiles(tree: Tree, options: NormalizedSchema) {
