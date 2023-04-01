@@ -1,3 +1,6 @@
 const nxPreset = require('@nrwl/jest/preset').default;
 
-module.exports = { ...nxPreset, testEnvironment: 'node' };
+module.exports = {
+  ...nxPreset,
+  testEnvironment: 'node',
+};
