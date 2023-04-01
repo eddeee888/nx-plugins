@@ -9,8 +9,7 @@
     "url": "git+https://github.com/eddeee888/nx-plugins.git",
     "directory": "packages/nx-dev-tools"
   },
-  "main": "src/index.js",
-  "executors": "executors.json",
+  "executors": "./executors.json",
   "generators": "./generators.json",
   "publishConfig": {
     "directory": "../../dist/packages/nx-dev-tools"
