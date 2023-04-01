@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "cli": "nx",
+  "title": "DockerCompose executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "subCommand": {
+      "type": "string",
+      "description": "Sub command to run"
+    }
+  },
+  "required": ["subCommand"]
+}
