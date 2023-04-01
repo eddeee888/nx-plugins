@@ -234,7 +234,8 @@ describe('nx-graphql-code-generator generator', () => {
               - typescript
               - typescript-operations
               - typescript-react-apollo
-              - fragment-matcher"
+              - fragment-matcher
+        "
       `);
 
       const workspaceConfig = readNxJson(tree);
@@ -264,7 +265,8 @@ describe('nx-graphql-code-generator generator', () => {
               - typescript
               - typescript-operations
               - typescript-apollo-angular
-              - fragment-matcher"
+              - fragment-matcher
+        "
       `);
 
       const workspaceConfig = readNxJson(tree);
@@ -294,7 +296,8 @@ describe('nx-graphql-code-generator generator', () => {
               - typescript
               - typescript-vue-apollo-smart-ops
               - typescript-vue-apollo
-              - fragment-matcher"
+              - fragment-matcher
+        "
       `);
 
       const workspaceConfig = readNxJson(tree);
@@ -360,7 +363,8 @@ describe('nx-graphql-code-generator generator', () => {
               - typescript
               - typescript-operations
               - typescript-react-apollo
-              - fragment-matcher"
+              - fragment-matcher
+        "
       `);
 
       const workspaceConfig = readNxJson(tree);
