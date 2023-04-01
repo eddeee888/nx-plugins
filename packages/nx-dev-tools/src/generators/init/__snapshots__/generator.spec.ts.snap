@@ -45,25 +45,25 @@ exports[`nx-dev-tools generator Files generation dev-tools/bin/core.sh content 1
 
 set -e
 
-CORE_CMD_NAME=\\"bb\\"
+CORE_CMD_NAME="bb"
 
 function display_help {
   echo
-  echo \\"Usage: $CORE_CMD_NAME [option...]\\" >&2
+  echo "Usage: $CORE_CMD_NAME [option...]" >&2
   echo
-  echo \\"vm-up                 Set up minimum networking requirements\\"
-  echo \\"vm-down               Turn off all services and stop all containers\\"
-  echo \\"up [service?]         Start one or all services in detached mode\\"
-  echo \\"down                  Stop the project, remove all containers\\"
-  echo \\"build [service?]      Rebuild a service or all services\\"
-  echo \\"start [service?]      Start a service or all services\\"
-  echo \\"stop [service?]       Stop a service or all services\\"
-  echo \\"exec [service?]       Execute a command inside a service\\"
-  echo \\"run [service?]        Run a service\\"
-  echo \\"shell [service?]      Shell into a service\\"
-  echo \\"logs [service?]       Look at the log of a particular service or all services\\"
-  echo \\"rebuild [service?]    Rebuild image of a service with no cache\\"
-  echo \\"recreate [service?]   Recreate a service container\\"
+  echo "vm-up                 Set up minimum networking requirements"
+  echo "vm-down               Turn off all services and stop all containers"
+  echo "up [service?]         Start one or all services in detached mode"
+  echo "down                  Stop the project, remove all containers"
+  echo "build [service?]      Rebuild a service or all services"
+  echo "start [service?]      Start a service or all services"
+  echo "stop [service?]       Stop a service or all services"
+  echo "exec [service?]       Execute a command inside a service"
+  echo "run [service?]        Run a service"
+  echo "shell [service?]      Shell into a service"
+  echo "logs [service?]       Look at the log of a particular service or all services"
+  echo "rebuild [service?]    Rebuild image of a service with no cache"
+  echo "recreate [service?]   Recreate a service container"
   echo
   exit 1
 }
@@ -93,7 +93,7 @@ function run {
   elif [[ -f $BIN_DIR/ws-$script_name.sh ]]; then
     $BIN_DIR/ws-$script_name.sh $@
   else
-    echo \\"$script_name command not found\\"
+    echo "$script_name command not found"
     exit 1
   fi
 }
@@ -121,7 +121,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc build $@\\"
+  local cmd="dc build $@"
   eval $cmd
 }
 
@@ -143,8 +143,8 @@ function clean_images {
 function build_dev_images {
   image=$1
 
-  docker-compose \\\\
-    --file dev-tools/docker-images/build-dev-images.yml \\\\
+  docker-compose \\
+    --file dev-tools/docker-images/build-dev-images.yml \\
     build --no-cache $image
 }
 
@@ -165,7 +165,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc down\\"
+  local cmd="dc down"
   eval $cmd
 }
 
@@ -181,7 +181,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc exec $@\\"
+  local cmd="dc exec $@"
   eval $cmd
 }
 
@@ -197,7 +197,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc logs $@\\"
+  local cmd="dc logs $@"
   eval $cmd
 }
 
@@ -213,7 +213,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc rm -f -s $@ && dc build --no-cache $@\\"
+  local cmd="dc rm -f -s $@ && dc build --no-cache $@"
   eval $cmd
 }
 
@@ -229,7 +229,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc rm -f -s $@ && dc up -d $@\\"
+  local cmd="dc rm -f -s $@ && dc up -d $@"
   eval $cmd
 }
 
@@ -245,7 +245,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc run $@\\"
+  local cmd="dc run $@"
   eval $cmd
 }
 
@@ -261,7 +261,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc exec $1 /bin/bash\\"
+  local cmd="dc exec $1 /bin/bash"
   eval $cmd
 }
 
@@ -277,7 +277,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc start $@\\"
+  local cmd="dc start $@"
   eval $cmd
 }
 
@@ -293,7 +293,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc stop --timeout=1 $@\\"
+  local cmd="dc stop --timeout=1 $@"
   eval $cmd
 }
 
@@ -309,7 +309,7 @@ set -e
 source $UTILS_DC
 
 function main {
-  local cmd=\\"dc up -d $@\\"
+  local cmd="dc up -d $@"
   eval $cmd
 }
 
@@ -322,39 +322,39 @@ exports[`nx-dev-tools generator Files generation dev-tools/bin/init.sh content 1
 
 set -e
 
-CURRENT_DIR=\\"$( cd \\"$( dirname \\"\${BASH_SOURCE[0]}\\" )\\" >/dev/null && pwd )\\"
-REVERSE_PROXY_CERTIFICATE_DIR=\\"\${CURRENT_DIR}/../reverse-proxy/certificates\\"
+CURRENT_DIR="$( cd "$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+REVERSE_PROXY_CERTIFICATE_DIR="\${CURRENT_DIR}/../reverse-proxy/certificates"
 source $CURRENT_DIR/utils-constants.sh
 
 function update_file_permissions {
-  echo \\"=> Updating script permissions...\\"
+  echo "=> Updating script permissions..."
   chmod +x $CURRENT_DIR/*.sh
-  echo -e \\"=> Successfully updated script permissions!\\\\n\\"
+  echo -e "=> Successfully updated script permissions!\\n"
 }
 
 function remove_old_symlink {
   if [ -f $USR_BIN/$CORE_CMD_NAME ]; then
-    echo \\"=> Removing old command...\\"
+    echo "=> Removing old command..."
     sudo rm $USR_BIN/$CORE_CMD_NAME
-    echo -e \\"=> Successfully removed old command!\\\\n\\"
+    echo -e "=> Successfully removed old command!\\n"
   fi
 }
 
 function setup_symlink_permission {
-  echo \\"=> Setting up permissions for core command...\\"
+  echo "=> Setting up permissions for core command..."
   sudo chmod a+rx $CURRENT_DIR/core.sh
-  echo -e \\"=> Successfully set up core command permissions!\\\\n\\"
+  echo -e "=> Successfully set up core command permissions!\\n"
 }
 
 function symlink {
-  echo \\"=> Symlinking core command...\\"
+  echo "=> Symlinking core command..."
   sudo ln -s $CURRENT_DIR/core.sh $USR_BIN/$CORE_CMD_NAME
-  echo -e \\"=> Successfully symlinked core command!\\\\n\\"
+  echo -e "=> Successfully symlinked core command!\\n"
 }
 
 function main {
-  echo -e \\"Welcome to \\\\\\"$CORE_CMD_NAME\\\\\\" setup!\\"
-  echo -e \\"======== **** ========\\\\n\\"
+  echo -e "Welcome to \\"$CORE_CMD_NAME\\" setup!"
+  echo -e "======== **** ========\\n"
 
   update_file_permissions
   remove_old_symlink
@@ -363,9 +363,9 @@ function main {
   $CORE_CMD_NAME init-cert $PRIMARY_DOMAIN $REVERSE_PROXY_CERTIFICATE_DIR/primary
   yarn install
 
-  echo -e \\"\\\\n=> Successfully set up \\\\\\"$CORE_CMD_NAME\\\\\\"!\\\\n\\"
-  echo -e \\"Run the following command to initialize the project:\\\\n\\"
-  echo -e \\"$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-images && $CORE_CMD_NAME up && $CORE_CMD_NAME nx init-database main-prisma\\\\n\\"
+  echo -e "\\n=> Successfully set up \\"$CORE_CMD_NAME\\"!\\n"
+  echo -e "Run the following command to initialize the project:\\n"
+  echo -e "$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-images && $CORE_CMD_NAME up && $CORE_CMD_NAME nx init-database main-prisma\\n"
 }
 
 main
@@ -378,25 +378,25 @@ exports[`nx-dev-tools generator Files generation dev-tools/bin/init-cert.sh cont
 set -e
 
 function create_root_cert_and_key {
-  echo \\"=> Creating Root CA...\\"
+  echo "=> Creating Root CA..."
 
-  SUBJECT=\\"/C=AU/ST=None/L=None/O=None/CN=root.com\\"
+  SUBJECT="/C=AU/ST=None/L=None/O=None/CN=root.com"
   
   openssl genrsa -out $1/rootCA.key 2048
-  openssl req -x509 -new -nodes -key $1/rootCA.key -subj \\"$SUBJECT\\" -sha256 -days 1024 -out $1/rootCA.pem
+  openssl req -x509 -new -nodes -key $1/rootCA.key -subj "$SUBJECT" -sha256 -days 1024 -out $1/rootCA.pem
 
-  echo -e \\"=> Successfully created Root CA!\\\\n\\"
+  echo -e "=> Successfully created Root CA!\\n"
 }
 
 function create_certificate {
-  echo \\"=> Creating certificate for \\\\\\"$1\\\\\\"...\\"
+  echo "=> Creating certificate for \\"$1\\"..."
 
   COMMON_NAME=$1
-  SUBJECT=\\"/C=AU/ST=Victoria/L=Melbourne/O=None/CN=$COMMON_NAME\\"
+  SUBJECT="/C=AU/ST=Victoria/L=Melbourne/O=None/CN=$COMMON_NAME"
   NUM_OF_DAYS=365
   
-  openssl req -new -newkey rsa:2048 -sha256 -nodes -keyout $2/device.key -subj \\"$SUBJECT\\" -out $2/device.csr
-  echo \\"
+  openssl req -new -newkey rsa:2048 -sha256 -nodes -keyout $2/device.key -subj "$SUBJECT" -out $2/device.csr
+  echo "
       authorityKeyIdentifier=keyid,issuer
       basicConstraints=CA:FALSE
       keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
@@ -404,42 +404,42 @@ function create_certificate {
 
       [alt_names]
       DNS.1 = \${COMMON_NAME}
-  \\" > /tmp/__v3.ext
+  " > /tmp/__v3.ext
   
-  openssl x509 \\\\
-    -req -in $2/device.csr \\\\
-    -CA $2/rootCA.pem \\\\
-    -CAkey $2/rootCA.key \\\\
-    -CAserial $2/.srl \\\\
-    -CAcreateserial \\\\
-    -out $2/device.crt \\\\
-    -days $NUM_OF_DAYS \\\\
-    -sha256 \\\\
+  openssl x509 \\
+    -req -in $2/device.csr \\
+    -CA $2/rootCA.pem \\
+    -CAkey $2/rootCA.key \\
+    -CAserial $2/.srl \\
+    -CAcreateserial \\
+    -out $2/device.crt \\
+    -days $NUM_OF_DAYS \\
+    -sha256 \\
     -extfile /tmp/__v3.ext
 
-  echo -e \\"=> Successfully created certificate for \\\\\\"$1\\\\\\"!\\\\n\\"
+  echo -e "=> Successfully created certificate for \\"$1\\"!\\n"
 }
 
 function trust_root_ca {
-  echo \\"=> Trusting Root CA...\\"
+  echo "=> Trusting Root CA..."
   sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain $1/rootCA.pem
-  echo -e \\"=> Successfully trusted Root CA!\\\\n\\"
+  echo -e "=> Successfully trusted Root CA!\\n"
 }
 
 function main {
-  echo \\"=> Setting up TLS...\\"
+  echo "=> Setting up TLS..."
 
   if [ ! -f $1/fullchain.pem ]; then
-    echo \\"=> No cert detected... Creating new certs...\\"
+    echo "=> No cert detected... Creating new certs..."
     mkdir -p $2
     create_root_cert_and_key $2
     create_certificate $1 $2
     trust_root_ca $2
   else
-    echo \\"=> Existing cert detected... Skipping cert creation.\\"
+    echo "=> Existing cert detected... Skipping cert creation."
   fi
 
-  echo -e \\"=> Successfully set up certs!\\\\n\\"
+  echo -e "=> Successfully set up certs!\\n"
 }
 
 main $@
@@ -451,7 +451,7 @@ exports[`nx-dev-tools generator Files generation dev-tools/bin/open.sh content 1
 
 set -e
 
-CURRENT_DIR=\\"$( cd \\"$( dirname \\"\${BASH_SOURCE[0]}\\" )\\" >/dev/null && pwd )\\"
+CURRENT_DIR="$( cd "$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 source $CURRENT_DIR/utils-constants.sh
 
 function main {
@@ -465,15 +465,15 @@ main
 exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-constants.sh content 1`] = `
 "#!/bin/bash
 
-CORE_CMD_NAME=\\"bb\\"
-PROJECT_NAME=\\"bam\\"
-USR_BIN=\\"/usr/local/bin\\"
-TOP_LEVEL_DOMAIN=\\"fakecom\\"
-PRIMARY_DOMAIN=\\"\${PROJECT_NAME}.\${TOP_LEVEL_DOMAIN}\\"
-DOCKER_PROJECT_NAME=\\"\${PROJECT_NAME}_\${TOP_LEVEL_DOMAIN}\\"
+CORE_CMD_NAME="bb"
+PROJECT_NAME="bam"
+USR_BIN="/usr/local/bin"
+TOP_LEVEL_DOMAIN="fakecom"
+PRIMARY_DOMAIN="\${PROJECT_NAME}.\${TOP_LEVEL_DOMAIN}"
+DOCKER_PROJECT_NAME="\${PROJECT_NAME}_\${TOP_LEVEL_DOMAIN}"
 DNS_PORT=53535
-RESOLVER_DIR=\\"/etc/resolver\\"
-RESOLVER_FILE=\\"$RESOLVER_DIR/$PRIMARY_DOMAIN\\"
+RESOLVER_DIR="/etc/resolver"
+RESOLVER_FILE="$RESOLVER_DIR/$PRIMARY_DOMAIN"
 "
 `;
 
@@ -485,18 +485,18 @@ set -e
 source $UTILS_CONST
 
 function dc {
-  local networking_compose_files=(\\"dev-tools/dnsmasq/docker-compose.yml\\" \\"dev-tools/reverse-proxy/docker-compose.yml\\")
-  local app_compose_files=(\\"apps/bam/docker-compose.yml\\")
+  local networking_compose_files=("dev-tools/dnsmasq/docker-compose.yml" "dev-tools/reverse-proxy/docker-compose.yml")
+  local app_compose_files=("apps/bam/docker-compose.yml")
 
-  local all_compose_files=(\\"\${networking_compose_files[@]}\\" \\"\${app_compose_files[@]}\\")
-  local files=\\"\\"
-  for file in \\"\${all_compose_files[@]}\\"
+  local all_compose_files=("\${networking_compose_files[@]}" "\${app_compose_files[@]}")
+  local files=""
+  for file in "\${all_compose_files[@]}"
   do
-	  files=\\"$files --file $file\\"
+	  files="$files --file $file"
   done
 
-  local cmd=\\"docker-compose $files --project-directory . --env-file=dev-tools/.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@\\"
-  echo \\"=> \${CORE_CMD_NAME}.compose: \\"$cmd
+  local cmd="docker-compose $files --project-directory . --env-file=dev-tools/.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@"
+  echo "=> \${CORE_CMD_NAME}.compose: "$cmd
   eval $cmd
 }
 "
@@ -511,9 +511,9 @@ source $UTILS_CONST
 
 function remove_resolver_file {
   if [ -e $RESOLVER_FILE ]; then 
-    echo \\"=> Removing old resolver file $RESOLVER_FILE ...\\"
+    echo "=> Removing old resolver file $RESOLVER_FILE ..."
     sudo rm $RESOLVER_FILE
-    echo \\"=> Successfully removed $RESOLVER_FILE\\"
+    echo "=> Successfully removed $RESOLVER_FILE"
   fi
 }
 
@@ -534,24 +534,24 @@ set -e
 source $UTILS_DC
 
 function main {
-  echo -e \\"=> Checking resolver file...\\\\n\\"
+  echo -e "=> Checking resolver file...\\n"
 
   # Make the directory
   if [ ! -e $RESOLVER_DIR ]; then 
     sudo mkdir -p $RESOLVER_DIR
-    echo -e \\"Created new directory: $RESOLVER_DIR\\\\n\\"
+    echo -e "Created new directory: $RESOLVER_DIR\\n"
   fi
 
   if [ -e $RESOLVER_FILE ]; then 
-    echo \\"=> Removing old resolver file $RESOLVER_FILE ...\\"
+    echo "=> Removing old resolver file $RESOLVER_FILE ..."
     sudo rm $RESOLVER_FILE
-    echo -e \\"=> Successfully removed $RESOLVER_FILE\\\\n\\"
+    echo -e "=> Successfully removed $RESOLVER_FILE\\n"
   fi
   
 
-  echo \\"=> Creating new resolver file $RESOLVER_FILE ...\\"
-  sudo sh -c \\"echo '# This is auto-generated. Do NOT edit this file\\\\nnameserver 127.0.0.1 \\\\nport $DNS_PORT' >> $RESOLVER_FILE\\"
-  echo -e \\"=> Successfully created resolver file: $RESOLVER_FILE\\\\n\\"
+  echo "=> Creating new resolver file $RESOLVER_FILE ..."
+  sudo sh -c "echo '# This is auto-generated. Do NOT edit this file\\nnameserver 127.0.0.1 \\nport $DNS_PORT' >> $RESOLVER_FILE"
+  echo -e "=> Successfully created resolver file: $RESOLVER_FILE\\n"
 }
 
 main
@@ -592,14 +592,14 @@ exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerf
 
 WORKDIR /usr/src/app
 
-RUN apk update \\\\
-  && apk add bash git curl \\\\
+RUN apk update \\
+  && apk add bash git curl \\
   && rm -rf /var/cache/apk/*
 
 COPY . .
 
-RUN yarn global add nx \\\\
-  && yarn install \\\\
+RUN yarn global add nx \\
+  && yarn install \\
   && rm -rf $(yarn cache dir)
 "
 `;
@@ -667,9 +667,9 @@ exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/.gitign
 exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/Dockerfile content 1`] = `
 "FROM nginx:1.22.0-alpine
 
-RUN apk update \\\\ 
-  && apk add bash \\\\
-  && apk add openssl \\\\
+RUN apk update \\ 
+  && apk add bash \\
+  && apk add openssl \\
   && rm -rf /var/cache/apk/*
 
 WORKDIR /opt
@@ -746,7 +746,7 @@ server {
 exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/ws.conf content 1`] = `
 "proxy_http_version 1.1;
 proxy_set_header Upgrade $http_upgrade;
-proxy_set_header Connection \\"Upgrade\\";
+proxy_set_header Connection "Upgrade";
 proxy_set_header Sec-WebSocket-Protocol $http_sec_websocket_protocol;
 "
 `;
