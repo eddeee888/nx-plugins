@@ -1,9 +1,9 @@
 {
   "executors": {
-    "docker-compose": {
-      "implementation": "./src/executors/docker-compose/executor",
-      "schema": "./src/executors/docker-compose/schema.json",
-      "description": "docker-compose executor"
+    "infra": {
+      "implementation": "./src/executors/infra/executor",
+      "schema": "./src/executors/infra/schema.json",
+      "description": "infra executor"
     }
   }
 }
