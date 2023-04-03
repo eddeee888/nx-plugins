@@ -3,8 +3,17 @@ import { execSync } from 'child_process';
 import { type ExecutorContext, readJsonFile } from '@nrwl/devkit';
 import type { InfraExecutorSchema } from './schema';
 
+interface DevToolsJson {
+  projectName: string;
+  baseHref: string;
+  dockerCompose: {
+    files: string[];
+    envFile: string;
+  };
+}
+
 export default async function runExecutor(
-  { subCommand, args }: InfraExecutorSchema,
+  { subCommand, args = '' }: InfraExecutorSchema,
   { projectName = '', projectsConfigurations }: ExecutorContext
 ) {
   const projectConfig = projectsConfigurations.projects[projectName];
@@ -14,25 +23,36 @@ export default async function runExecutor(
 
   const {
     projectName: stackName,
+    baseHref,
     dockerCompose: { files, envFile },
-  } = readJsonFile<{ projectName: string; dockerCompose: { files: string[]; envFile: string } }>(
-    path.join(projectConfig.root, 'dev-tools.json')
+  } = readJsonFile<DevToolsJson>(path.join(projectConfig.root, 'dev-tools.json'));
+
+  if (subCommand === 'open') {
+    execSync(`open ${baseHref}`, { stdio: 'inherit' });
+    return { success: true };
+  }
+
+  const filesString = files.reduce((res, file) => {
+    res.push('--file');
+    res.push(file);
+    return res;
+  }, []);
+
+  execSync(
+    [
+      'docker-compose',
+      ...filesString,
+      '--project-directory',
+      '.',
+      '--env-file',
+      envFile,
+      '-p',
+      stackName,
+      subCommand,
+      args,
+    ].join(' '),
+    { stdio: 'inherit' }
   );
-
-  const filesString = files.map((file) => `--file ${file}`).join(' ');
-
-  const command =
-    'docker-compose' +
-    ` ${filesString}` +
-    ` --project-directory .` +
-    ` --env-file=${envFile}` +
-    ` -p ${stackName}` +
-    ` ${subCommand}` +
-    args
-      ? ` ${args}`
-      : '';
-
-  execSync(command, { stdio: 'inherit' });
 
   return { success: true };
 }

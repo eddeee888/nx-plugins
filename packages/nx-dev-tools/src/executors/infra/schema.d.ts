@@ -1,4 +1,4 @@
 export interface InfraExecutorSchema {
-  subCommand: string;
+  subCommand: 'up' | 'down' | 'logs' | 'start' | 'stop' | 'open';
   args?: string;
 }

@@ -8,6 +8,7 @@
   "properties": {
     "subCommand": {
       "type": "string",
+      "enum": ["up", "down", "logs", "start", "stop", "open"],
       "description": "Sub command to run"
     },
     "args": {
