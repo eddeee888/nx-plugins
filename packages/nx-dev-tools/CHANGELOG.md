@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 0.0.9
+
+### Patch Changes
+
+- b934acb: Add infra executor
+
 ## 0.0.8
 
 ### Patch Changes
