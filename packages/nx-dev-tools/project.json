@@ -25,6 +25,11 @@
           },
           {
             "input": "./packages/nx-dev-tools",
+            "glob": "executors.json",
+            "output": "."
+          },
+          {
+            "input": "./packages/nx-dev-tools",
             "glob": "generators.json",
             "output": "."
           }
@@ -37,6 +42,7 @@
       "options": {
         "lintFilePatterns": [
           "packages/nx-dev-tools/**/*.ts",
+          "packages/nx-dev-tools/executors.json",
           "packages/nx-dev-tools/generators.json",
           "packages/nx-dev-tools/package.json"
         ]

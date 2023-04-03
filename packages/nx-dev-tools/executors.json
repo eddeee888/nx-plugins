@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "infra": {
+      "implementation": "./src/executors/infra/executor",
+      "schema": "./src/executors/infra/schema.json",
+      "description": "infra executor"
+    }
+  }
+}

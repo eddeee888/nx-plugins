@@ -6,9 +6,10 @@
   "description": "The Nx Plugin to add essential Docker and networking config to an Nx workspace",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eddeee888/nx-plugins.git"
+    "url": "git+https://github.com/eddeee888/nx-plugins.git",
+    "directory": "packages/nx-dev-tools"
   },
-  "main": "src/index.js",
+  "executors": "./executors.json",
   "generators": "./generators.json",
   "publishConfig": {
     "directory": "../../dist/packages/nx-dev-tools"
