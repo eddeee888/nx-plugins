@@ -1,31 +1,21 @@
-import * as path from 'path';
 import { execSync } from 'child_process';
-import { type ExecutorContext, readJsonFile } from '@nrwl/devkit';
+import { type ExecutorContext } from '@nrwl/devkit';
 import type { InfraExecutorSchema } from './schema';
+import { readDevToolsConfig, getProjectConfig } from '../utils';
 
-interface DevToolsJson {
-  projectName: string;
-  baseHref: string;
-  dockerCompose: {
-    files: string[];
-    envFile: string;
-  };
-}
-
-export default async function runExecutor(
-  { subCommand, args = '' }: InfraExecutorSchema,
-  { projectName = '', projectsConfigurations }: ExecutorContext
-) {
-  const projectConfig = projectsConfigurations.projects[projectName];
-  if (!projectsConfigurations.projects[projectName]) {
+export default async function runExecutor({ subCommand, args = '' }: InfraExecutorSchema, context: ExecutorContext) {
+  const projectConfig = getProjectConfig(context);
+  if (!projectConfig) {
     return { success: false };
   }
 
   const {
-    projectName: stackName,
-    baseHref,
+    primaryDomain,
     dockerCompose: { files, envFile },
-  } = readJsonFile<DevToolsJson>(path.join(projectConfig.root, 'dev-tools.json'));
+  } = readDevToolsConfig(projectConfig.root);
+
+  const stackName = primaryDomain.split('.').join('_');
+  const baseHref = `https://${primaryDomain}`;
 
   if (subCommand === 'open') {
     execSync(`open ${baseHref}`, { stdio: 'inherit' });
