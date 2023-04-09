@@ -14,8 +14,8 @@ services:
       MAIN_SERVICE_NAME: ${MAIN_SERVICE_NAME}
       MAIN_SERVICE_HOST: ${MAIN_SERVICE_HOST}
     volumes:
-      - <%= projectRoot -%>/reverse-proxy/templates:/etc/nginx/templates
-      - <%= projectRoot -%>/reverse-proxy/certificates/primary/device.crt:/usr/share/nginx/certificates/primary/device.crt
-      - <%= projectRoot -%>/reverse-proxy/certificates/primary/device.key:/usr/share/nginx/certificates/primary/device.key
-      - <%= projectRoot -%>/reverse-proxy/proxy.conf:/etc/nginx/proxy.conf
-      - <%= projectRoot -%>/reverse-proxy/ws.conf:/etc/nginx/ws.conf
+      - ./<%= projectRoot -%>/reverse-proxy/templates:/etc/nginx/templates
+      - ./<%= projectRoot -%>/reverse-proxy/certificates/primary/device.crt:/usr/share/nginx/certificates/primary/device.crt
+      - ./<%= projectRoot -%>/reverse-proxy/certificates/primary/device.key:/usr/share/nginx/certificates/primary/device.key
+      - ./<%= projectRoot -%>/reverse-proxy/proxy.conf:/etc/nginx/proxy.conf
+      - ./<%= projectRoot -%>/reverse-proxy/ws.conf:/etc/nginx/ws.conf

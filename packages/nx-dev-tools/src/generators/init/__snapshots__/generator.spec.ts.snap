@@ -34,13 +34,13 @@ services:
       - 53535:53/udp
     cap_add: ['NET_ADMIN']
     volumes:
-      - libs/dev/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+      - ./libs/dev/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
 "
 `;
 
 exports[`nx-dev-tools generator Files generation libs/dev/project.json content 1`] = `
 "{
-  "name": "libs/dev",
+  "name": "dev",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/dev",
   "projectType": "library",
@@ -128,11 +128,11 @@ services:
       MAIN_SERVICE_NAME: \${MAIN_SERVICE_NAME}
       MAIN_SERVICE_HOST: \${MAIN_SERVICE_HOST}
     volumes:
-      - libs/dev/reverse-proxy/templates:/etc/nginx/templates
-      - libs/dev/reverse-proxy/certificates/primary/device.crt:/usr/share/nginx/certificates/primary/device.crt
-      - libs/dev/reverse-proxy/certificates/primary/device.key:/usr/share/nginx/certificates/primary/device.key
-      - libs/dev/reverse-proxy/proxy.conf:/etc/nginx/proxy.conf
-      - libs/dev/reverse-proxy/ws.conf:/etc/nginx/ws.conf
+      - ./libs/dev/reverse-proxy/templates:/etc/nginx/templates
+      - ./libs/dev/reverse-proxy/certificates/primary/device.crt:/usr/share/nginx/certificates/primary/device.crt
+      - ./libs/dev/reverse-proxy/certificates/primary/device.key:/usr/share/nginx/certificates/primary/device.key
+      - ./libs/dev/reverse-proxy/proxy.conf:/etc/nginx/proxy.conf
+      - ./libs/dev/reverse-proxy/ws.conf:/etc/nginx/ws.conf
 "
 `;
 

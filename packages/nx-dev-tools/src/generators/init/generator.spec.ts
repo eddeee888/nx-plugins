@@ -9,6 +9,7 @@ describe('nx-dev-tools generator', () => {
   const options: NxDevToolsGeneratorSchema = {
     projectRoot: 'libs/dev',
     primaryDomain: 'bam.fakecom',
+    libraryName: 'dev',
   };
 
   beforeEach(async () => {

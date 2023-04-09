@@ -19,7 +19,7 @@ describe('nx-dev-tools e2e', () => {
 
   it('should create dev-tools folder and related files ', async () => {
     await runNxCommandAsync(
-      `generate @eddeee888/nx-dev-tools:init --projectRoot libs/dev-infra --projectName bam --devDomain vm`
+      `generate @eddeee888/nx-dev-tools:init --projectRoot libs/dev-infra --primaryDomain bam.vm --libraryName=dev-infra`
     );
 
     checkFilesExist(

@@ -14,6 +14,11 @@
       "type": "string",
       "description": "Primary domain",
       "x-prompt": "What is your project's primary domain? (e.g. \"your-project.dev\")"
+    },
+    "libraryName": {
+      "type": "string",
+      "description": "Library name",
+      "x-prompt": "What is your library's name?"
     }
   }
 }

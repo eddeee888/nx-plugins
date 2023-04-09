@@ -12,10 +12,11 @@ interface NormalizedSchema {
   projectRoot: NxDevToolsGeneratorSchema['projectRoot'];
   projectName: string;
   domain: string;
+  libraryName: string;
 }
 
 function normalizeOptions(_tree: Tree, options: NxDevToolsGeneratorSchema): NormalizedSchema {
-  const { primaryDomain, projectRoot } = options;
+  const { primaryDomain, projectRoot, libraryName } = options;
 
   const [projectName, domain] = primaryDomain.split('.');
 
@@ -23,6 +24,7 @@ function normalizeOptions(_tree: Tree, options: NxDevToolsGeneratorSchema): Norm
     projectRoot,
     projectName,
     domain,
+    libraryName,
   };
 }
 
@@ -72,7 +74,7 @@ function addProject(tree: Tree, options: NormalizedSchema) {
     tags: [],
   };
 
-  addProjectConfiguration(tree, options.projectRoot, projectConfiguration);
+  addProjectConfiguration(tree, options.libraryName, projectConfiguration);
 }
 
 function addFiles(tree: Tree, options: NormalizedSchema) {
