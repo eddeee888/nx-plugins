@@ -1,5 +1,15 @@
 # @eddeee888/nx-dev-tools
 
+## 1.0.0
+
+### Major Changes
+
+- aee23cd: nx-dev-tools v1
+
+### Patch Changes
+
+- 74bb03b: Add setup executor for nx-dev-tools
+
 ## 0.0.9
 
 ### Patch Changes
