@@ -8,11 +8,21 @@ import {
 import * as path from 'path';
 import type { NxDevToolsGeneratorSchema } from './schema';
 
-type NormalizedSchema = NxDevToolsGeneratorSchema;
+interface NormalizedSchema {
+  projectRoot: NxDevToolsGeneratorSchema['projectRoot'];
+  projectName: string;
+  domain: string;
+}
 
 function normalizeOptions(_tree: Tree, options: NxDevToolsGeneratorSchema): NormalizedSchema {
+  const { primaryDomain, projectRoot } = options;
+
+  const [projectName, domain] = primaryDomain.split('.');
+
   return {
-    ...options,
+    projectRoot,
+    projectName,
+    domain,
   };
 }
 

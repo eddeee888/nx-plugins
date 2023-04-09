@@ -30,7 +30,6 @@ describe('nx-dev-tools e2e', () => {
       'libs/dev-infra/reverse-proxy/docker-compose.yml',
       'libs/dev-infra/reverse-proxy/proxy.conf',
       'libs/dev-infra/reverse-proxy/ws.conf',
-      'libs/dev-infra/.env.docker-compose',
       'libs/dev-infra/dev-tools.json'
     );
   }, 120000);

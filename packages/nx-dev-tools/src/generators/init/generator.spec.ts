@@ -8,8 +8,7 @@ describe('nx-dev-tools generator', () => {
   let tree: Tree;
   const options: NxDevToolsGeneratorSchema = {
     projectRoot: 'libs/dev',
-    stackName: 'bam',
-    domain: 'fakecom',
+    primaryDomain: 'bam.fakecom',
   };
 
   beforeEach(async () => {
