@@ -11,7 +11,7 @@ export default async function runExecutor({ subCommand, args = '' }: InfraExecut
 
   const {
     primaryDomain,
-    dockerCompose: { files, envFile },
+    infra: { files, envFile },
   } = readDevToolsConfig(projectConfig.root);
 
   const stackName = primaryDomain.split('.').join('_');

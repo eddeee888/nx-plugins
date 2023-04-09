@@ -3,8 +3,7 @@ import { readJsonFile } from '@nrwl/devkit';
 
 interface DevToolsJson {
   primaryDomain: string;
-  hostResolverFile: string;
-  dockerCompose: {
+  infra: {
     files: string[];
     envFile: string;
   };
