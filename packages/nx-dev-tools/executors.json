@@ -3,7 +3,12 @@
     "infra": {
       "implementation": "./src/executors/infra/executor",
       "schema": "./src/executors/infra/schema.json",
-      "description": "infra executor"
+      "description": "Interact with dev infra"
+    },
+    "setup": {
+      "implementation": "./src/executors/setup/executor",
+      "schema": "./src/executors/setup/schema.json",
+      "description": "Set up infra"
     }
   }
 }

@@ -1,12 +1,19 @@
-import * as devKit from '@nrwl/devkit';
 import * as childProcess from 'child_process';
+import { readDevToolsConfig } from '../utils';
 import executor from './executor';
 import { InfraExecutorSchema } from './schema';
 
 jest.mock('@nrwl/devkit', () => ({ readJsonFile: jest.fn() }));
 jest.mock('child_process', () => ({ execSync: jest.fn() }));
+jest.mock('../utils', () => {
+  const utilsActual = jest.requireActual('../utils');
+  return {
+    ...utilsActual,
+    readDevToolsConfig: jest.fn(),
+  };
+});
 
-const readJsonFileMock = jest.mocked(devKit.readJsonFile);
+const readDevToolsConfigMock = jest.mocked(readDevToolsConfig);
 
 describe('Infra Executor', () => {
   it.each<{ params: InfraExecutorSchema; expected: { command: string; success: boolean } }>([
@@ -14,7 +21,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'up' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project up ',
+          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev up ',
         success: true,
       },
     },
@@ -22,7 +29,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'down' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project down ',
+          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev down ',
         success: true,
       },
     },
@@ -30,7 +37,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'logs' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project logs ',
+          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev logs ',
         success: true,
       },
     },
@@ -38,7 +45,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'start' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project start ',
+          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev start ',
         success: true,
       },
     },
@@ -46,7 +53,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'stop' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project stop ',
+          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev stop ',
         success: true,
       },
     },
@@ -61,15 +68,14 @@ describe('Infra Executor', () => {
       params: { subCommand: 'logs', args: '-f project-a' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project logs -f project-a',
+          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev logs -f project-a',
         success: true,
       },
     },
   ])('params: $params', async ({ params, expected }) => {
-    readJsonFileMock.mockReturnValueOnce({
-      projectName: 'infra-project',
-      baseHref: 'https://infra-project.dev',
-      dockerCompose: {
+    readDevToolsConfigMock.mockReturnValueOnce({
+      primaryDomain: 'infra-project.dev',
+      infra: {
         files: ['libs/project-a/config.yml', 'libs/project-b/config.yml'],
         envFile: 'libs/env.yml',
       },
