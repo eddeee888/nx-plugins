@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.25.2",
-    "@graphql-codegen/cli": "3.0.0",
+    "@graphql-codegen/cli": "3.3.0",
     "@nrwl/devkit": "15.9.2",
     "@nrwl/eslint-plugin-nx": "15.9.2",
     "@nrwl/jest": "15.9.2",
