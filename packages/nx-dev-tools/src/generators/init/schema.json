@@ -5,19 +5,19 @@
   "title": "",
   "type": "object",
   "properties": {
+    "projectRoot": {
+      "type": "string",
+      "description": "Project root",
+      "x-prompt": "What is your project root?"
+    },
     "projectName": {
       "type": "string",
-      "description": "",
+      "description": "Project name",
       "x-prompt": "What is your project name?"
-    },
-    "commandName": {
-      "type": "string",
-      "description": "",
-      "x-prompt": "What is your core command name?"
     },
     "devDomain": {
       "type": "string",
-      "description": "",
+      "description": "Dev domain",
       "x-prompt": "What is your development top-level domain?"
     }
   }

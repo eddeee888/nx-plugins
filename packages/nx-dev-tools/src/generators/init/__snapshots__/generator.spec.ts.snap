@@ -1,578 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`nx-dev-tools generator Files generation apps/bam/docker-compose.yml content 1`] = `
-"version: '3.7'
-
-services:
-  bam:
-    image: bam/dev:latest
-    command: nx serve bam --port=\${MAIN_SERVICE_PORT}
-    volumes:
-      - .:/usr/src/app/
-      - /usr/src/app/node_modules
-
-  bam-db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=\${MYSQL_ROOT_PASSWORD}
-      - MYSQL_PORT=\${MYSQL_PORT}
-    volumes:
-      - bam-db-data:/var/lib/mysql
-    expose:
-      - \${MYSQL_PORT}
-    ports:
-      - \${MYSQL_PORT}:\${MYSQL_PORT}
-
-volumes:
-  bam-db-data:
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/.env.docker-compose content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/.env.docker-compose content 1`] = `
 "PRIMARY_DOMAIN=bam.fakecom
 
-MYSQL_ROOT_PASSWORD=root
-MYSQL_PORT=3306
-
 MAIN_SERVICE_NAME=bam
-MAIN_SERVICE_PORT=3000
+MAIN_SERVICE_HOST=host.docker.internal:4200 # Note: Update port to match your app's port that runs on the host
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/bin/core.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-CORE_CMD_NAME="bb"
-
-function display_help {
-  echo
-  echo "Usage: $CORE_CMD_NAME [option...]" >&2
-  echo
-  echo "vm-up                 Set up minimum networking requirements"
-  echo "vm-down               Turn off all services and stop all containers"
-  echo "up [service?]         Start one or all services in detached mode"
-  echo "down                  Stop the project, remove all containers"
-  echo "build [service?]      Rebuild a service or all services"
-  echo "start [service?]      Start a service or all services"
-  echo "stop [service?]       Stop a service or all services"
-  echo "exec [service?]       Execute a command inside a service"
-  echo "run [service?]        Run a service"
-  echo "shell [service?]      Shell into a service"
-  echo "logs [service?]       Look at the log of a particular service or all services"
-  echo "rebuild [service?]    Rebuild image of a service with no cache"
-  echo "recreate [service?]   Recreate a service container"
-  echo
-  exit 1
-}
-
-function run {
-  # Go to root project directory
-  BIN_DIR=$(dirname $(readlink $(type -P $CORE_CMD_NAME)))
-  cd $BIN_DIR/../..
-
-  # Set env to make it easier to load files in subsequent scripts
-  export ROOT_DIR=$(pwd)
-  export UTILS_DC=$BIN_DIR/utils-dc.sh
-  export UTILS_CONST=$BIN_DIR/utils-constants.sh
-
-  # Run command
-  script_name=$1
-  shift
-
-
-
-  # dc-* ( docker-compose scripts ), ws-* ( workspace scripts ) are the main commands so if we don't find a command, try to prefix dc-
-  # e.g. if \`somecmd.sh\` does not exist, \`dc-somecmd.sh\` will be checked
-  if [[ -f $BIN_DIR/$script_name.sh ]]; then
-    $BIN_DIR/$script_name.sh $@
-  elif [[ -f $BIN_DIR/dc-$script_name.sh ]]; then
-    $BIN_DIR/dc-$script_name.sh $@
-  elif [[ -f $BIN_DIR/ws-$script_name.sh ]]; then
-    $BIN_DIR/ws-$script_name.sh $@
-  else
-    echo "$script_name command not found"
-    exit 1
-  fi
-}
-
-function main {
-  #If no command, show help menu 
-  if [ ! $1 ]
-  then
-      display_help
-      exit 1
-  fi
-  
-  run $@
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-build.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc build $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-build-dev-images.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_CONST
-
-function clean_images {
-  docker rmi -f $PROJECT_NAME/dev
-}
-
-function build_dev_images {
-  image=$1
-
-  docker-compose \\
-    --file dev-tools/docker-images/build-dev-images.yml \\
-    build --no-cache $image
-}
-
-function main {
-  clean_images
-  build_dev_images dev
-}
-
-main
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-down.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc down"
-  eval $cmd
-}
-
-main
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-exec.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc exec $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-logs.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc logs $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-rebuild.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc rm -f -s $@ && dc build --no-cache $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-recreate.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc rm -f -s $@ && dc up -d $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-run.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc run $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-shell.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc exec $1 /bin/bash"
-  eval $cmd
-}
-
-main $1
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-start.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc start $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-stop.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc stop --timeout=1 $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/dc-up.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  local cmd="dc up -d $@"
-  eval $cmd
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/init.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-CURRENT_DIR="$( cd "$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-REVERSE_PROXY_CERTIFICATE_DIR="\${CURRENT_DIR}/../reverse-proxy/certificates"
-source $CURRENT_DIR/utils-constants.sh
-
-function update_file_permissions {
-  echo "=> Updating script permissions..."
-  chmod +x $CURRENT_DIR/*.sh
-  echo -e "=> Successfully updated script permissions!\\n"
-}
-
-function remove_old_symlink {
-  if [ -f $USR_BIN/$CORE_CMD_NAME ]; then
-    echo "=> Removing old command..."
-    sudo rm $USR_BIN/$CORE_CMD_NAME
-    echo -e "=> Successfully removed old command!\\n"
-  fi
-}
-
-function setup_symlink_permission {
-  echo "=> Setting up permissions for core command..."
-  sudo chmod a+rx $CURRENT_DIR/core.sh
-  echo -e "=> Successfully set up core command permissions!\\n"
-}
-
-function symlink {
-  echo "=> Symlinking core command..."
-  sudo ln -s $CURRENT_DIR/core.sh $USR_BIN/$CORE_CMD_NAME
-  echo -e "=> Successfully symlinked core command!\\n"
-}
-
-function main {
-  echo -e "Welcome to \\"$CORE_CMD_NAME\\" setup!"
-  echo -e "======== **** ========\\n"
-
-  update_file_permissions
-  remove_old_symlink
-  setup_symlink_permission
-  symlink
-  $CORE_CMD_NAME init-cert $PRIMARY_DOMAIN $REVERSE_PROXY_CERTIFICATE_DIR/primary
-  yarn install
-
-  echo -e "\\n=> Successfully set up \\"$CORE_CMD_NAME\\"!\\n"
-  echo -e "Run the following command to initialize the project:\\n"
-  echo -e "$CORE_CMD_NAME vm-up && $CORE_CMD_NAME build-dev-images && $CORE_CMD_NAME up && $CORE_CMD_NAME nx init-database main-prisma\\n"
-}
-
-main
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/init-cert.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-function create_root_cert_and_key {
-  echo "=> Creating Root CA..."
-
-  SUBJECT="/C=AU/ST=None/L=None/O=None/CN=root.com"
-  
-  openssl genrsa -out $1/rootCA.key 2048
-  openssl req -x509 -new -nodes -key $1/rootCA.key -subj "$SUBJECT" -sha256 -days 1024 -out $1/rootCA.pem
-
-  echo -e "=> Successfully created Root CA!\\n"
-}
-
-function create_certificate {
-  echo "=> Creating certificate for \\"$1\\"..."
-
-  COMMON_NAME=$1
-  SUBJECT="/C=AU/ST=Victoria/L=Melbourne/O=None/CN=$COMMON_NAME"
-  NUM_OF_DAYS=365
-  
-  openssl req -new -newkey rsa:2048 -sha256 -nodes -keyout $2/device.key -subj "$SUBJECT" -out $2/device.csr
-  echo "
-      authorityKeyIdentifier=keyid,issuer
-      basicConstraints=CA:FALSE
-      keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-      subjectAltName = @alt_names
-
-      [alt_names]
-      DNS.1 = \${COMMON_NAME}
-  " > /tmp/__v3.ext
-  
-  openssl x509 \\
-    -req -in $2/device.csr \\
-    -CA $2/rootCA.pem \\
-    -CAkey $2/rootCA.key \\
-    -CAserial $2/.srl \\
-    -CAcreateserial \\
-    -out $2/device.crt \\
-    -days $NUM_OF_DAYS \\
-    -sha256 \\
-    -extfile /tmp/__v3.ext
-
-  echo -e "=> Successfully created certificate for \\"$1\\"!\\n"
-}
-
-function trust_root_ca {
-  echo "=> Trusting Root CA..."
-  sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain $1/rootCA.pem
-  echo -e "=> Successfully trusted Root CA!\\n"
-}
-
-function main {
-  echo "=> Setting up TLS..."
-
-  if [ ! -f $1/fullchain.pem ]; then
-    echo "=> No cert detected... Creating new certs..."
-    mkdir -p $2
-    create_root_cert_and_key $2
-    create_certificate $1 $2
-    trust_root_ca $2
-  else
-    echo "=> Existing cert detected... Skipping cert creation."
-  fi
-
-  echo -e "=> Successfully set up certs!\\n"
-}
-
-main $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/open.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-CURRENT_DIR="$( cd "$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-source $CURRENT_DIR/utils-constants.sh
-
-function main {
-  open https://$PRIMARY_DOMAIN
-}
-
-main
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-constants.sh content 1`] = `
-"#!/bin/bash
-
-CORE_CMD_NAME="bb"
-PROJECT_NAME="bam"
-USR_BIN="/usr/local/bin"
-TOP_LEVEL_DOMAIN="fakecom"
-PRIMARY_DOMAIN="\${PROJECT_NAME}.\${TOP_LEVEL_DOMAIN}"
-DOCKER_PROJECT_NAME="\${PROJECT_NAME}_\${TOP_LEVEL_DOMAIN}"
-DNS_PORT=53535
-RESOLVER_DIR="/etc/resolver"
-RESOLVER_FILE="$RESOLVER_DIR/$PRIMARY_DOMAIN"
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/utils-dc.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_CONST
-
-function dc {
-  local networking_compose_files=("dev-tools/dnsmasq/docker-compose.yml" "dev-tools/reverse-proxy/docker-compose.yml")
-  local app_compose_files=("apps/bam/docker-compose.yml")
-
-  local all_compose_files=("\${networking_compose_files[@]}" "\${app_compose_files[@]}")
-  local files=""
-  for file in "\${all_compose_files[@]}"
-  do
-	  files="$files --file $file"
-  done
-
-  local cmd="docker-compose $files --project-directory . --env-file=dev-tools/.env.docker-compose -p \${DOCKER_PROJECT_NAME} $@"
-  echo "=> \${CORE_CMD_NAME}.compose: "$cmd
-  eval $cmd
+exports[`nx-dev-tools generator Files generation libs/dev/dev-tools.json content 1`] = `
+"{
+  "primaryDomain": "bam.fakecom",
+  "infra": {
+    "files": [
+      "libs/dev/dnsmasq/docker-compose.yml",
+      "libs/dev/reverse-proxy/docker-compose.yml"
+    ],
+    "envFile": "libs/dev/.env.docker-compose"
+  }
 }
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/bin/vm-down.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_CONST
-
-function remove_resolver_file {
-  if [ -e $RESOLVER_FILE ]; then 
-    echo "=> Removing old resolver file $RESOLVER_FILE ..."
-    sudo rm $RESOLVER_FILE
-    echo "=> Successfully removed $RESOLVER_FILE"
-  fi
-}
-
-function main {
-  remove_resolver_file
-  $CORE_CMD_NAME stop
-}
-
-main
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/vm-up.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-source $UTILS_DC
-
-function main {
-  echo -e "=> Checking resolver file...\\n"
-
-  # Make the directory
-  if [ ! -e $RESOLVER_DIR ]; then 
-    sudo mkdir -p $RESOLVER_DIR
-    echo -e "Created new directory: $RESOLVER_DIR\\n"
-  fi
-
-  if [ -e $RESOLVER_FILE ]; then 
-    echo "=> Removing old resolver file $RESOLVER_FILE ..."
-    sudo rm $RESOLVER_FILE
-    echo -e "=> Successfully removed $RESOLVER_FILE\\n"
-  fi
-  
-
-  echo "=> Creating new resolver file $RESOLVER_FILE ..."
-  sudo sh -c "echo '# This is auto-generated. Do NOT edit this file\\nnameserver 127.0.0.1 \\nport $DNS_PORT' >> $RESOLVER_FILE"
-  echo -e "=> Successfully created resolver file: $RESOLVER_FILE\\n"
-}
-
-main
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/bin/ws-nx.sh content 1`] = `
-"#!/bin/bash
-
-set -e
-
-nx $@
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/dnsmasq.conf content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/dnsmasq/dnsmasq.conf content 1`] = `
 "address=/fakecom/127.0.0.1
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/dnsmasq/docker-compose.yml content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/dnsmasq/docker-compose.yml content 1`] = `
 "version: '3.7'
 
 services:
@@ -583,130 +38,109 @@ services:
       - 53535:53/udp
     cap_add: ['NET_ADMIN']
     volumes:
-      - ./dev-tools/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+      - libs/dev/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev content 1`] = `
-"FROM node:16.14-alpine
-
-WORKDIR /usr/src/app
-
-RUN apk update \\
-  && apk add bash git curl \\
-  && rm -rf /var/cache/apk/*
-
-COPY . .
-
-RUN yarn global add nx \\
-  && yarn install \\
-  && rm -rf $(yarn cache dir)
+exports[`nx-dev-tools generator Files generation libs/dev/project.json content 1`] = `
+"{
+  "name": "libs/dev",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/dev",
+  "projectType": "library",
+  "targets": {
+    "nw-cert": {
+      "executor": "@eddeee888/nx-dev-tools:setup",
+      "options": {
+        "command": "cert"
+      }
+    },
+    "nw-up": {
+      "executor": "@eddeee888/nx-dev-tools:setup",
+      "options": {
+        "command": "network-up"
+      }
+    },
+    "nw-down": {
+      "executor": "@eddeee888/nx-dev-tools:setup",
+      "options": {
+        "command": "network-down"
+      }
+    },
+    "up": {
+      "executor": "@eddeee888/nx-dev-tools:infra",
+      "options": {
+        "subCommand": "up",
+        "args": "-d"
+      }
+    },
+    "down": {
+      "executor": "@eddeee888/nx-dev-tools:infra",
+      "options": {
+        "subCommand": "down"
+      }
+    },
+    "logs": {
+      "executor": "@eddeee888/nx-dev-tools:infra",
+      "options": {
+        "subCommand": "logs"
+      }
+    },
+    "start": {
+      "executor": "@eddeee888/nx-dev-tools:infra",
+      "options": {
+        "subCommand": "start"
+      }
+    },
+    "stop": {
+      "executor": "@eddeee888/nx-dev-tools:infra",
+      "options": {
+        "subCommand": "stop"
+      }
+    },
+    "open": {
+      "executor": "@eddeee888/nx-dev-tools:infra",
+      "options": {
+        "subCommand": "open"
+      }
+    }
+  },
+  "tags": []
+}
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/docker-images/Dockerfile.dev.dockerignore content 1`] = `
-"# See http://help.github.com/ignore-files/ for more about ignoring files.
-
-# compiled output
-/dist
-/tmp
-/out-tsc
-
-# dependencies
-/node_modules
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-
-# System Files
-.DS_Store
-Thumbs.db
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/docker-images/build-dev-images.yml content 1`] = `
-"version: '3.7'
-
-services:
-  dev:
-    image: bam/dev:latest
-    build:
-      context: ../..
-      dockerfile: dev-tools/docker-images/Dockerfile.dev
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/.gitignore content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/reverse-proxy/.gitignore content 1`] = `
 "certificates/
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/Dockerfile content 1`] = `
-"FROM nginx:1.22.0-alpine
-
-RUN apk update \\ 
-  && apk add bash \\
-  && apk add openssl \\
-  && rm -rf /var/cache/apk/*
-
-WORKDIR /opt
-
-COPY ./dev-tools/reverse-proxy/certificates/primary/device.crt /usr/share/nginx/certificates/primary/device.crt
-COPY ./dev-tools/reverse-proxy/certificates/primary/device.key /usr/share/nginx/certificates/primary/device.key
-
-COPY ./dev-tools/reverse-proxy/proxy.conf /etc/nginx/proxy.conf
-COPY ./dev-tools/reverse-proxy/ws.conf /etc/nginx/ws.conf
-"
-`;
-
-exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/docker-compose.yml content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/reverse-proxy/docker-compose.yml content 1`] = `
 "version: '3.7'
 
 services:
   reverse-proxy:
-    build:
-      context: .
-      dockerfile: dev-tools/reverse-proxy/Dockerfile
+    image: nginx:1.23.1-alpine
     tty: true
     ports:
       - 80:80
       - 443:443
     depends_on:
-      - main
       - dnsmasq
     environment:
       PRIMARY_DOMAIN: \${PRIMARY_DOMAIN}
       MAIN_SERVICE_NAME: \${MAIN_SERVICE_NAME}
-      MAIN_SERVICE_PORT: \${MAIN_SERVICE_PORT}
+      MAIN_SERVICE_HOST: \${MAIN_SERVICE_HOST}
     volumes:
-      - ./dev-tools/reverse-proxy/templates:/etc/nginx/templates
+      - libs/dev/reverse-proxy/templates:/etc/nginx/templates
+      - libs/dev/reverse-proxy/certificates/primary/device.crt:/usr/share/nginx/certificates/primary/device.crt
+      - libs/dev/reverse-proxy/certificates/primary/device.key:/usr/share/nginx/certificates/primary/device.key
+      - libs/dev/reverse-proxy/proxy.conf:/etc/nginx/proxy.conf
+      - libs/dev/reverse-proxy/ws.conf:/etc/nginx/ws.conf
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/proxy.conf content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/reverse-proxy/proxy.conf content 1`] = `
 "proxy_redirect    off;
 proxy_set_header  Host $host;
 proxy_set_header  X-Real-IP $remote_addr;
@@ -715,9 +149,9 @@ proxy_set_header  X-Forwarded-Host $server_name;
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/templates/http.conf.template content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/reverse-proxy/templates/http.conf.template content 1`] = `
 "upstream \${MAIN_SERVICE_NAME} {
-  server \${MAIN_SERVICE_NAME}:\${MAIN_SERVICE_PORT};
+  server \${MAIN_SERVICE_HOST};
 }
 
 server {
@@ -743,7 +177,7 @@ server {
 "
 `;
 
-exports[`nx-dev-tools generator Files generation dev-tools/reverse-proxy/ws.conf content 1`] = `
+exports[`nx-dev-tools generator Files generation libs/dev/reverse-proxy/ws.conf content 1`] = `
 "proxy_http_version 1.1;
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection "Upgrade";

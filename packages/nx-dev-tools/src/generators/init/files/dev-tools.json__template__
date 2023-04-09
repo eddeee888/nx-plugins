@@ -1,0 +1,10 @@
+{
+  "primaryDomain": "<%= projectName -%>.<%= devDomain %>",
+  "infra": {
+    "files": [
+      "<%= projectRoot -%>/dnsmasq/docker-compose.yml",
+      "<%= projectRoot -%>/reverse-proxy/docker-compose.yml"
+    ],
+    "envFile": "<%= projectRoot -%>/.env.docker-compose"
+  }
+}

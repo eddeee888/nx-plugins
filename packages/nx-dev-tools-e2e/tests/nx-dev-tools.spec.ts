@@ -18,20 +18,20 @@ describe('nx-dev-tools e2e', () => {
   });
 
   it('should create dev-tools folder and related files ', async () => {
-    await runNxCommandAsync(`generate @eddeee888/nx-dev-tools:init --projectName bam --commandName bb --devDomain vm`);
-
-    // Docker files
-    checkFilesExist(
-      'dev-tools/.env.docker-compose',
-      'apps/bam/docker-compose.yml',
-      'dev-tools/reverse-proxy/docker-compose.yml',
-      'dev-tools/dnsmasq/docker-compose.yml'
+    await runNxCommandAsync(
+      `generate @eddeee888/nx-dev-tools:init --projectRoot libs/dev-infra --projectName bam --devDomain vm`
     );
 
-    // main folders and files
-    expect(exists(tmpProjPath('dev-tools/bin/core.sh'))).toBe(true);
-    expect(exists(tmpProjPath('dev-tools/dnsmasq'))).toBe(true);
-    expect(exists(tmpProjPath('dev-tools/docker-images'))).toBe(true);
-    expect(exists(tmpProjPath('dev-tools/reverse-proxy'))).toBe(true);
+    checkFilesExist(
+      'libs/dev-infra/dnsmasq/dnsmas.conf',
+      'libs/dev-infra/dnsmasq/docker-compose.yml',
+      'libs/dev-infra/reverse-proxy/templates/http.conf.template',
+      'libs/dev-infra/reverse-proxy/.gitignore',
+      'libs/dev-infra/reverse-proxy/docker-compose.yml',
+      'libs/dev-infra/reverse-proxy/proxy.conf',
+      'libs/dev-infra/reverse-proxy/ws.conf',
+      'libs/dev-infra/.env.docker-compose',
+      'libs/dev-infra/dev-tools.json'
+    );
   }, 120000);
 });

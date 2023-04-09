@@ -1,5 +1,5 @@
 export interface NxDevToolsGeneratorSchema {
+  projectRoot: string;
   projectName: string;
-  commandName: string;
   devDomain: string;
 }
