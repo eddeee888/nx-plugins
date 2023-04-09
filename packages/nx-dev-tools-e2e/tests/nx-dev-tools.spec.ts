@@ -23,7 +23,7 @@ describe('nx-dev-tools e2e', () => {
     );
 
     checkFilesExist(
-      'libs/dev-infra/dnsmasq/dnsmas.conf',
+      'libs/dev-infra/dnsmasq/dnsmasq.conf',
       'libs/dev-infra/dnsmasq/docker-compose.yml',
       'libs/dev-infra/reverse-proxy/templates/http.conf.template',
       'libs/dev-infra/reverse-proxy/.gitignore',
