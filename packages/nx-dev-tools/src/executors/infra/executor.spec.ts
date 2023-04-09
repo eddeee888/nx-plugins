@@ -21,7 +21,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'up' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev up ',
+          'ENV_1=VALUE_1 ENV_2=VALUE_2 docker compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . -p infra-project_dev up ',
         success: true,
       },
     },
@@ -29,7 +29,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'down' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev down ',
+          'ENV_1=VALUE_1 ENV_2=VALUE_2 docker compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . -p infra-project_dev down ',
         success: true,
       },
     },
@@ -37,7 +37,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'logs' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev logs ',
+          'ENV_1=VALUE_1 ENV_2=VALUE_2 docker compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . -p infra-project_dev logs ',
         success: true,
       },
     },
@@ -45,7 +45,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'start' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev start ',
+          'ENV_1=VALUE_1 ENV_2=VALUE_2 docker compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . -p infra-project_dev start ',
         success: true,
       },
     },
@@ -53,7 +53,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'stop' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev stop ',
+          'ENV_1=VALUE_1 ENV_2=VALUE_2 docker compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . -p infra-project_dev stop ',
         success: true,
       },
     },
@@ -68,7 +68,7 @@ describe('Infra Executor', () => {
       params: { subCommand: 'logs', args: '-f project-a' },
       expected: {
         command:
-          'docker-compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . --env-file libs/env.yml -p infra-project_dev logs -f project-a',
+          'ENV_1=VALUE_1 ENV_2=VALUE_2 docker compose --file libs/project-a/config.yml --file libs/project-b/config.yml --project-directory . -p infra-project_dev logs -f project-a',
         success: true,
       },
     },
@@ -77,7 +77,10 @@ describe('Infra Executor', () => {
       primaryDomain: 'infra-project.dev',
       infra: {
         files: ['libs/project-a/config.yml', 'libs/project-b/config.yml'],
-        envFile: 'libs/env.yml',
+        env: {
+          ENV_1: 'VALUE_1',
+          ENV_2: 'VALUE_2',
+        },
       },
     });
     const output = await executor(

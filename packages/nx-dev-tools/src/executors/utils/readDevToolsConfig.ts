@@ -5,7 +5,7 @@ interface DevToolsJson {
   primaryDomain: string;
   infra: {
     files: string[];
-    envFile: string;
+    env: Record<string, string>;
   };
 }
 

@@ -1,0 +1,14 @@
+{
+  "primaryDomain": "<%= projectName -%>.<%= domain %>",
+  "infra": {
+    "files": [
+      "<%= projectRoot -%>/dnsmasq/docker-compose.yml",
+      "<%= projectRoot -%>/reverse-proxy/docker-compose.yml"
+    ],
+    "env": {
+      "PRIMARY_DOMAIN": "<%= projectName -%>.<%= domain %>",
+      "MAIN_SERVICE_NAME": "<%= projectName %>",
+      "MAIN_SERVICE_HOST": "host.docker.internal:4200"
+    }
+  }
+}

@@ -5,20 +5,20 @@
   "title": "",
   "type": "object",
   "properties": {
-    "projectName": {
+    "projectRoot": {
       "type": "string",
-      "description": "",
-      "x-prompt": "What is your project name?"
+      "description": "Project root",
+      "x-prompt": "What is your project root?"
     },
-    "commandName": {
+    "primaryDomain": {
       "type": "string",
-      "description": "",
-      "x-prompt": "What is your core command name?"
+      "description": "Primary domain",
+      "x-prompt": "What is your project's primary domain? (e.g. \"your-project.dev\")"
     },
-    "devDomain": {
+    "libraryName": {
       "type": "string",
-      "description": "",
-      "x-prompt": "What is your development top-level domain?"
+      "description": "Library name",
+      "x-prompt": "What is your library's name?"
     }
   }
 }
