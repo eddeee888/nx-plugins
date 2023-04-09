@@ -10,12 +10,12 @@
       "description": "Project root",
       "x-prompt": "What is your project root?"
     },
-    "projectName": {
+    "stackName": {
       "type": "string",
       "description": "Project name",
       "x-prompt": "What is your project name?"
     },
-    "devDomain": {
+    "domain": {
       "type": "string",
       "description": "Dev domain",
       "x-prompt": "What is your development top-level domain?"

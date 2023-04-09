@@ -7,9 +7,9 @@ import { NxDevToolsGeneratorSchema } from './schema';
 describe('nx-dev-tools generator', () => {
   let tree: Tree;
   const options: NxDevToolsGeneratorSchema = {
-    projectName: 'bam',
     projectRoot: 'libs/dev',
-    devDomain: 'fakecom',
+    stackName: 'bam',
+    domain: 'fakecom',
   };
 
   beforeEach(async () => {
@@ -26,7 +26,6 @@ describe('nx-dev-tools generator', () => {
       ['libs/dev/reverse-proxy/docker-compose.yml'],
       ['libs/dev/reverse-proxy/proxy.conf'],
       ['libs/dev/reverse-proxy/ws.conf'],
-      ['libs/dev/.env.docker-compose'],
       ['libs/dev/dev-tools.json'],
       ['libs/dev/project.json'],
     ])('%s content', (file) => {

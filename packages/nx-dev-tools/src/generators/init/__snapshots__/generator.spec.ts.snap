@@ -1,13 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`nx-dev-tools generator Files generation libs/dev/.env.docker-compose content 1`] = `
-"PRIMARY_DOMAIN=bam.fakecom
-
-MAIN_SERVICE_NAME=bam
-MAIN_SERVICE_HOST=host.docker.internal:4200 # Note: Update port to match your app's port that runs on the host
-"
-`;
-
 exports[`nx-dev-tools generator Files generation libs/dev/dev-tools.json content 1`] = `
 "{
   "primaryDomain": "bam.fakecom",
@@ -16,7 +8,11 @@ exports[`nx-dev-tools generator Files generation libs/dev/dev-tools.json content
       "libs/dev/dnsmasq/docker-compose.yml",
       "libs/dev/reverse-proxy/docker-compose.yml"
     ],
-    "envFile": "libs/dev/.env.docker-compose"
+    "env": {
+      "PRIMARY_DOMAIN": "bam.fakecom",
+      "MAIN_SERVICE_NAME": "bam",
+      "MAIN_SERVICE_HOST": "host.docker.internal:4200"
+    }
   }
 }
 "
