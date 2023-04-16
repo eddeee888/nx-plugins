@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 0.1.1
+
+### Patch Changes
+
+- 8b20f62: Fix issue where executor never returns success=false
+
 ## 0.1.0
 
 ### Minor Changes
