@@ -16,14 +16,15 @@ export default async function runExecutor(options: BuildExecutorSchema) {
       process.argv.push('--profile');
     }
 
-    await runCli('');
+    const status = await runCli('');
+
+    return {
+      success: status === 0,
+    };
   } catch (e) {
     cliError(e);
     return {
       success: false,
     };
   }
-  return {
-    success: true,
-  };
 }
