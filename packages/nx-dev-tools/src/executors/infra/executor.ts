@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import type { ExecutorContext } from '@nrwl/devkit';
+import type { ExecutorContext } from '@nx/devkit';
 import type { InfraExecutorSchema } from './schema';
 import { readDevToolsConfig, getProjectConfig, fmt } from '../utils';
 

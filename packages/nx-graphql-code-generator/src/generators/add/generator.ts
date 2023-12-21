@@ -12,7 +12,7 @@ import {
   readProjectConfiguration,
   updateProjectConfiguration,
   ProjectConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import * as path from 'path';
 import { major } from 'semver';
 import { graphqlCodegenCliVersion, graphqlVersion } from '../../utils/versions';
@@ -146,7 +146,7 @@ function upsertCacheableOperation(tree: Tree) {
   if (
     !workspace.tasksRunnerOptions ||
     !workspace.tasksRunnerOptions.default ||
-    (workspace.tasksRunnerOptions.default.runner !== '@nrwl/workspace/tasks-runners/default' &&
+    (workspace.tasksRunnerOptions.default.runner !== '@nx/workspace/tasks-runners/default' &&
       workspace.tasksRunnerOptions.default.runner !== 'nx/tasks-runners/default')
   ) {
     return;

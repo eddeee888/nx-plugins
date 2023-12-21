@@ -1,7 +1,7 @@
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { Tree, readProjectConfiguration, readJson, writeJson, readNxJson } from '@nrwl/devkit';
-import { libraryGenerator } from '@nrwl/workspace/generators';
-import { applicationGenerator } from '@nrwl/node';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { Tree, readProjectConfiguration, readJson, writeJson, readNxJson } from '@nx/devkit';
+import { libraryGenerator } from '@nx/workspace/generators';
+import { applicationGenerator } from '@nx/node';
 import generator from './generator';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 
