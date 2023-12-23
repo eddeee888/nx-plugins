@@ -41,10 +41,10 @@ jobs:
       - name: Check affected projects
         id: affected
         run: |
-          echo "::set-output name=nx-graphql-code-generator::$(./ops/bin/check-affected.sh libs nx-graphql-code-generator origin/master)"
-          echo "::set-output name=nx-graphql-code-generator-e2e::$(./ops/bin/check-affected.sh libs nx-graphql-code-generator-e2e origin/master)"
-          echo "::set-output name=nx-dev-tools::$(./ops/bin/check-affected.sh libs nx-dev-tools origin/master)"
-          echo "::set-output name=nx-dev-tools-e2e::$(./ops/bin/check-affected.sh libs nx-dev-tools-e2e origin/master)"
+          echo "nx-graphql-code-generator=$(./ops/bin/check-affected.sh lib nx-graphql-code-generator origin/master)" >> $GITHUB_OUTPUT
+          echo "nx-graphql-code-generator-e2e=$(./ops/bin/check-affected.sh lib nx-graphql-code-generator-e2e origin/master)" >> $GITHUB_OUTPUT
+          echo "nx-dev-tools=$(./ops/bin/check-affected.sh lib nx-dev-tools origin/master)" >> $GITHUB_OUTPUT
+          echo "nx-dev-tools-e2e=$(./ops/bin/check-affected.sh lib nx-dev-tools-e2e origin/master)" >> $GITHUB_OUTPUT
 
   nx-graphql-code-generator:
     name:
