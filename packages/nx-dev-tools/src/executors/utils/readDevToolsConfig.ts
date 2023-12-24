@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { readJsonFile } from '@nrwl/devkit';
+import { readJsonFile } from '@nx/devkit';
 
 interface DevToolsJson {
   primaryDomain: string;

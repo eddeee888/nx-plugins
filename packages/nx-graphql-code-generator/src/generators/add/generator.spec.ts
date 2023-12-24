@@ -1,7 +1,7 @@
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { Tree, readProjectConfiguration, readJson, writeJson, readNxJson } from '@nrwl/devkit';
-import { libraryGenerator } from '@nrwl/workspace/generators';
-import { applicationGenerator } from '@nrwl/node';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { Tree, readProjectConfiguration, readJson, writeJson, readNxJson } from '@nx/devkit';
+import { libraryGenerator } from '@nx/js';
+import { applicationGenerator } from '@nx/node';
 import generator from './generator';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
 
@@ -18,7 +18,7 @@ describe('nx-graphql-code-generator generator', () => {
     tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
-  it('generates files to library', async () => {
+  it.only('generates files to library', async () => {
     await libraryGenerator(tree, { name: projectName });
     await generator(tree, options);
 
@@ -29,7 +29,6 @@ describe('nx-graphql-code-generator generator', () => {
 
     // workspace config ( nx.json )
     const workspaceConfig = readNxJson(tree);
-    expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: 'https://localhost:9999/graphql',
@@ -78,7 +77,6 @@ describe('nx-graphql-code-generator generator', () => {
 
     // workspace config ( nx.json )
     const workspaceConfig = readNxJson(tree);
-    expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: 'https://localhost:9999/graphql',

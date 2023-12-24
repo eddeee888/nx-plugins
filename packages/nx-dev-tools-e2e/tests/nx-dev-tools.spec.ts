@@ -1,4 +1,4 @@
-import { checkFilesExist, ensureNxProject, exists, runNxCommandAsync, tmpProjPath } from '@nrwl/nx-plugin/testing';
+import { checkFilesExist, ensureNxProject, exists, runNxCommandAsync, tmpProjPath } from '@nx/plugin/testing';
 
 describe('nx-dev-tools e2e', () => {
   // Setting up individual workspaces per

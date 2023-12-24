@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ExecutorContext, ProjectConfiguration } from '@nrwl/devkit';
+import { ExecutorContext, ProjectConfiguration } from '@nx/devkit';
 import { getProjectConfig, readDevToolsConfig } from '../utils';
 import { SetupExecutorSchema } from './schema';
 import { execSync } from 'child_process';

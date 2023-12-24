@@ -5,11 +5,12 @@
   "sourceRoot": "packages/nx-graphql-code-generator-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "nx-graphql-code-generator:build",
-        "jestConfig": "packages/nx-graphql-code-generator-e2e/jest.config.ts"
-      }
+        "jestConfig": "packages/nx-graphql-code-generator-e2e/jest.config.ts",
+        "runInBand": true
+      },
+      "dependsOn": ["nx-graphql-code-generator:build"]
     }
   },
   "tags": [],

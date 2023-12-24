@@ -3,7 +3,7 @@ import { readDevToolsConfig } from '../utils';
 import executor from './executor';
 import { InfraExecutorSchema } from './schema';
 
-jest.mock('@nrwl/devkit', () => ({ readJsonFile: jest.fn() }));
+jest.mock('@nx/devkit', () => ({ readJsonFile: jest.fn() }));
 jest.mock('child_process', () => ({ execSync: jest.fn() }));
 jest.mock('../utils', () => {
   const utilsActual = jest.requireActual('../utils');

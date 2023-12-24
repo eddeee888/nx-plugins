@@ -1,10 +1,4 @@
-import {
-  addProjectConfiguration,
-  formatFiles,
-  generateFiles,
-  type ProjectConfiguration,
-  type Tree,
-} from '@nrwl/devkit';
+import { addProjectConfiguration, formatFiles, generateFiles, type ProjectConfiguration, type Tree } from '@nx/devkit';
 import * as path from 'path';
 import type { NxDevToolsGeneratorSchema } from './schema';
 

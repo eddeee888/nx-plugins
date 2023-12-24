@@ -6,8 +6,8 @@ projectType=$1
 project=$2
 baseBranch=$3
 
-if [ "$projectType" != "libs" ] && [ "$projectType" != "apps" ]; then
-  echo "Project type must be 'libs' or 'apps'"
+if [ "$projectType" != "lib" ] && [ "$projectType" != "app" ]; then
+  echo "Project type must be 'lib' or 'app'"
   exit 1
 fi
 
@@ -21,7 +21,7 @@ if [ -z "$baseBranch" ]; then
   exit 1
 fi
 
-affected=$(yarn nx affected:$projectType --plain --base=$baseBranch)
+affected=$(yarn --silent nx print-affected --type=$projectType --select=projects --exclude=workspace-plugin --base=$baseBranch)
 affectedFinal=${affected:=""}
 
 # If no affected found
@@ -32,7 +32,7 @@ fi
 
 # If at least one affected found
 # Split string into array
-affectedArr=(${affected// / })
+affectedArr=(${affected//, / })
 for i in "${affectedArr[@]}"
 do
   if [[ "$i" == "$project" ]]; then
