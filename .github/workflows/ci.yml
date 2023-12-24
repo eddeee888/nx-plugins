@@ -19,7 +19,7 @@ jobs:
       affected-nx-dev-tools-e2e: ${{ steps.affected.outputs.nx-dev-tools-e2e }}
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
+        uses: styfle/cancel-workflow-action@0.12.0
         with:
           access_token: ${{ github.token }}
 
