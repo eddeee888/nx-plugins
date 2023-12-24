@@ -127,38 +127,23 @@ function upsertGraphqlCodegenTask(tree: Tree, options: NormalizedSchema) {
   options.projectConfig.targets['graphql-codegen'] = {
     executor: '@eddeee888/nx-graphql-code-generator:codegen',
     outputs: [],
-    options: {
-      configFile: path.join(options.projectConfig.root, options.config),
-      watch: false,
-    },
-    configurations: {
-      watch: {
-        watch: true,
-      },
-    },
+    options: { configFile: path.join(options.projectConfig.root, options.config) },
   };
 
   updateProjectConfiguration(tree, options.projectName, options.projectConfig);
 }
 
-function upsertCacheableOperation(tree: Tree) {
+function upsertTargetDefaults(tree: Tree) {
   const workspace = readNxJson(tree);
-  if (
-    !workspace.tasksRunnerOptions ||
-    !workspace.tasksRunnerOptions.default ||
-    (workspace.tasksRunnerOptions.default.runner !== '@nx/workspace/tasks-runners/default' &&
-      workspace.tasksRunnerOptions.default.runner !== 'nx/tasks-runners/default')
-  ) {
-    return;
-  }
 
-  workspace.tasksRunnerOptions.default.options = workspace.tasksRunnerOptions.default.options || {};
+  workspace['targetDefaults']['graphql-codegen'] = workspace['targetDefaults']['graphql-codegen'] || {};
+  workspace['targetDefaults']['graphql-codegen']['cache'] = true;
+  workspace['targetDefaults']['graphql-codegen']['options'] =
+    workspace['targetDefaults']['graphql-codegen']['options'] || {};
+  workspace['targetDefaults']['graphql-codegen']['options'] = {
+    configFile: '{projectRoot}/graphql-codegen.ts',
+  };
 
-  workspace.tasksRunnerOptions.default.options.cacheableOperations =
-    workspace.tasksRunnerOptions.default.options.cacheableOperations || [];
-  if (!workspace.tasksRunnerOptions.default.options.cacheableOperations?.includes('graphql-codegen')) {
-    workspace.tasksRunnerOptions.default.options.cacheableOperations.push('graphql-codegen');
-  }
   updateNxJson(tree, workspace);
 }
 
@@ -178,7 +163,6 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
       add: {
         schema: options.schema,
         config: options.config,
-        pluginPreset: options.pluginPreset !== 'none' ? options.pluginPreset : undefined,
         ...prev.add,
       },
     },
@@ -205,7 +189,7 @@ export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGenera
 
   const installTask = checkDependenciesInstalled(tree, normalizedOptions);
   upsertGraphqlCodegenTask(tree, normalizedOptions);
-  upsertCacheableOperation(tree);
+  upsertTargetDefaults(tree);
   addDefaultWorkspaceOptions(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);

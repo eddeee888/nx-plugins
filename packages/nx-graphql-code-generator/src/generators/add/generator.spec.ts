@@ -29,28 +29,34 @@ describe('nx-graphql-code-generator generator', () => {
 
     // workspace config ( nx.json )
     const workspaceConfig = readNxJson(tree);
-    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: {
-        schema: 'https://localhost:9999/graphql',
-        config: 'codegen.yml',
-      },
-    });
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toMatchInlineSnapshot(`
+      {
+        "add": {
+          "config": "codegen.yml",
+          "schema": "https://localhost:9999/graphql",
+        },
+      }
+    `);
+    expect(workspaceConfig.targetDefaults['graphql-codegen']).toMatchInlineSnapshot(`
+      {
+        "cache": true,
+        "options": {
+          "configFile": "{projectRoot}/graphql-codegen.ts",
+        },
+      }
+    `);
 
     // project config
     const projectConfig = readProjectConfiguration(tree, projectName);
-    expect(projectConfig.targets['graphql-codegen']).toEqual({
-      executor: '@eddeee888/nx-graphql-code-generator:codegen',
-      outputs: [],
-      options: {
-        configFile: `libs/${projectName}/codegen.yml`,
-        watch: false,
-      },
-      configurations: {
-        watch: {
-          watch: true,
+    expect(projectConfig.targets['graphql-codegen']).toMatchInlineSnapshot(`
+      {
+        "executor": "@eddeee888/nx-graphql-code-generator:codegen",
+        "options": {
+          "configFile": "libs/test/codegen.yml",
         },
-      },
-    });
+        "outputs": [],
+      }
+    `);
 
     // files
     const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
@@ -77,28 +83,26 @@ describe('nx-graphql-code-generator generator', () => {
 
     // workspace config ( nx.json )
     const workspaceConfig = readNxJson(tree);
-    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: {
-        schema: 'https://localhost:9999/graphql',
-        config: 'codegen.yml',
-      },
-    });
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toMatchInlineSnapshot(`
+      {
+        "add": {
+          "config": "codegen.yml",
+          "schema": "https://localhost:9999/graphql",
+        },
+      }
+    `);
 
     // project config
     const projectConfig = readProjectConfiguration(tree, finalProjectName);
-    expect(projectConfig.targets['graphql-codegen']).toEqual({
-      executor: '@eddeee888/nx-graphql-code-generator:codegen',
-      outputs: [],
-      options: {
-        configFile: `apps/${directory}/${projectName}/codegen.yml`,
-        watch: false,
-      },
-      configurations: {
-        watch: {
-          watch: true,
+    expect(projectConfig.targets['graphql-codegen']).toMatchInlineSnapshot(`
+      {
+        "executor": "@eddeee888/nx-graphql-code-generator:codegen",
+        "options": {
+          "configFile": "apps/node/js/test/codegen.yml",
         },
-      },
-    });
+        "outputs": [],
+      }
+    `);
 
     // files
     const codegenConfig = tree.read(`apps/${directory}/${projectName}/codegen.yml`, 'utf-8');
@@ -117,22 +121,26 @@ describe('nx-graphql-code-generator generator', () => {
     await generator(tree, { ...options, schema: '**/*.graphqls' });
 
     const workspaceConfig = readNxJson(tree);
-    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: {
-        schema: '**/*.graphqls',
-        config: 'codegen.yml',
-      },
-    });
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toMatchInlineSnapshot(`
+      {
+        "add": {
+          "config": "codegen.yml",
+          "schema": "**/*.graphqls",
+        },
+      }
+    `);
 
     await libraryGenerator(tree, { name: projectName + '2' });
     await generator(tree, { ...options, schema: 'libs/other-lib/*.graphqls' });
 
-    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
-      add: {
-        schema: '**/*.graphqls',
-        config: 'codegen.yml',
-      },
-    });
+    expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toMatchInlineSnapshot(`
+      {
+        "add": {
+          "config": "codegen.yml",
+          "schema": "**/*.graphqls",
+        },
+      }
+    `);
   });
 
   it('updates NPM packges if existing versions are less than expected major version', async () => {
@@ -235,11 +243,6 @@ describe('nx-graphql-code-generator generator', () => {
         "
       `);
 
-      const workspaceConfig = readNxJson(tree);
-      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
-        'typescript-react-apollo-client'
-      );
-
       const packageJson = readJson(tree, 'package.json');
       expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
       expect(packageJson.devDependencies['@graphql-codegen/typescript-operations']).toBe('^2.3.6');
@@ -265,11 +268,6 @@ describe('nx-graphql-code-generator generator', () => {
               - fragment-matcher
         "
       `);
-
-      const workspaceConfig = readNxJson(tree);
-      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
-        'typescript-angular-apollo-client'
-      );
 
       const packageJson = readJson(tree, 'package.json');
       expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
@@ -297,11 +295,6 @@ describe('nx-graphql-code-generator generator', () => {
         "
       `);
 
-      const workspaceConfig = readNxJson(tree);
-      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
-        'typescript-vue-apollo-client'
-      );
-
       const packageJson = readJson(tree, 'package.json');
       expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
       expect(packageJson.devDependencies['@graphql-codegen/typescript-vue-apollo-smart-ops']).toBe('^2.2.9');
@@ -327,11 +320,6 @@ describe('nx-graphql-code-generator generator', () => {
               relativeTargetDir: 'resolvers'
         "
       `);
-
-      const workspaceConfig = readNxJson(tree);
-      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
-        'typescript-resolver-files'
-      );
 
       const packageJson = readJson(tree, 'package.json');
       expect(packageJson.devDependencies['@eddeee888/gcg-typescript-resolver-files']).toBe('^0.0.7');
@@ -363,11 +351,6 @@ describe('nx-graphql-code-generator generator', () => {
               - fragment-matcher
         "
       `);
-
-      const workspaceConfig = readNxJson(tree);
-      expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator'].add.pluginPreset).toBe(
-        'typescript-react-apollo-client'
-      );
 
       const packageJson = readJson(tree, 'package.json');
       expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('1.0.0');
