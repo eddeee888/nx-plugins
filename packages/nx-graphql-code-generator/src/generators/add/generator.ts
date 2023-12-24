@@ -62,7 +62,7 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
     ...options,
     schema: options.schema ?? '',
     documents: options.documents ?? '',
-    config: options.config ?? 'codegen.yml',
+    config: options.config ?? 'graphql-codegen.ts',
     pluginPreset,
     output,
     fullOutput,
