@@ -1,2 +1,2 @@
-export const graphqlVersion = '^16.4.0';
-export const graphqlCodegenCliVersion = '^3.0.0';
+export const graphqlVersion = '^16.8.1';
+export const graphqlCodegenCliVersion = '^5.0.0';
