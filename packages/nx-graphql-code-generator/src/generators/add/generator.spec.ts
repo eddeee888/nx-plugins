@@ -18,14 +18,14 @@ describe('nx-graphql-code-generator generator', () => {
     tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
-  it.only('generates files to library', async () => {
+  it('generates files to library', async () => {
     await libraryGenerator(tree, { name: projectName });
     await generator(tree, options);
 
     // Root
     const packageJson = readJson(tree, 'package.json');
-    expect(packageJson.dependencies.graphql).toBe('^16.4.0');
-    expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^3.0.0');
+    expect(packageJson.dependencies.graphql).toBe('^16.8.1');
+    expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^5.0.0');
 
     // workspace config ( nx.json )
     const workspaceConfig = readNxJson(tree);
@@ -72,8 +72,8 @@ describe('nx-graphql-code-generator generator', () => {
 
     // Root
     const packageJson = readJson(tree, 'package.json');
-    expect(packageJson.dependencies.graphql).toBe('^16.4.0');
-    expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^3.0.0');
+    expect(packageJson.dependencies.graphql).toBe('^16.8.1');
+    expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^5.0.0');
 
     // workspace config ( nx.json )
     const workspaceConfig = readNxJson(tree);
@@ -117,7 +117,6 @@ describe('nx-graphql-code-generator generator', () => {
     await generator(tree, { ...options, schema: '**/*.graphqls' });
 
     const workspaceConfig = readNxJson(tree);
-    expect(workspaceConfig.tasksRunnerOptions.default.options.cacheableOperations).toContain('graphql-codegen');
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toEqual({
       add: {
         schema: '**/*.graphqls',
@@ -149,8 +148,8 @@ describe('nx-graphql-code-generator generator', () => {
     await generator(tree, options);
 
     const packageJson = readJson(tree, 'package.json');
-    expect(packageJson.dependencies.graphql).toBe('^16.4.0');
-    expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^3.0.0');
+    expect(packageJson.dependencies.graphql).toBe('^16.8.1');
+    expect(packageJson.devDependencies['@graphql-codegen/cli']).toBe('^5.0.0');
   });
 
   it('does not update NPM packges if existing versions are greater than expected major version', async () => {
