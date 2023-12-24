@@ -30,8 +30,8 @@ describe.skip('nx-graphql-code-generator:add e2e', () => {
 
       // check package.json
       const rootPackageJson = readJson('package.json');
-      expect(rootPackageJson.dependencies.graphql).toBe('^16.4.0');
-      expect(rootPackageJson.devDependencies['@graphql-codegen/cli']).toBe('^3.0.0');
+      expect(rootPackageJson.dependencies.graphql).toBe('^16.8.1');
+      expect(rootPackageJson.devDependencies['@graphql-codegen/cli']).toBe('^5.0.0');
 
       // nx.json
       const nxJson = readJson('nx.json');
@@ -104,8 +104,8 @@ describe.skip('nx-graphql-code-generator:add e2e', () => {
       );
 
       const resultPackageJson = readJson('package.json');
-      expect(resultPackageJson.dependencies.graphql).toBe('^16.4.0');
-      expect(resultPackageJson.devDependencies['@graphql-codegen/cli']).toBe('^3.0.0');
+      expect(rootPackageJson.dependencies.graphql).toBe('^16.8.1');
+      expect(rootPackageJson.devDependencies['@graphql-codegen/cli']).toBe('^5.0.0');
     }, 120000);
 
     it('does not update packages if existing packages are higher in semver', async () => {
