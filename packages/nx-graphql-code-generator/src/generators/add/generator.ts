@@ -4,7 +4,6 @@ import {
   formatFiles,
   generateFiles,
   names,
-  offsetFromRoot,
   readJson,
   Tree,
   readNxJson,
@@ -18,26 +17,26 @@ import { major } from 'semver';
 import { graphqlCodegenCliVersion, graphqlVersion } from '../../utils/versions';
 import { checkAndCleanWithSemver } from '../../utils/checkAndCleanWithSemver';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
-import { PluginOption, pluginPresets } from './graphql-codegen-cli/plugins';
+import { type PluginOption, pluginPresets } from './graphql-codegen-cli/plugins';
 
 interface NormalizedSchema extends Required<NxGraphqlCodeGeneratorGeneratorSchema> {
   projectConfig: ProjectConfiguration;
   projectName: string;
-  fullOutput: string;
   plugins: PluginOption[];
 }
 
-interface PresetDefaults {
-  fileDir: string;
-  outputPath: string;
+export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {
+  const normalizedOptions = normalizeOptions(tree, options);
+
+  const installTask = checkDependenciesInstalled(tree, normalizedOptions);
+  upsertGraphqlCodegenTask(tree, normalizedOptions);
+  upsertTargetDefaults(tree);
+  addDefaultWorkspaceOptions(tree, normalizedOptions);
+  addFiles(tree, normalizedOptions);
+  await formatFiles(tree);
+
+  return installTask;
 }
-const presetDefaultsMap: Record<string, PresetDefaults> = {
-  'typescript-resolver-files': { fileDir: 'typescript-resolver-files', outputPath: 'src/graphql/schemas/modules' },
-};
-const genericPresetDefaults: PresetDefaults = {
-  fileDir: 'generic',
-  outputPath: 'src/graphql/generated.ts',
-};
 
 function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema): NormalizedSchema {
   // Validations
@@ -50,25 +49,18 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectConfig = readProjectConfiguration(tree, projectName);
 
-  const pluginPreset = options.pluginPreset ?? 'none';
-
-  const { outputPath: defaultOutputPath } = presetDefaultsMap[pluginPreset] || genericPresetDefaults;
-  const output = options.output ?? defaultOutputPath;
-  const fullOutput = path.join(projectConfig.root, output);
-
-  const plugins = getPlugins(options);
+  const pluginPreset = options.pluginPreset || 'basic';
 
   return {
     ...options,
-    schema: options.schema ?? '',
-    documents: options.documents ?? '',
-    config: options.config ?? 'graphql-codegen.ts',
+    schema: options.schema || '',
+    documents: options.documents || '',
+    output: options.output || '',
+    config: options.config || 'graphql-codegen.ts',
     pluginPreset,
-    output,
-    fullOutput,
+    plugins: pluginPresets[pluginPreset],
     projectConfig,
     projectName,
-    plugins,
   };
 }
 
@@ -113,14 +105,6 @@ function checkDependenciesInstalled(tree: Tree, options: NormalizedSchema) {
   });
 
   return addDependenciesToPackageJson(tree, dependencies, devDependencies);
-}
-
-function getPlugins(options: NxGraphqlCodeGeneratorGeneratorSchema): PluginOption[] {
-  if (!options.pluginPreset) {
-    return [];
-  }
-
-  return pluginPresets[options.pluginPreset] || [];
 }
 
 function upsertGraphqlCodegenTask(tree: Tree, options: NormalizedSchema) {
@@ -171,28 +155,42 @@ function addDefaultWorkspaceOptions(tree: Tree, options: NormalizedSchema) {
   updateNxJson(tree, workspace);
 }
 
-function addFiles(tree: Tree, options: NormalizedSchema) {
+function addFiles(tree: Tree, normalizedSchema: NormalizedSchema) {
+  const generationConfig = getGenerationConfig(normalizedSchema);
+
   const templateOptions = {
-    ...options,
-    ...names(options.project),
-    offsetFromRoot: offsetFromRoot(options.projectConfig.root),
     template: '',
+    config: normalizedSchema.config,
+    codegenConfig: generationConfig.codegenConfig,
   };
 
-  const { fileDir } = presetDefaultsMap[options.pluginPreset] || genericPresetDefaults;
-
-  generateFiles(tree, path.join(__dirname, 'files', fileDir), options.projectConfig.root, templateOptions);
+  generateFiles(
+    tree,
+    path.join(__dirname, 'files', generationConfig.fileDir),
+    normalizedSchema.projectConfig.root,
+    templateOptions
+  );
 }
 
-export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {
-  const normalizedOptions = normalizeOptions(tree, options);
+const getGenerationConfig = ({ pluginPreset, output, schema, projectConfig }: NormalizedSchema) => {
+  if (pluginPreset === 'typescript-resolver-files') {
+    const providedOutput = output || 'src/graphql/schema';
 
-  const installTask = checkDependenciesInstalled(tree, normalizedOptions);
-  upsertGraphqlCodegenTask(tree, normalizedOptions);
-  upsertTargetDefaults(tree);
-  addDefaultWorkspaceOptions(tree, normalizedOptions);
-  addFiles(tree, normalizedOptions);
-  await formatFiles(tree);
+    return {
+      fileDir: 'typescript-resolver-files',
+      codegenConfig: {
+        schema,
+        output: path.posix.join(projectConfig.root, providedOutput),
+        presetName: 'typescript-resolver-files',
+        projectRoot: projectConfig.root,
+      },
+    };
+  }
 
-  return installTask;
-}
+  return {
+    fileDir: 'basic',
+    codegenConfig: {
+      schema,
+    },
+  };
+};
