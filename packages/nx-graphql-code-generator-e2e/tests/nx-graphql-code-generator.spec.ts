@@ -1,7 +1,7 @@
 import { ensureNxProject, readFile, readJson, runNxCommandAsync, uniq, updateFile } from '@nx/plugin/testing';
 
 describe('nx-graphql-code-generator:add e2e', () => {
-  it('Generating for brand new project - adds codegen.yml and packages', async () => {
+  it('Generating for brand new project - adds codegen config and packages', async () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
     await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
@@ -16,10 +16,6 @@ describe('nx-graphql-code-generator:add e2e', () => {
     const projectJson = readJson(`libs/${plugin}/project.json`);
     expect(projectJson.targets['graphql-codegen']).toEqual({
       executor: '@eddeee888/nx-graphql-code-generator:codegen',
-      options: {
-        configFile: `libs/${plugin}/graphql-codegen.ts`,
-      },
-      outputs: [],
     });
 
     // check package.json
