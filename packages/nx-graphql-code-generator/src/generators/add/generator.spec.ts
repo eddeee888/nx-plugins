@@ -260,7 +260,6 @@ describe('nx-graphql-code-generator generator', () => {
     it('basic', async () => {
       await libraryGenerator(tree, { name: projectName, directory: 'libs' });
       await generator(tree, { ...options });
-      console.log(tree);
       const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
       expect(codegenConfig).toMatchInlineSnapshot(`
         "import type { CodegenConfig } from '@graphql-codegen/cli';
