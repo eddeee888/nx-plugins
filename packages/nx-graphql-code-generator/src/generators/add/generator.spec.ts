@@ -51,10 +51,6 @@ describe('nx-graphql-code-generator generator', () => {
     expect(projectConfig.targets['graphql-codegen']).toMatchInlineSnapshot(`
       {
         "executor": "@eddeee888/nx-graphql-code-generator:codegen",
-        "options": {
-          "configFile": "libs/test/graphql-codegen.ts",
-        },
-        "outputs": [],
       }
     `);
 
@@ -100,10 +96,6 @@ describe('nx-graphql-code-generator generator', () => {
     expect(projectConfig.targets['graphql-codegen']).toMatchInlineSnapshot(`
       {
         "executor": "@eddeee888/nx-graphql-code-generator:codegen",
-        "options": {
-          "configFile": "apps/node/js/test/graphql-codegen.ts",
-        },
-        "outputs": [],
       }
     `);
 
