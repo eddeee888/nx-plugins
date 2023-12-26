@@ -9,7 +9,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
       `generate @eddeee888/nx-graphql-code-generator:add --project=${plugin} --schema http://localhost:9999/graphql`
     );
 
-    // check graphql-codegen.yml
+    // check graphql-codegen config
     expect(readFile(`libs/${plugin}/graphql-codegen.ts`)).toBeTruthy();
 
     // check projectJson
