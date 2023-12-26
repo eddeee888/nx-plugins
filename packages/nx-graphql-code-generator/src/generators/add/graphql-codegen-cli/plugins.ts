@@ -9,6 +9,7 @@ export interface PluginOption {
 }
 
 export interface PluginPresets {
+  basic: PluginOption[];
   'typescript-react-apollo-client': PluginOption[];
   'typescript-resolver-files': PluginOption[];
 }
@@ -25,14 +26,9 @@ const typescriptOperationsPlugin: PluginOption = {
   value: 'typescript-operations',
   version: '^4.0.0',
 };
-const typescriptApolloFragmentMatcher: PluginOption = {
-  name: `Introspection Fragment Matcher (for Apollo Client)`,
-  package: '@graphql-codegen/fragment-matcher',
-  value: 'fragment-matcher',
-  version: '^5.0.0',
-};
 
 export const pluginPresets: PluginPresets = {
+  basic: [],
   'typescript-react-apollo-client': [
     typescriptLanguagePlugin,
     typescriptOperationsPlugin,
@@ -42,7 +38,18 @@ export const pluginPresets: PluginPresets = {
       value: 'typescript-react-apollo',
       version: '^4.1.0',
     },
-    typescriptApolloFragmentMatcher,
+    {
+      name: 'Near operation file preset',
+      package: '@graphql-codegen/near-operation-file-preset',
+      value: 'near-operation-file',
+      version: '^3.0.0',
+    },
+    {
+      name: `Introspection Fragment Matcher (for Apollo Client)`,
+      package: '@graphql-codegen/fragment-matcher',
+      value: 'fragment-matcher',
+      version: '^5.0.0',
+    },
   ],
   'typescript-resolver-files': [
     {

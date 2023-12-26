@@ -32,18 +32,12 @@
     "pluginPreset": {
       "type": "string",
       "description": "What do you want to generate output for?",
-      "enum": [
-        "typescript-resolver-files",
-        "typescript-react-apollo-client",
-        "typescript-angular-apollo-client",
-        "typescript-vue-apollo-client",
-        "none"
-      ]
+      "enum": ["typescript-resolver-files", "basic"]
     },
     "config": {
       "type": "string",
       "description": "Name of the codegen config file",
-      "default": "graphql-codegen.yml",
+      "default": "graphql-codegen.ts",
       "alias": "c"
     }
   },
