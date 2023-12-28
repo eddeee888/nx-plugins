@@ -1,5 +1,21 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 1.0.0
+
+### Major Changes
+
+- d55c07d: Update presets config
+
+  Call default preset `basic`. Deprecate old presets:
+
+  - `typescript-react-apollo-client`
+  - `typescript-angular-apollo-client`
+  - `typescript-vue-apollo-client`
+
+- d5a7403: Use Nx 17 and update package.json with missing deps
+- f25c2b7: Update typescript-react-apollo-client generators
+- 48b4fdf: Update generator to support Nx 17 workspace config
+
 ## 0.1.1
 
 ### Patch Changes
