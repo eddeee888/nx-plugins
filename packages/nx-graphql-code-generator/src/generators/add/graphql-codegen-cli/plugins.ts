@@ -10,7 +10,8 @@ export interface PluginOption {
 
 export interface PluginPresets {
   basic: PluginOption[];
-  'typescript-react-apollo-client': PluginOption[];
+  'typescript-react-apollo-client-only': PluginOption[];
+  'typescript-react-apollo-client-with-types': PluginOption[];
   'typescript-resolver-files': PluginOption[];
 }
 
@@ -20,37 +21,38 @@ const typescriptLanguagePlugin: PluginOption = {
   value: 'typescript',
   version: '^4.0.0',
 };
-const typescriptOperationsPlugin: PluginOption = {
-  name: 'TypeScript Operations (operations and fragments)',
-  package: '@graphql-codegen/typescript-operations',
-  value: 'typescript-operations',
-  version: '^4.0.0',
-};
+
+const baseApolloClientPlugins: PluginOption[] = [
+  {
+    name: 'TypeScript Operations (operations and fragments)',
+    package: '@graphql-codegen/typescript-operations',
+    value: 'typescript-operations',
+    version: '^4.0.0',
+  },
+  {
+    name: 'TypeScript React Apollo (typed components and HOCs)',
+    package: '@graphql-codegen/typescript-react-apollo',
+    value: 'typescript-react-apollo',
+    version: '^4.1.0',
+  },
+  {
+    name: 'Near operation file preset',
+    package: '@graphql-codegen/near-operation-file-preset',
+    value: 'near-operation-file',
+    version: '^3.0.0',
+  },
+  {
+    name: `Introspection Fragment Matcher (for Apollo Client)`,
+    package: '@graphql-codegen/fragment-matcher',
+    value: 'fragment-matcher',
+    version: '^5.0.0',
+  },
+];
 
 export const pluginPresets: PluginPresets = {
   basic: [],
-  'typescript-react-apollo-client': [
-    typescriptLanguagePlugin,
-    typescriptOperationsPlugin,
-    {
-      name: 'TypeScript React Apollo (typed components and HOCs)',
-      package: '@graphql-codegen/typescript-react-apollo',
-      value: 'typescript-react-apollo',
-      version: '^4.1.0',
-    },
-    {
-      name: 'Near operation file preset',
-      package: '@graphql-codegen/near-operation-file-preset',
-      value: 'near-operation-file',
-      version: '^3.0.0',
-    },
-    {
-      name: `Introspection Fragment Matcher (for Apollo Client)`,
-      package: '@graphql-codegen/fragment-matcher',
-      value: 'fragment-matcher',
-      version: '^5.0.0',
-    },
-  ],
+  'typescript-react-apollo-client-only': baseApolloClientPlugins,
+  'typescript-react-apollo-client-with-types': [...baseApolloClientPlugins, typescriptLanguagePlugin],
   'typescript-resolver-files': [
     {
       name: 'TypeScript Resolver Files preset',

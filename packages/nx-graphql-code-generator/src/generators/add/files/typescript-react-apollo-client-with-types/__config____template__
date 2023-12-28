@@ -1,0 +1,21 @@
+import type { CodegenConfig } from '@graphql-codegen/cli';
+
+const config: CodegenConfig = {
+  schema: '<%= codegenConfig.schema -%>',
+  documents: '<%= codegenConfig.documents -%>',
+  generates: {
+    '<%= codegenConfig.output -%>': {
+      preset: 'near-operation-file',
+      presetConfig: {
+        baseTypesPath: './types.generated',
+      },
+      plugins: ['typescript-operations', 'typescript-react-apollo'],
+    },
+
+    '<%= codegenConfig.output -%>/types.generated.ts': {
+      plugins: ['typescript'],
+    },
+  },
+};
+
+export default config;

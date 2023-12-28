@@ -17,12 +17,12 @@ import { major } from 'semver';
 import { graphqlCodegenCliVersion, graphqlVersion } from '../../utils/versions';
 import { checkAndCleanWithSemver } from '../../utils/checkAndCleanWithSemver';
 import { NxGraphqlCodeGeneratorGeneratorSchema } from './schema';
-import { type PluginOption, pluginPresets } from './graphql-codegen-cli/plugins';
+import { pluginPresets } from './graphql-codegen-cli/plugins';
 
 interface NormalizedSchema extends Required<NxGraphqlCodeGeneratorGeneratorSchema> {
   projectConfig: ProjectConfiguration;
   projectName: string;
-  plugins: PluginOption[];
+  normalizedPluginPreset: keyof typeof pluginPresets;
 }
 
 export default async function (tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSchema) {
@@ -49,18 +49,35 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectConfig = readProjectConfiguration(tree, projectName);
 
-  const pluginPreset = options.pluginPreset || 'basic';
+  const pluginPresetOption = ((): {
+    provided: NormalizedSchema['pluginPreset'];
+    normalized: keyof typeof pluginPresets;
+  } => {
+    const preset = options.pluginPreset || 'basic';
+
+    if (preset === 'typescript-react-apollo-client') {
+      return {
+        provided: preset,
+        normalized: options.externalGeneratedFile
+          ? 'typescript-react-apollo-client-only'
+          : 'typescript-react-apollo-client-with-types',
+      };
+    }
+
+    return { provided: preset, normalized: preset };
+  })();
 
   return {
-    ...options,
+    project: options.project,
+    projectConfig,
+    projectName,
     schema: options.schema || '',
     documents: options.documents || '',
     output: options.output || '',
     config: options.config || 'graphql-codegen.ts',
-    pluginPreset,
-    plugins: pluginPresets[pluginPreset],
-    projectConfig,
-    projectName,
+    pluginPreset: pluginPresetOption.provided,
+    normalizedPluginPreset: pluginPresetOption.normalized,
+    externalGeneratedFile: options.externalGeneratedFile || '',
   };
 }
 
@@ -95,7 +112,7 @@ function checkDependenciesInstalled(tree: Tree, options: NormalizedSchema) {
     });
   }
 
-  options.plugins.forEach((plugin) => {
+  pluginPresets[options.normalizedPluginPreset].forEach((plugin) => {
     if (!packageJson.devDependencies[plugin.package]) {
       updateJson(tree, 'package.json', (json) => {
         json.devDependencies[plugin.package] = plugin.version;
@@ -170,8 +187,15 @@ function addFiles(tree: Tree, normalizedSchema: NormalizedSchema) {
   );
 }
 
-const getGenerationConfig = ({ pluginPreset, output, schema, projectConfig }: NormalizedSchema) => {
-  if (pluginPreset === 'typescript-resolver-files') {
+const getGenerationConfig = ({
+  projectConfig,
+  schema,
+  documents,
+  normalizedPluginPreset,
+  output,
+  externalGeneratedFile,
+}: NormalizedSchema) => {
+  if (normalizedPluginPreset === 'typescript-resolver-files') {
     const providedOutput = output || 'src/graphql/schema';
 
     return {
@@ -181,6 +205,31 @@ const getGenerationConfig = ({ pluginPreset, output, schema, projectConfig }: No
         output: path.posix.join(projectConfig.root, providedOutput),
         presetName: 'typescript-resolver-files',
         projectRoot: projectConfig.root,
+      },
+    };
+  }
+
+  if (normalizedPluginPreset === 'typescript-react-apollo-client-only') {
+    const providedOutput = output || projectConfig.sourceRoot || 'src';
+    return {
+      fileDir: 'typescript-react-apollo-client-only',
+      codegenConfig: {
+        schema,
+        documents,
+        outout: path.posix.join(projectConfig.root, providedOutput),
+        baseTypesPath: externalGeneratedFile,
+      },
+    };
+  }
+
+  if (normalizedPluginPreset === 'typescript-react-apollo-client-with-types') {
+    const providedOutput = output || projectConfig.sourceRoot || 'src';
+    return {
+      fileDir: 'typescript-react-apollo-client-with-types',
+      codegenConfig: {
+        schema,
+        documents,
+        outout: path.posix.join(projectConfig.root, providedOutput),
       },
     };
   }
