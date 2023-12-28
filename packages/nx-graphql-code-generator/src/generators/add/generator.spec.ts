@@ -230,33 +230,6 @@ describe('nx-graphql-code-generator generator', () => {
   });
 
   describe('generates plugin presets', () => {
-    // FIXME: add back this test once it's fixed
-    // it('typescript-react-apollo-client', async () => {
-    //   await libraryGenerator(tree, { name: projectName });
-    //   await generator(tree, { ...options, pluginPreset: 'typescript-react-apollo-client' });
-
-    //   const codegenConfig = tree.read(`libs/${projectName}/codegen.yml`, 'utf-8');
-    //   expect(codegenConfig).toMatchInlineSnapshot(`
-    //     "# https://www.graphql-code-generator.com/docs/config-reference/codegen-config
-    //     overwrite: true
-    //     schema: https://localhost:9999/graphql
-    //     generates:
-    //       libs/test/src/graphql/generated.ts:
-    //         plugins:
-    //           - typescript
-    //           - typescript-operations
-    //           - typescript-react-apollo
-    //           - fragment-matcher
-    //     "
-    //   `);
-
-    //   const packageJson = readJson(tree, 'package.json');
-    //   expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^2.4.9');
-    //   expect(packageJson.devDependencies['@graphql-codegen/typescript-operations']).toBe('^2.3.6');
-    //   expect(packageJson.devDependencies['@graphql-codegen/typescript-react-apollo']).toBe('^3.2.12');
-    //   expect(packageJson.devDependencies['@graphql-codegen/fragment-matcher']).toBe('^3.2.1');
-    // });
-
     it('basic', async () => {
       await libraryGenerator(tree, { name: projectName, directory: 'libs' });
       await generator(tree, { ...options });
@@ -301,6 +274,95 @@ describe('nx-graphql-code-generator generator', () => {
 
       const packageJson = readJson(tree, 'package.json');
       expect(packageJson.devDependencies['@eddeee888/gcg-typescript-resolver-files']).toBe('^0.7.2');
+    });
+
+    it('typescript-react-apollo-client - with externalGeneratedFile', async () => {
+      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await generator(tree, {
+        ...options,
+        documents: `libs/${projectName}/**/*.graphql`,
+        externalGeneratedFile: '~@my-app/graphq-types',
+        pluginPreset: 'typescript-react-apollo-client',
+      });
+
+      const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "import type { CodegenConfig } from '@graphql-codegen/cli';
+
+        const config: CodegenConfig = {
+          schema: 'https://localhost:9999/graphql',
+          documents: 'libs/test/**/*.graphql',
+          generates: {
+            'libs/test/src': {
+              preset: 'near-operation-file',
+              presetConfig: {
+                baseTypesPath: '~@my-app/graphq-types',
+              },
+              plugins: ['typescript-operations', 'typescript-react-apollo'],
+            },
+          },
+        };
+
+        export default config;
+        "
+      `);
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe(undefined);
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-operations']).toBe('^4.0.0');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-react-apollo']).toBe('^4.1.0');
+      expect(packageJson.devDependencies['@graphql-codegen/near-operation-file-preset']).toBe('^3.0.0');
+    });
+
+    it('typescript-react-apollo-client - without externalGeneratedFile', async () => {
+      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await generator(tree, {
+        ...options,
+        documents: `libs/${projectName}/**/*.graphql`,
+        pluginPreset: 'typescript-react-apollo-client',
+      });
+
+      const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "import type { CodegenConfig } from '@graphql-codegen/cli';
+
+        const config: CodegenConfig = {
+          schema: 'https://localhost:9999/graphql',
+          documents: 'libs/test/**/*.graphql',
+          generates: {
+            'libs/test/src': {
+              preset: 'near-operation-file',
+              presetConfig: {
+                baseTypesPath: './types.generated.ts',
+              },
+              plugins: ['typescript-operations', 'typescript-react-apollo'],
+            },
+
+            'libs/test/src/types.generated.ts': {
+              plugins: ['typescript'],
+            },
+          },
+        };
+
+        export default config;
+        "
+      `);
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^4.0.0');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-operations']).toBe('^4.0.0');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript-react-apollo']).toBe('^4.1.0');
+      expect(packageJson.devDependencies['@graphql-codegen/near-operation-file-preset']).toBe('^3.0.0');
+    });
+
+    it('throws error if --document is not provided for client presets', async () => {
+      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await expect(
+        generator(tree, {
+          ...options,
+          pluginPreset: 'typescript-react-apollo-client',
+        })
+      ).rejects.toThrow();
     });
 
     it('does not overwrite packages if already exists', async () => {

@@ -214,26 +214,26 @@ const getGenerationConfig = ({
   }
 
   if (normalizedPluginPreset === 'typescript-react-apollo-client-only') {
-    const providedOutput = output || projectConfig.sourceRoot || 'src';
+    const providedOutput = output || 'src';
     return {
       fileDir: 'typescript-react-apollo-client-only',
       codegenConfig: {
         schema,
         documents,
-        outout: path.posix.join(projectConfig.root, providedOutput),
+        output: projectConfig.sourceRoot || path.posix.join(projectConfig.root, providedOutput),
         baseTypesPath: externalGeneratedFile,
       },
     };
   }
 
   if (normalizedPluginPreset === 'typescript-react-apollo-client-with-types') {
-    const providedOutput = output || projectConfig.sourceRoot || 'src';
+    const providedOutput = output || 'src';
     return {
       fileDir: 'typescript-react-apollo-client-with-types',
       codegenConfig: {
         schema,
         documents,
-        outout: path.posix.join(projectConfig.root, providedOutput),
+        output: projectConfig.sourceRoot || path.posix.join(projectConfig.root, providedOutput),
       },
     };
   }

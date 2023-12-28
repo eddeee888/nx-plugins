@@ -41,12 +41,6 @@ const baseApolloClientPlugins: PluginOption[] = [
     value: 'near-operation-file',
     version: '^3.0.0',
   },
-  {
-    name: `Introspection Fragment Matcher (for Apollo Client)`,
-    package: '@graphql-codegen/fragment-matcher',
-    value: 'fragment-matcher',
-    version: '^5.0.0',
-  },
 ];
 
 export const pluginPresets: PluginPresets = {
