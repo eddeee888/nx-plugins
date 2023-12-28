@@ -44,6 +44,10 @@ function normalizeOptions(tree: Tree, options: NxGraphqlCodeGeneratorGeneratorSc
     throw new Error('--schema is required');
   }
 
+  if (options.pluginPreset === 'typescript-react-apollo-client' && !options.documents) {
+    throw new Error('--document is required when generating client presets');
+  }
+
   const name = names(options.project).fileName;
   const projectDirectory = name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
