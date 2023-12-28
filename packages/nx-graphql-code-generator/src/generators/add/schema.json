@@ -26,19 +26,23 @@
     },
     "documents": {
       "type": "string",
-      "description": "Array of paths or glob patterns for files which export GraphQL documents e.g. libs/<project name>/**/*.graphql",
+      "description": "Array of paths or glob patterns for files which export GraphQL documents. Required for client presets. e.g. libs/<project name>/**/*.graphql",
       "alias": "d"
-    },
-    "pluginPreset": {
-      "type": "string",
-      "description": "What do you want to generate output for?",
-      "enum": ["typescript-resolver-files", "basic"]
     },
     "config": {
       "type": "string",
       "description": "Name of the codegen config file",
       "default": "graphql-codegen.ts",
       "alias": "c"
+    },
+    "pluginPreset": {
+      "type": "string",
+      "description": "What do you want to generate output for?",
+      "enum": ["typescript-resolver-files", "typescript-react-apollo-client", "basic"]
+    },
+    "externalGeneratedFile": {
+      "type": "string",
+      "description": "Path to independently generated type file. Usable for with `pluginPreset=typescript-react-apollo-client`). Example: `~@my-graphql-lib/generated-types`, `./types.generated.ts`"
     }
   },
   "required": ["project", "schema"]
