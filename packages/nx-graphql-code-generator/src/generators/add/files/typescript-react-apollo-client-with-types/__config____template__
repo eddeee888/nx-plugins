@@ -7,7 +7,7 @@ const config: CodegenConfig = {
     '<%= codegenConfig.output -%>': {
       preset: 'near-operation-file',
       presetConfig: {
-        baseTypesPath: './types.generated',
+        baseTypesPath: './types.generated.ts',
       },
       plugins: ['typescript-operations', 'typescript-react-apollo'],
     },
