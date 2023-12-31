@@ -220,7 +220,7 @@ const getGenerationConfig = ({
       codegenConfig: {
         schema,
         documents,
-        output: projectConfig.sourceRoot || path.posix.join(projectConfig.root, providedOutput),
+        output: path.posix.join(projectConfig.root, providedOutput),
         baseTypesPath: externalGeneratedFile,
       },
     };
@@ -233,7 +233,18 @@ const getGenerationConfig = ({
       codegenConfig: {
         schema,
         documents,
-        output: projectConfig.sourceRoot || path.posix.join(projectConfig.root, providedOutput),
+        output: path.posix.join(projectConfig.root, providedOutput),
+      },
+    };
+  }
+
+  if (normalizedPluginPreset === 'typescript-types') {
+    const providedOutput = output || path.posix.join('src', 'types.generated.ts');
+    return {
+      fileDir: 'typescript-types',
+      codegenConfig: {
+        schema,
+        output: path.posix.join(projectConfig.root, providedOutput),
       },
     };
   }

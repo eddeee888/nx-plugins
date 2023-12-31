@@ -21,7 +21,7 @@
     },
     "output": {
       "type": "string",
-      "description": "Output to be generated ( relative to the project root ). More can be added later.",
+      "description": "Output to be generated ( relative to the project root ).",
       "alias": "o"
     },
     "documents": {
@@ -38,7 +38,7 @@
     "pluginPreset": {
       "type": "string",
       "description": "What do you want to generate output for?",
-      "enum": ["typescript-resolver-files", "typescript-react-apollo-client", "basic"]
+      "enum": ["basic", "typescript-types", "typescript-react-apollo-client", "typescript-resolver-files"]
     },
     "externalGeneratedFile": {
       "type": "string",
