@@ -105,6 +105,7 @@ const setupNetwork = (projectConfig: ProjectConfiguration): void => {
     removeNetwork(projectConfig);
   }
 
+  console.log(`=> Creating ${hostResolverFile} ...`);
   execSync(`sudo mkdir -p ${resolverDir}`);
 
   execSync(
