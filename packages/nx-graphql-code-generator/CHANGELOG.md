@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 1.1.0
+
+### Minor Changes
+
+- 0fa6fb9: Add typescript-types preset and simplify generated output path changes
+
 ## 1.0.0
 
 ### Major Changes
