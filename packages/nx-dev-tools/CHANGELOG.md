@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 1.0.1
+
+### Patch Changes
+
+- 5d0cf91: Fix bug where setting up network will fail on brand new machines and missing package.json deps
+
 ## 1.0.0
 
 ### Major Changes
