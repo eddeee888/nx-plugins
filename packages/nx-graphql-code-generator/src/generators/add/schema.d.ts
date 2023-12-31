@@ -4,6 +4,6 @@ export interface NxGraphqlCodeGeneratorGeneratorSchema {
   documents?: string;
   output?: string;
   config?: string;
-  pluginPreset?: 'typescript-resolver-files' | 'typescript-react-apollo-client' | 'basic';
+  pluginPreset?: 'basic' | 'typescript-types' | 'typescript-react-apollo-client' | 'typescript-resolver-files';
   externalGeneratedFile?: string;
 }

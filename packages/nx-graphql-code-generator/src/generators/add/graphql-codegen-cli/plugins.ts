@@ -10,6 +10,7 @@ export interface PluginOption {
 
 export interface PluginPresets {
   basic: PluginOption[];
+  'typescript-types': PluginOption[];
   'typescript-react-apollo-client-only': PluginOption[];
   'typescript-react-apollo-client-with-types': PluginOption[];
   'typescript-resolver-files': PluginOption[];
@@ -45,6 +46,7 @@ const baseApolloClientPlugins: PluginOption[] = [
 
 export const pluginPresets: PluginPresets = {
   basic: [],
+  'typescript-types': [typescriptLanguagePlugin],
   'typescript-react-apollo-client-only': baseApolloClientPlugins,
   'typescript-react-apollo-client-with-types': [...baseApolloClientPlugins, typescriptLanguagePlugin],
   'typescript-resolver-files': [
