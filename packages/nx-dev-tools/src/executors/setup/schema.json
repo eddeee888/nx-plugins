@@ -7,7 +7,7 @@
   "properties": {
     "command": {
       "type": "string",
-      "enum": ["cert", "network-up", "network-down"],
+      "enum": ["cert", "network-up", "network-down", "up", "down", "logs", "start", "stop", "open"],
       "description": "Sub command to run"
     }
   },
