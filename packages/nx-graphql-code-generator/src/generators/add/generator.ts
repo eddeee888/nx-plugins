@@ -200,7 +200,7 @@ const getGenerationConfig = ({
   externalGeneratedFile,
 }: NormalizedSchema) => {
   if (normalizedPluginPreset === 'typescript-resolver-files') {
-    const providedOutput = output || 'src/graphql/schema';
+    const providedOutput = output || path.posix.join('src', 'graphql', 'schema');
 
     return {
       fileDir: 'typescript-resolver-files',

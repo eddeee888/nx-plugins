@@ -247,6 +247,31 @@ describe('nx-graphql-code-generator generator', () => {
       `);
     });
 
+    it('typescript-types', async () => {
+      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await generator(tree, { ...options, pluginPreset: 'typescript-types' });
+
+      const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
+      expect(codegenConfig).toMatchInlineSnapshot(`
+        "import type { CodegenConfig } from '@graphql-codegen/cli';
+
+        const config: CodegenConfig = {
+          schema: 'https://localhost:9999/graphql',
+          generates: {
+            'libs/test/src/types.generated.ts': {
+              plugins: ['typescript'],
+            },
+          },
+        };
+
+        export default config;
+        "
+      `);
+
+      const packageJson = readJson(tree, 'package.json');
+      expect(packageJson.devDependencies['@graphql-codegen/typescript']).toBe('^4.0.0');
+    });
+
     it('typescript-resolver-files', async () => {
       await libraryGenerator(tree, { name: projectName, directory: 'libs' });
       await generator(tree, { ...options, pluginPreset: 'typescript-resolver-files' });
