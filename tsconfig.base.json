@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@eddeee888/eslint-plugin": ["packages/eslint-config/src/index.ts"],
       "@eddeee888/nx-dev-tools": ["packages/nx-dev-tools/src/index.ts"],
       "@eddeee888/nx-graphql-code-generator": ["packages/nx-graphql-code-generator/src/index.ts"]
     }
