@@ -3,5 +3,3 @@
 This plugin contains extendable ESLint configs.
 
 ## Usage
-
-TODO
