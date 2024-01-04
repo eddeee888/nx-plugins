@@ -47,6 +47,7 @@ jobs:
           echo "nx-dev-tools=$(./tools/bin/check-affected.sh lib nx-dev-tools origin/master)" >> $GITHUB_OUTPUT
           echo "nx-dev-tools-e2e=$(./tools/bin/check-affected.sh lib nx-dev-tools-e2e origin/master)" >> $GITHUB_OUTPUT
           echo "eslint-config=$(./tools/bin/check-affected.sh lib eslint-config origin/master)" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
 
   nx-graphql-code-generator:
     name:
