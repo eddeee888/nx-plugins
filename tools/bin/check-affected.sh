@@ -32,7 +32,7 @@ fi
 
 # If at least one affected found
 # Split string into array
-affectedArr=(${affected// / })
+affectedArr=(${affected//, / })
 for i in "${affectedArr[@]}"
 do
   if [[ "$i" == "$project" ]]; then
