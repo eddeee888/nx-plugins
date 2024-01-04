@@ -21,7 +21,7 @@ if [ -z "$baseBranch" ]; then
   exit 1
 fi
 
-affected=$(yarn --silent nx print-affected --type=$projectType --select=projects --exclude=workspace-plugin --base=$baseBranch)
+affected=$(yarn --silent nx show projects --affected --type=$projectType --base=$baseBranch --select=projects)
 affectedFinal=${affected:=""}
 
 # If no affected found
@@ -32,7 +32,7 @@ fi
 
 # If at least one affected found
 # Split string into array
-affectedArr=(${affected//, / })
+affectedArr=(${affected// / })
 for i in "${affectedArr[@]}"
 do
   if [[ "$i" == "$project" ]]; then
