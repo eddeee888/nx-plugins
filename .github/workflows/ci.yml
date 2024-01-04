@@ -17,7 +17,7 @@ jobs:
       affected-nx-graphql-code-generator-e2e: ${{ steps.affected.outputs.nx-graphql-code-generator-e2e }}
       affected-nx-dev-tools: ${{ steps.affected.outputs.nx-dev-tools }}
       affected-nx-dev-tools-e2e: ${{ steps.affected.outputs.nx-dev-tools-e2e }}
-      affected-eslint-config: ${{ steps.affected.outputs.eslint-config }}
+      affected-eslint-plugin: ${{ steps.affected.outputs.eslint-plugin }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.12.0
@@ -46,7 +46,7 @@ jobs:
           echo "nx-graphql-code-generator-e2e=$(./tools/bin/check-affected.sh lib nx-graphql-code-generator-e2e origin/master)" >> $GITHUB_OUTPUT
           echo "nx-dev-tools=$(./tools/bin/check-affected.sh lib nx-dev-tools origin/master)" >> $GITHUB_OUTPUT
           echo "nx-dev-tools-e2e=$(./tools/bin/check-affected.sh lib nx-dev-tools-e2e origin/master)" >> $GITHUB_OUTPUT
-          echo "eslint-config=$(./tools/bin/check-affected.sh lib eslint-config origin/master)" >> $GITHUB_OUTPUT
+          echo "eslint-plugin=$(./tools/bin/check-affected.sh lib eslint-plugin origin/master)" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
 
   nx-graphql-code-generator:
@@ -149,10 +149,10 @@ jobs:
       - name: e2e
         run: yarn nx e2e nx-dev-tools-e2e
 
-  eslint-config:
+  eslint-plugin:
     runs-on: ubuntu-22.04
     needs: precheck
-    if: ${{ needs.precheck.outputs.affected-eslint-config == 'true' }}
+    if: ${{ needs.precheck.outputs.affected-eslint-plugin == 'true' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -168,7 +168,7 @@ jobs:
         run: yarn install --prefer-offline
 
       - name: Lint
-        run: yarn nx lint eslint-config
+        run: yarn nx lint eslint-plugin
 
       - name: Build
-        run: yarn nx build eslint-config
+        run: yarn nx build eslint-plugin
