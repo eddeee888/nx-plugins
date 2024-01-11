@@ -68,4 +68,29 @@ yarn add -DE eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11
     }
   ]
 }
+
+// Project .eslintrc.json
+{
+  "extends": ["../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    // ... other config
+    {
+      "files": ["*.ts", "*.tsx"],
+      // 👇 Add parserOptions.project that points to your project tsconfig.json file
+      "parserOptions": {
+        "project": ["pathto/project/tsconfig(.*)?.json"]
+      },
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
+  ],
+  "env": {
+    "jest": true
+  }
+}
+
 ```
