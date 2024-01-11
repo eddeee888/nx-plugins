@@ -40,3 +40,32 @@ yarn add -DE eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11
   ]
 }
 ```
+
+### Nx monorepo
+
+```json
+// Root .eslintrc.json
+{
+  // ... other options
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@nx/typescript",
+        // 👇 Add this line for TypeScript files
+        "plugin:@eddeee888/typescript"
+      ],
+      "rules": {}
+    },
+    {
+      "files": ["*.tsx"],
+      "extends": [
+        "plugin:@nx/react-typescript",
+        // 👇 Add this line if you use React TypeScript
+        "plugin:@eddeee888/react-typescript"
+      ],
+      "rules": {}
+    }
+  ]
+}
+```
