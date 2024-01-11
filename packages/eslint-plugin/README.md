@@ -93,4 +93,21 @@ yarn add -DE eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11
   }
 }
 
+// (Optional) Choose files to lint by using `project.json` 's `lintFilePatterns`
+//
+// Sometimes, the patterns set in a project's .eslintrc.json may not work correctly,
+// especially when running Nx CLI: `nx lint <project>`
+// In such case, try using `lintFilePatterns` in the project's `project.json`
+{
+  // ... other configs
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["{projectRoot}/app/**/*.tsx", "{projectRoot}/app/**/*.ts"]
+      }
+    },
+  }
+}
 ```
