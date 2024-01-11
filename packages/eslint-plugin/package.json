@@ -1,10 +1,21 @@
 {
   "name": "@eddeee888/eslint-plugin",
-  "version": "0.0.1",
-  "dependencies": {
-    "tslib": "^2.3.0"
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": "Eddy Nguyen <ch@eddeee888.me>",
+  "description": "An ESLint plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddeee888/nx-plugins.git",
+    "directory": "packages/eslint-plugin"
   },
   "type": "commonjs",
   "main": "./src/index.js",
-  "typings": "./src/index.d.ts"
+  "typings": "./src/index.d.ts",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "publishConfig": {
+    "directory": "../../dist/packages/eslint-plugin"
+  }
 }

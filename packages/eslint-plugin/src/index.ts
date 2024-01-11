@@ -1,10 +1,10 @@
 import { typescriptConfig } from './configs/typescript';
-import { typescriptReactConfig } from './configs/typescript-react';
+import { reactTypescriptConfig } from './configs/react-typescript';
 
 module.exports = {
   configs: {
     typescript: typescriptConfig,
-    typescriptReact: typescriptReactConfig,
+    ['react-typescript']: reactTypescriptConfig,
   },
   rules: {},
 };
