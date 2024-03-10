@@ -22,18 +22,13 @@ if [ -z "$baseBranch" ]; then
 fi
 
 affected=$(yarn --silent nx show projects --affected --type=$projectType --base=$baseBranch --select=projects)
-affectedFinal=${affected:=""}
 
-# If no affected found
-if [ -z "$affectedFinal" ]; then
+if [ -z "$affected" ]; then
   echo "false"
   exit 0
 fi
 
-# If at least one affected found
-# Split string into array
-affectedArr=(${affected//, / })
-for i in "${affectedArr[@]}"
+for i in $affected
 do
   if [[ "$i" == "$project" ]]; then
       echo "true"

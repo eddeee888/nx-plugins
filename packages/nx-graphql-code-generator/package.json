@@ -4,6 +4,14 @@
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
   "description": "The Nx Plugin to integrate graphql-code-generator with Nx projects",
+  "keywords": [
+    "nx",
+    "nx-plugin",
+    "monorepo",
+    "graphql-code-generator",
+    "graphql-codegen",
+    "codegen"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddeee888/nx-plugins.git",
