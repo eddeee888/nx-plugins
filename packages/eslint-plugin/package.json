@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
-  "description": "An ESLint plugin",
+  "description": "An ESLint plugins",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddeee888/nx-plugins.git",

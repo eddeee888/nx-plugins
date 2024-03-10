@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
-  "description": "The Nx Plugin to integrate graphql-code-generator with Nx projects",
+  "description": "The Nx Plugin to integrate graphql-code-generator with Nx project",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddeee888/nx-plugins.git",
