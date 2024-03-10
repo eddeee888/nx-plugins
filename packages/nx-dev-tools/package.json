@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
-  "description": "The Nx Plugin to add essential Docker and networking config to an Nx workspace. This is a test",
+  "description": "The Nx Plugin to add essential Docker and networking config to an Nx workspace",
   "keywords": [
     "nx",
     "monorepo",
