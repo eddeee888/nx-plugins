@@ -7,7 +7,7 @@ This plugin contains extendable ESLint configs.
 1. Install the plugin and TypeScript config
 
 ```
-yarn add -DE @eddeee888/eslint-plugin @typescript-eslint/eslint-plugin @typescript-eslint/parser
+yarn add -DE eslint @eddeee888/eslint-plugin @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ```
 
 2. Install React plugins - only if you are planning to work with React files
@@ -21,6 +21,7 @@ yarn add -DE eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11
 ### Normal repo
 
 ```json
+// .eslintrc.json
 {
   "plugins": ["@eddeee888"],
   "parserOptions": {
@@ -28,10 +29,12 @@ yarn add -DE eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11
   },
   "overrides": [
     {
+      // 👇 Omit ".tsx" if you don't use React TypeScript
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@eddeee888/typescript"],
       "rules": {}
     },
+    // 👇 Omit this block if you don't use React TypeScript
     {
       "files": ["*.tsx"],
       "extends": ["plugin:@eddeee888/react-typescript"],
