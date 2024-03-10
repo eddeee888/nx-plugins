@@ -4,6 +4,12 @@
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
   "description": "The Nx Plugin to add essential Docker and networking config to an Nx workspace",
+  "keywords": [
+    "nx",
+    "monorepo",
+    "docker",
+    "dev-tools"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddeee888/nx-plugins.git",
