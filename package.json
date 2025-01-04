@@ -25,7 +25,7 @@
     "@swc/cli": "0.3.14",
     "@swc/core": "1.5.7",
     "@types/jest": "29.5.14",
-    "@types/node": "20.11.25",
+    "@types/node": "22.10.5",
     "@types/semver": "7.5.6",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
