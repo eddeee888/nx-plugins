@@ -19,7 +19,7 @@ describe('nx-graphql-code-generator generator', () => {
   });
 
   it('generates files to library', async () => {
-    await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+    await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
     await generator(tree, options);
 
     // Root
@@ -72,7 +72,7 @@ describe('nx-graphql-code-generator generator', () => {
   it('generates files to a nested project', async () => {
     const directory = 'node/js';
     const finalProjectName = `node-js-${projectName}`;
-    await applicationGenerator(tree, { name: projectName, directory });
+    await applicationGenerator(tree, { name: finalProjectName, directory: `apps/${directory}/${projectName}` });
     await generator(tree, { ...options, project: finalProjectName });
 
     // Root
@@ -128,7 +128,7 @@ describe('nx-graphql-code-generator generator', () => {
       }
     `);
 
-    await libraryGenerator(tree, { name: projectName + '2' });
+    await libraryGenerator(tree, { name: projectName + '2', directory: 'other-lib' });
     await generator(tree, { ...options, config: 'codegen.ts', schema: 'libs/other-lib/*.graphqls' });
 
     expect(workspaceConfig.generators['@eddeee888/nx-graphql-code-generator']).toMatchInlineSnapshot(`
@@ -176,7 +176,7 @@ describe('nx-graphql-code-generator generator', () => {
   });
 
   it('generates schema path correctly to codegen config', async () => {
-    await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+    await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
     await generator(tree, { ...options, schema: '**/*.graphqls' });
 
     const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
@@ -194,7 +194,7 @@ describe('nx-graphql-code-generator generator', () => {
   });
 
   it('generates documents path correctly to codegen config', async () => {
-    await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+    await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
     await generator(tree, { ...options, documents: '**/*.graphqls' });
 
     const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
@@ -212,7 +212,7 @@ describe('nx-graphql-code-generator generator', () => {
   });
 
   it('generates custom codegen config filename', async () => {
-    await libraryGenerator(tree, { name: projectName });
+    await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
     await generator(tree, { ...options, config: 'codegen.ts' });
 
     const codegenConfig = tree.read(`libs/${projectName}/codegen.ts`, 'utf-8');
@@ -231,7 +231,7 @@ describe('nx-graphql-code-generator generator', () => {
 
   describe('generates plugin presets', () => {
     it('basic', async () => {
-      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
       await generator(tree, { ...options });
       const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
       expect(codegenConfig).toMatchInlineSnapshot(`
@@ -248,7 +248,7 @@ describe('nx-graphql-code-generator generator', () => {
     });
 
     it('typescript-types', async () => {
-      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
       await generator(tree, { ...options, pluginPreset: 'typescript-types' });
 
       const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
@@ -273,7 +273,7 @@ describe('nx-graphql-code-generator generator', () => {
     });
 
     it('typescript-resolver-files', async () => {
-      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
       await generator(tree, { ...options, pluginPreset: 'typescript-resolver-files' });
 
       const codegenConfig = tree.read(`libs/${projectName}/graphql-codegen.ts`, 'utf-8');
@@ -302,7 +302,7 @@ describe('nx-graphql-code-generator generator', () => {
     });
 
     it('typescript-react-apollo-client - with externalGeneratedFile', async () => {
-      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
       await generator(tree, {
         ...options,
         documents: `libs/${projectName}/**/*.graphql`,
@@ -340,7 +340,7 @@ describe('nx-graphql-code-generator generator', () => {
     });
 
     it('typescript-react-apollo-client - without externalGeneratedFile', async () => {
-      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
       await generator(tree, {
         ...options,
         documents: `libs/${projectName}/**/*.graphql`,
@@ -391,7 +391,7 @@ describe('nx-graphql-code-generator generator', () => {
     });
 
     it('does not overwrite packages if already exists', async () => {
-      await libraryGenerator(tree, { name: projectName, directory: 'libs' });
+      await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
       writeJson(tree, 'package.json', {
         devDependencies: {
           '@eddeee888/gcg-typescript-resolver-files': '0.0.1',
@@ -426,7 +426,7 @@ describe('nx-graphql-code-generator generator', () => {
   });
 
   it('throws error if there is no schema', async () => {
-    await libraryGenerator(tree, { name: projectName });
+    await libraryGenerator(tree, { name: projectName, directory: `libs/${projectName}` });
     await expect(generator(tree, { ...options, schema: undefined })).rejects.toEqual(new Error('--schema is required'));
   });
 });
