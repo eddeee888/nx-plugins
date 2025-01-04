@@ -4,7 +4,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
   it('Generating for brand new project - adds codegen config and packages', async () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
-    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
+    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs/${plugin} --no-interactive`);
     await runNxCommandAsync(
       `generate @eddeee888/nx-graphql-code-generator:add --project=${plugin} --schema http://localhost:9999/graphql`
     );
@@ -46,7 +46,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
   it('--documents - adds path to documents', async () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
-    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
+    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs/${plugin} --no-interactive`);
     await runNxCommandAsync(
       `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --documents libs/**/*.graphql`
     );
@@ -56,7 +56,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
   it('--config - generates custom codegen config filename correctly', async () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
-    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
+    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs/${plugin} --no-interactive`);
     await runNxCommandAsync(
       `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --config codegen.ts`
     );
@@ -66,7 +66,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
   it('--pluginPreset - generates pluginPreset correctly', async () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
-    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
+    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs/${plugin} --no-interactive`);
     await runNxCommandAsync(
       `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql --pluginPreset typescript-resolver-files`
     );
@@ -80,7 +80,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
 
-    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
+    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs/${plugin} --no-interactive`);
 
     const rootPackageJson = readJson('package.json');
     rootPackageJson.dependencies.graphql = '15.0.0';
@@ -100,7 +100,7 @@ describe('nx-graphql-code-generator:add e2e', () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
 
-    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
+    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs/${plugin} --no-interactive`);
 
     const rootPackageJson = readJson('package.json');
     rootPackageJson.dependencies.graphql = '99.0.0';
@@ -121,7 +121,7 @@ describe('nx-graphql-code-generator:codegen e2e', () => {
   it('generates templates with dummy plugin', async () => {
     const plugin = uniq('nx-graphql-code-generator');
     ensureNxProject('@eddeee888/nx-graphql-code-generator', 'dist/packages/nx-graphql-code-generator');
-    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs --no-interactive`);
+    await runNxCommandAsync(`generate @nx/js:library --name=${plugin} --directory=libs/${plugin} --no-interactive`);
     await runNxCommandAsync(
       `generate @eddeee888/nx-graphql-code-generator:add --project ${plugin} --schema http://localhost:9999/graphql`
     );
