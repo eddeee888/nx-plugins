@@ -97,6 +97,11 @@ describe('Infra Executor', () => {
             'project-b': { root: 'libs/project-b' },
           },
         },
+        nxJsonConfiguration: {},
+        projectGraph: {
+          dependencies: {},
+          nodes: {},
+        },
       }
     );
     expect(childProcess.execSync).toHaveBeenCalledWith(expected.command, { stdio: 'inherit' });
