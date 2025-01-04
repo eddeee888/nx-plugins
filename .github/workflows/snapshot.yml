@@ -41,7 +41,7 @@ jobs:
 
       - name: Report failure
         if: failure()
-        uses: octokit/request-action@v2.1.0
+        uses: octokit/request-action@v2.4.0
         with:
           route: POST /repos/{owner}/{repo}/issues/{issue_number}/comments
           owner: ${{ github.repository_owner }}
@@ -58,7 +58,7 @@ jobs:
     steps:
       - name: Get Pull Request ref
         id: get_pull_request_ref
-        uses: octokit/request-action@v2.1.0
+        uses: octokit/request-action@v2.4.0
         with:
           route: GET /repos/{owner}/{repo}/pulls/{issue_number}
           owner: ${{ github.repository_owner }}
@@ -101,7 +101,7 @@ jobs:
 
       - name: Report success
         if: success()
-        uses: octokit/request-action@v2.1.0
+        uses: octokit/request-action@v2.4.0
         with:
           route: POST /repos/{owner}/{repo}/issues/{issue_number}/comments
           owner: ${{ github.repository_owner }}
@@ -113,7 +113,7 @@ jobs:
 
       - name: Report failure
         if: failure()
-        uses: octokit/request-action@v2.1.0
+        uses: octokit/request-action@v2.4.0
         with:
           route: POST /repos/{owner}/{repo}/issues/{issue_number}/comments
           owner: ${{ github.repository_owner }}
