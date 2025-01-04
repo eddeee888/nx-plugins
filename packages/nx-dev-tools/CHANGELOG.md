@@ -1,5 +1,11 @@
 # @eddeee888/nx-dev-tools
 
+## 2.0.0
+
+### Major Changes
+
+- 4ca1c73: Support nx@20
+
 ## 1.0.1
 
 ### Patch Changes

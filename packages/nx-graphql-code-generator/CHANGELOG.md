@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 2.0.0
+
+### Major Changes
+
+- 4ca1c73: Support nx@20
+
 ## 1.1.0
 
 ### Minor Changes
