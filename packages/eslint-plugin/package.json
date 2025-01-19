@@ -1,6 +1,6 @@
 {
   "name": "@eddeee888/eslint-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "author": "Eddy Nguyen <ch@eddeee888.me>",
   "description": "An ESLint plugin with standard TypeScript and React config to be used in standalone repos or in Nx monorepos.",
