@@ -23,7 +23,7 @@ export const typescriptConfig = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'error',
     'no-throw-literal': 'off',
-    '@typescript-eslint/no-throw-literal': 'error',
+    '@typescript-eslint/only-throw-error': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     'no-unused-expressions': 'off',
     '@typescript-eslint/no-unused-expressions': 'error',
