@@ -20,7 +20,13 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
-    "tslib": "^2.3.0"
+    "@eslint/js": "^9.37.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "tslib": "^2.4.1",
+    "typescript-eslint": "^8.46.1"
   },
   "publishConfig": {
     "directory": "../../dist/packages/eslint-plugin"
