@@ -4,113 +4,56 @@ This plugin contains extendable ESLint configs.
 
 ## Installation
 
-1. Install the plugin and TypeScript config
-
-```
-yarn add -DE eslint @eddeee888/eslint-plugin @typescript-eslint/eslint-plugin @typescript-eslint/parser
-```
-
-2. Install React plugins - only if you are planning to work with React files
-
-```
-yarn add -DE eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y
+```bash
+yarn add -DE eslint @eddeee888/eslint-plugin
 ```
 
 ## Usage
 
 ### Normal repo
 
-```json
-// .eslintrc.json
-{
-  "plugins": ["@eddeee888"],
-  "parserOptions": {
-    "project": ["tsconfig.json"]
-  },
-  "overrides": [
-    {
-      // 👇 Omit ".tsx" if you don't use React TypeScript
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@eddeee888/typescript"],
-      "rules": {}
+```js
+// eslint.config.mjs
+import { defineConfig } from 'eslint/config';
+import ed from '@eddeee888/eslint-plugin';
+
+export default defineConfig(
+  ...ed.configs['base-typescript'],
+  ...ed.configs.typescript,
+  ...ed.configs['react-typescript'], // 👈 Omit this line if you don't use React TypeScript
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
     },
-    // 👇 Omit this block if you don't use React TypeScript
-    {
-      "files": ["*.tsx"],
-      "extends": ["plugin:@eddeee888/react-typescript"],
-      "rules": {}
-    }
-  ]
-}
+  }
+);
 ```
 
 ### Nx monorepo
 
-```json
-// Root .eslintrc.json
-{
-  // ... other options
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx"],
-      "extends": [
-        "plugin:@nx/typescript",
-        // 👇 Add this line for TypeScript files
-        "plugin:@eddeee888/typescript"
-      ],
-      "rules": {}
-    },
-    {
-      "files": ["*.tsx"],
-      "extends": [
-        "plugin:@nx/react-typescript",
-        // 👇 Add this line if you use React TypeScript
-        "plugin:@eddeee888/react-typescript"
-      ],
-      "rules": {}
-    }
-  ]
-}
+```js
+// eslint.config.mjs
+import { defineConfig } from 'eslint/config';
+import nx from '@nx/eslint-plugin';
+import ed from '@eddeee888/eslint-plugin';
 
-// Project .eslintrc.json
-{
-  "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
-  "overrides": [
-    // ... other config
-    {
-      "files": ["*.ts", "*.tsx"],
-      // 👇 Add parserOptions.project that points to your project tsconfig.json file
-      "parserOptions": {
-        "project": ["pathto/project/tsconfig(.*)?.json"]
+export default defineConfig(
+  ...nx.configs['flat/base'],
+  ...nx.configs['flat/typescript'],
+  ...nx.configs['flat/javascript'],
+  ...ed.configs.typescript,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
       },
-      "rules": {}
     },
-    {
-      "files": ["*.js", "*.jsx"],
-      "rules": {}
-    }
-  ],
-  "env": {
-    "jest": true
+  },
+  {
+    ignores: ['**/dist', 'eslint.config.mjs'],
   }
-}
-
-// (Optional) Choose files to lint by using `project.json` 's `lintFilePatterns`
-//
-// Sometimes, the patterns set in a project's .eslintrc.json may not work correctly,
-// especially when running Nx CLI: `nx lint <project>`
-// In such case, try using `lintFilePatterns` in the project's `project.json`
-{
-  // ... other configs
-  "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["{projectRoot}/app/**/*.tsx", "{projectRoot}/app/**/*.ts"]
-      }
-    },
-  }
-}
+  // Other configs below...
+);
 ```
