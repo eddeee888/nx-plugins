@@ -3,12 +3,6 @@ import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export const typescriptConfig = defineConfig(
-  {
-    plugins: { '@typescript-eslint': tseslint.plugin },
-    languageOptions: {
-      parser: tseslint.parser,
-    },
-  },
   eslint.configs.recommended,
   tseslint.configs.eslintRecommended,
   tseslint.configs.recommended,
