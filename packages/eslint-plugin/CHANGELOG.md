@@ -1,5 +1,11 @@
 # @eddeee888/eslint-plugin
 
+## 1.0.0
+
+### Major Changes
+
+- 1f49dee: Convert to flat config
+
 ## 0.0.2
 
 ### Patch Changes
