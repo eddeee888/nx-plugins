@@ -1,11 +1,8 @@
-export const typescriptConfig = {
-  plugins: ['@typescript-eslint'],
-  parser: '@typescript-eslint/parser',
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
+import { defineConfig } from 'eslint/config';
+
+export const typescriptConfig = defineConfig({
+  name: '@eddeee888/eslint-plugin/typescript',
+  files: ['**/*.ts', '**/*.tsx', '**/*.cts', '**/*.mts'],
   rules: {
     '@typescript-eslint/array-type': 'error',
     '@typescript-eslint/await-thenable': 'error',
@@ -29,4 +26,4 @@ export const typescriptConfig = {
     '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
   },
-};
+});
