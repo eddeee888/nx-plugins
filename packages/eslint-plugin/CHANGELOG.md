@@ -1,5 +1,11 @@
 # @eddeee888/eslint-plugin
 
+## 1.0.1
+
+### Patch Changes
+
+- 71b8b6b: Turn off react/react-in-jsx-scope to make it easier to integrate with modern React apps
+
 ## 1.0.0
 
 ### Major Changes
