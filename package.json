@@ -6,6 +6,7 @@
     "release": "yarn nx run-many --target=build --all && yarn changeset publish"
   },
   "private": true,
+  "description": "Test",
   "dependencies": {
     "@swc/helpers": "0.5.15",
     "tslib": "^2.4.1"
