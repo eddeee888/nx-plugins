@@ -1,5 +1,11 @@
 # @eddeee888/nx-graphql-code-generator
 
+## 2.1.0
+
+### Minor Changes
+
+- 7473bb5: Update @graphql-codegen/cli peerDeps
+
 ## 2.0.0
 
 ### Major Changes
