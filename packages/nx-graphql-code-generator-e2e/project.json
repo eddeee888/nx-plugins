@@ -3,6 +3,8 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "packages/nx-graphql-code-generator-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["nx-graphql-code-generator"],
   "targets": {
     "e2e": {
       "executor": "@nx/jest:jest",
@@ -12,7 +14,5 @@
       },
       "dependsOn": ["nx-graphql-code-generator:build"]
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["nx-graphql-code-generator"]
+  }
 }
