@@ -38,5 +38,6 @@
     }
   },
   "defaultBase": "master",
-  "useLegacyCache": true
+  "useLegacyCache": true,
+  "analytics": false
 }
