@@ -38,6 +38,6 @@
     }
   },
   "defaultBase": "master",
-  "useLegacyCache": true,
-  "analytics": false
+  "analytics": false,
+  "neverConnectToCloud": true
 }
